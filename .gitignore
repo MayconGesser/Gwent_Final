@@ -1,0 +1,4 @@
+*.classpath
+*.log
+*eclipse*
+.idea
