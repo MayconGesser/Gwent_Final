@@ -1,4 +1,4 @@
-package src;
+package gwent.entidades;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -28,11 +28,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import controladores.ControladorMesa;
-import entidades.Carta;
-import entidades.CartaUnidade;
-import entidades.Fileira;
-import entidades.TipoUnidade;
+import gwent.controladores.ControladorMesa;
 
 /**
  *

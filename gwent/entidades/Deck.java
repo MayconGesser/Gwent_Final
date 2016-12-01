@@ -1,10 +1,8 @@
-package src;
+package gwent.entidades;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
-
-import entidades.Carta;
 
 public class Deck implements Serializable{
 	

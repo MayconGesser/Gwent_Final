@@ -1,4 +1,4 @@
-package src;
+package gwent.entidades;
 
 
 public enum Faccao {

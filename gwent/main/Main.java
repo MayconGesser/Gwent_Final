@@ -1,5 +1,6 @@
-package src;
+package gwent.main;
 
+import gwent.entidades.Tabuleiro;
 
 public class Main {
 

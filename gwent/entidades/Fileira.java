@@ -1,4 +1,4 @@
-package entidades;
+package gwent.entidades;
 import java.util.ArrayList;
 
 import javax.swing.GroupLayout;

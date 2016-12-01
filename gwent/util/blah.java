@@ -1,4 +1,5 @@
-package src;
+package gwent.util;
+
 
 import java.awt.Image;
 import java.io.File;
@@ -11,9 +12,11 @@ import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 
-import entidades.Carta;
-import entidades.CartaUnidade;
-import entidades.TipoUnidade;
+import gwent.entidades.Carta;
+import gwent.entidades.CartaUnidade;
+import gwent.entidades.Deck;
+import gwent.entidades.Faccao;
+import gwent.entidades.TipoUnidade;
 
 public class blah {
 	
