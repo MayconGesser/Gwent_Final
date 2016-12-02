@@ -15,4 +15,16 @@ public class CartaHabilidade extends Carta {
 	public CartaHabilidade(String nome, ImageIcon img){
 		super(nome, img);
 	}
+
+	@Override
+	public String getNomeCarta() {
+		// TODO Auto-generated method stub
+		return this.nome;
+	}
+
+	@Override
+	public ImageIcon getEstampa() {
+		// TODO Auto-generated method stub
+		return this.estampa;
+	}
 }

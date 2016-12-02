@@ -2,7 +2,7 @@ package src.gwent.entidades;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-public class Carta extends JLabel {
+public abstract class Carta extends JLabel {
 
 	/**
 	 * 
@@ -17,11 +17,6 @@ public class Carta extends JLabel {
 		this.nome = nome; 
 	}
 	
-	public String getNomeCarta(){
-		return this.nome;
-	}
-	
-	public ImageIcon getEstampa(){
-		return this.estampa;
-	}
+	public abstract String getNomeCarta();	
+	public abstract ImageIcon getEstampa();
 }
