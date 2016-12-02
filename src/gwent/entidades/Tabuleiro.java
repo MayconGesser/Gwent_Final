@@ -1,4 +1,4 @@
-package src.gwent.entidades;
+package gwent.entidades;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -24,11 +24,12 @@ import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Group;
+import javax.swing.border.BevelBorder;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import src.gwent.controladores.ControladorMesa;
+import gwent.controladores.ControladorMesa;
 
 /**
  *
@@ -286,15 +287,17 @@ public class Tabuleiro extends javax.swing.JFrame {
         );
 
         espacoExibicaoCarta.setBackground(marrom);
-        espacoExibicaoCarta.setPreferredSize(new java.awt.Dimension(190,254));
+        espacoExibicaoCarta.setPreferredSize(new java.awt.Dimension(180,244));
+        espacoExibicaoCarta.setBorder(BorderFactory.createBevelBorder(
+        		BevelBorder.LOWERED));
 
         espacoExibicaoCartaLayout = new javax.swing.GroupLayout(espacoExibicaoCarta);
         espacoExibicaoCarta.setLayout(espacoExibicaoCartaLayout);
-        
         dummy = new JPanel();
         dummy.setBackground(marrom);
         dummy.setPreferredSize(new java.awt.Dimension(168,234));
         Hexibicao = espacoExibicaoCartaLayout.createSequentialGroup();
+        
         Hexibicao.addComponent(dummy);
         espacoExibicaoCartaLayout.setHorizontalGroup(
             Hexibicao
@@ -495,7 +498,6 @@ public class Tabuleiro extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemDesconectar;
     private javax.swing.JMenuItem jMenuItemIniciarPartida;
     private javax.swing.JMenuItem jMenuItemEncerrarPartida;
-    //private Carta cartaHover;
     // End of variables declaration        
     
     private class blah implements MouseListener{
@@ -505,6 +507,7 @@ public class Tabuleiro extends javax.swing.JFrame {
 			// TODO Auto-generated method stub
 			if(passouTurno){return;}
 			Object o = e.getSource();
+			Carta cartaHover = null;
 			if(o instanceof Carta){
 				Carta c = (Carta) o;
 				java.awt.Component p = c.getParent();
@@ -518,7 +521,7 @@ public class Tabuleiro extends javax.swing.JFrame {
 					//logo, deve-se anular a selecao
 					if(cartaSelecionada.getName().equals(cartaSelecionada.getNomeCarta())){						
 						cartaSelecionada.setBorder(null);
-						espacoExibicaoCarta.setBorder(null);
+						//cartaHover.setBorder(null);
 						cartaSelecionada = null;
 						return;
 					}
@@ -527,8 +530,10 @@ public class Tabuleiro extends javax.swing.JFrame {
 				Carta carta = (Carta) o;
 				cartaSelecionada = carta;				
 				carta.setBorder(BorderFactory.createLineBorder(Color.RED));
-				espacoExibicaoCarta.setBorder(
-						BorderFactory.createLineBorder(Color.RED, 2));
+				
+				cartaHover = (Carta)espacoExibicaoCarta.getComponent(0);
+				cartaHover.setBorder(BorderFactory.createLineBorder(Color.RED,3));
+				//cartaHover.setBorder(BorderFactory.createLineBorder(Color.BLUE,2));
 			}
 			else{	//se nao for um componente carta q foi clicado
 					//como o resto da janela inteira estah vinculado a uma instancia dessa classe
@@ -552,6 +557,7 @@ public class Tabuleiro extends javax.swing.JFrame {
 			Carta c = (Carta) o;
 			String n = c.getNomeCarta();
 			c = cartasExibicao.get(n);
+			c.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 			java.awt.Component co = espacoExibicaoCarta.getComponent(0);	//getComponent(0) pq esse espaco tem sempre apenas um componente (q eh a carta amplificada)
 			espacoExibicaoCartaLayout.replace(co, c);
 		}
@@ -610,7 +616,6 @@ public class Tabuleiro extends javax.swing.JFrame {
 				ctrlMesa.processarCarta(cartaAdicionada);
 				cartaSelecionada = null;
 				trocaCartaParaDummy(); 
-				espacoExibicaoCarta.setBorder(null);
 			}
 			else if(s.equals(btPassar.getActionCommand())){
 				if(JOptionPane.showConfirmDialog(null, 

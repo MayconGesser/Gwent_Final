@@ -1,6 +1,6 @@
-package src.gwent.main;
 
-import src.gwent.entidades.Tabuleiro;
+
+import gwent.entidades.Tabuleiro;
 
 public class Main {
 

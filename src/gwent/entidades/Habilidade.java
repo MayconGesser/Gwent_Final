@@ -1,4 +1,4 @@
-package src.gwent.entidades;
+package gwent.entidades;
 
 public class Habilidade {
 
