@@ -507,7 +507,8 @@ public class Tabuleiro extends javax.swing.JFrame {
 			// TODO Auto-generated method stub
 			if(passouTurno){return;}
 			Object o = e.getSource();
-			Carta cartaHover = null;
+			Carta cartaHover = (Carta)espacoExibicaoCarta.getComponent(0);
+			cartaHover.setBorder(BorderFactory.createLineBorder(Color.RED,3));
 			if(o instanceof Carta){
 				Carta c = (Carta) o;
 				java.awt.Component p = c.getParent();
@@ -521,7 +522,7 @@ public class Tabuleiro extends javax.swing.JFrame {
 					//logo, deve-se anular a selecao
 					if(cartaSelecionada.getName().equals(cartaSelecionada.getNomeCarta())){						
 						cartaSelecionada.setBorder(null);
-						//cartaHover.setBorder(null);
+						cartaHover.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
 						cartaSelecionada = null;
 						return;
 					}
@@ -531,16 +532,14 @@ public class Tabuleiro extends javax.swing.JFrame {
 				cartaSelecionada = carta;				
 				carta.setBorder(BorderFactory.createLineBorder(Color.RED));
 				
-				cartaHover = (Carta)espacoExibicaoCarta.getComponent(0);
-				cartaHover.setBorder(BorderFactory.createLineBorder(Color.RED,3));
-				//cartaHover.setBorder(BorderFactory.createLineBorder(Color.BLUE,2));
+				
 			}
 			else{	//se nao for um componente carta q foi clicado
 					//como o resto da janela inteira estah vinculado a uma instancia dessa classe
 					//um clique em qlqr lugar fora da carta anulara a selecao dela
 				if(cartaSelecionada == null){return;}
 				cartaSelecionada.setBorder(null);
-				espacoExibicaoCarta.setBorder(null);
+				cartaHover.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
 				cartaSelecionada = null;
 			}
 		}
