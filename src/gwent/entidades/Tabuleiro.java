@@ -75,7 +75,7 @@ public class Tabuleiro extends javax.swing.JFrame {
         		);
         getContentPane().setBackground(marrom);
         setVisible(true);
-        File bin = new File("/home/viwjcq/Desktop/BancoCartas/ReinosNorte/cartas.bin");
+        File bin = new File("/home/guiga/Git/Gwent_Final/BancoCartas/ReinosNorte/cartas.bin");
         FileInputStream fis = null;
         ObjectInputStream ois = null;
         try {
@@ -134,8 +134,16 @@ public class Tabuleiro extends javax.swing.JFrame {
         espacoExibicaoCarta = new javax.swing.JPanel();
         btPassar = new javax.swing.JButton();
         btJogar = new javax.swing.JButton();
-        
-        
+
+        jMenuBar = new javax.swing.JMenuBar();
+        jMenu = new javax.swing.JMenu();
+        jMenuItemConectar = new javax.swing.JMenuItem();
+        jMenuItemIniciarPartida = new javax.swing.JMenuItem();
+        jMenuItemEncerrarPartida = new javax.swing.JMenuItem();
+        jMenuItemDesconectar = new javax.swing.JMenuItem();
+
+
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         JPanel placar = new JPanel();
@@ -380,7 +388,45 @@ public class Tabuleiro extends javax.swing.JFrame {
                                     .addComponent(fileiraCerco, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(espacoCartas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addContainerGap())))
-        );        
+        );
+
+        jMenu.setText("Menu");
+
+        jMenuItemConectar.setText("Conectar");
+        jMenuItemConectar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemConectarActionPerformed(evt);
+            }
+        });
+        jMenu.add(jMenuItemConectar);
+
+        jMenuItemIniciarPartida.setText("Iniciar Partida");
+        jMenuItemIniciarPartida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemIniciarPartidaActionPerformed(evt);
+            }
+        });
+        jMenu.add(jMenuItemIniciarPartida);
+
+        jMenuItemEncerrarPartida.setText("Encerrar Partida");
+        jMenuItemEncerrarPartida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemEncerrarPartidaActionPerformed(evt);
+            }
+        });
+        jMenu.add(jMenuItemEncerrarPartida);
+
+        jMenuItemDesconectar.setText("Desconectar");
+        jMenuItemDesconectar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemDesconectarActionPerformed(evt);
+            }
+        });
+        jMenu.add(jMenuItemDesconectar);
+
+        jMenuBar.add(jMenu);
+
+        setJMenuBar(jMenuBar);
         
         btPassar.setActionCommand(btPassar.getText());
         btJogar.setActionCommand(btJogar.getText());
@@ -391,7 +437,24 @@ public class Tabuleiro extends javax.swing.JFrame {
         getContentPane().addMouseListener(new blah());
         pack();
 
-    }// </editor-fold>                                   
+    }// </editor-fold>
+
+    protected void jMenuItemDesconectarActionPerformed(ActionEvent evt) {
+//        atorJogador.desconectar();
+    }
+
+    protected void jMenuItemIniciarPartidaActionPerformed(ActionEvent evt) {
+//        atorJogador.iniciarPartida();
+    }
+
+    protected void jMenuItemEncerrarPartidaActionPerformed(ActionEvent evt) {
+//        atorJogador.encerrarPartida();
+    }
+
+    protected void jMenuItemConectarActionPerformed(ActionEvent evt) {
+//        this.conectar();
+    }
+
 
 
     // Variables declaration - do not modify
@@ -425,6 +488,12 @@ public class Tabuleiro extends javax.swing.JFrame {
     private HashMap<String,Carta> cartasExibicao;
     private HashMap<String,Carta> cartasFileiraEx;
     private boolean passouTurno;
+    private javax.swing.JMenu jMenu;
+    private javax.swing.JMenuBar jMenuBar;
+    private javax.swing.JMenuItem jMenuItemConectar;
+    private javax.swing.JMenuItem jMenuItemDesconectar;
+    private javax.swing.JMenuItem jMenuItemIniciarPartida;
+    private javax.swing.JMenuItem jMenuItemEncerrarPartida;
     //private Carta cartaHover;
     // End of variables declaration        
     

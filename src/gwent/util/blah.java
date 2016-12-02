@@ -70,13 +70,13 @@ public class blah {
 		ImageIcon img = new ImageIcon(
 					new ImageIcon("/home/viwjcq/Desktop/BancoCartas/ReinosNorte/" + nome)
 					.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH));
-		
+
 		CartaUnidade carta = new CartaUnidade(nome,img,poder,null,tipo);
 		return carta;
 	}
-	
+
 	public static void persisteRN(){
-		
+
 		File[] imgs = new File("/home/viwjcq/Desktop/BancoCartas/ReinosNorte").listFiles();
 		File f = new File("/home/viwjcq/Desktop/BancoCartas/ReinosNorte/cartas.bin");
 		ArrayList<Carta> deck = new ArrayList<>();
