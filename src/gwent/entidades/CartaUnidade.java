@@ -35,4 +35,16 @@ public class CartaUnidade extends Carta {
 	public TipoUnidade getTipo(){
 		return this.tipo;
 	}
+
+	@Override
+	public String getNomeCarta() {
+		// TODO Auto-generated method stub
+		return this.nome;
+	}
+
+	@Override
+	public ImageIcon getEstampa() {
+		// TODO Auto-generated method stub
+		return this.estampa;
+	}
 }
