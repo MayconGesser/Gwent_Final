@@ -1,6 +1,7 @@
 package gwent.main;
 
 import gwent.entidades.Tabuleiro;
+import gwent.util.blah;
 
 public class Main {
 

@@ -68,7 +68,7 @@ public class blah {
 		}
 		
 		ImageIcon img = new ImageIcon(
-					new ImageIcon("/home/viwjcq/Desktop/BancoCartas/ReinosNorte/" + nome)
+					new ImageIcon("BancoCartas/ReinosNorte/" + nome)
 					.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH));
 		
 		CartaUnidade carta = new CartaUnidade(nome,img,poder,null,tipo);
@@ -77,8 +77,8 @@ public class blah {
 	
 	public static void persisteRN(){
 		
-		File[] imgs = new File("/home/viwjcq/Desktop/BancoCartas/ReinosNorte").listFiles();
-		File f = new File("/home/viwjcq/Desktop/BancoCartas/ReinosNorte/cartas.bin");
+		File[] imgs = new File("BancoCartas/ReinosNorte").listFiles();
+		File f = new File("BancoCartas/ReinosNorte/cartas.bin");
 		ArrayList<Carta> deck = new ArrayList<>();
 		HashMap<String,Carta> cartasExibicao = new HashMap<>();
 		HashMap<String,Carta> cartasFileira = new HashMap<>();

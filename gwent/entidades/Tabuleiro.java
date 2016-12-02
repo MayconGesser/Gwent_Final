@@ -75,7 +75,7 @@ public class Tabuleiro extends javax.swing.JFrame {
         		);
         getContentPane().setBackground(marrom);
         setVisible(true);
-        File bin = new File("/home/viwjcq/Desktop/BancoCartas/ReinosNorte/cartas.bin");
+        File bin = new File("BancoCartas/ReinosNorte/cartas.bin");
         FileInputStream fis = null;
         ObjectInputStream ois = null;
         try {
