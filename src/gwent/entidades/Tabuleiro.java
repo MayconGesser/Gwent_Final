@@ -98,19 +98,23 @@ public class Tabuleiro extends javax.swing.JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        Random r = new Random();
+        
+        cartasDeck.embaralhar();
 		Group gh = espacoCartasLayout.createSequentialGroup();
 		Group gv = espacoCartasLayout.createParallelGroup();
 		MouseCarta b = new MouseCarta();
 		
-		for(int x = 0; x<10; x++){
-			int i = r.nextInt(cartasDeck.getCartas().size());
-			Carta carta = cartasDeck.sacarCarta(i);
+		for(int x = 0; x<10; x++){			
+			Carta carta = cartasDeck.sacarCarta();
 			carta.addMouseListener(b);
 			carta.setName(carta.getNomeCarta());
 			gh.addComponent(carta);
 			gv.addComponent(carta);
 		}
+		
+		Carta carta = this.cartasDeck.sacarCarta();
+		cartasCemiterio = new Deck(cartasDeck.getFaccao());
+		cartasCemiterio.addCarta(carta);
 		
 		espacoCartasLayout.setHorizontalGroup(gh);
 		espacoCartasLayout.setVerticalGroup(gv);

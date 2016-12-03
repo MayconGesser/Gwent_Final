@@ -29,9 +29,8 @@ public class Habilidade {
 				retorno = new GatilhoHabilidade(){
 				@Override
 				public void ativarHabilidade(){
-					Deck cemiterio = (Deck) referencia;
-					int i = new java.util.Random().nextInt(cemiterio.getCartas().size());
-					CartaUnidade carta = (CartaUnidade) cemiterio.sacarCarta(i);
+					Deck cemiterio = (Deck) referencia;					
+					CartaUnidade carta = (CartaUnidade) cemiterio.sacarCarta();
 					chamador.processarCarta(carta);
 				}
 					
