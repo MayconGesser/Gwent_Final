@@ -1,4 +1,4 @@
-package gwent.entidades;
+package gwent.visao;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -30,14 +30,19 @@ import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
 import gwent.controladores.ControladorMesa;
+import gwent.entidades.Carta;
+import gwent.entidades.CartaUnidade;
+import gwent.entidades.Deck;
+import gwent.entidades.Fileira;
+import gwent.entidades.TipoUnidade;
 
 /**
  *
  * @author viwjcq
  */
-public class Tabuleiro extends javax.swing.JFrame {
-
-    /**
+public class JMesa extends javax.swing.JFrame {
+	private static final long serialVersionUID = 1L;
+	/**
      * Creates new form Tabuleiro
      */
     final Color marrom = new Color(102,51,0);
@@ -69,7 +74,8 @@ public class Tabuleiro extends javax.swing.JFrame {
     	espacoExibicaoCartaLayout.replace(c, carta);
     }
     
-    public Tabuleiro() {
+    @SuppressWarnings("unchecked")
+	public JMesa() {
         initComponents();
         
         ctrlMesa = new ControladorMesa(
@@ -119,7 +125,7 @@ public class Tabuleiro extends javax.swing.JFrame {
     }
     
     
-    @SuppressWarnings("unchecked")
+    
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
     	placar = new javax.swing.JPanel();

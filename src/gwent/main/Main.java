@@ -4,15 +4,15 @@ package gwent.main;
 
 
 
-import gwent.entidades.Tabuleiro;
 import gwent.util.blah;
+import gwent.visao.JMesa;
 
 public class Main {
 
 	public static void main(String[] args) {
 		
 		blah.persisteRN();
-		new Tabuleiro();
+		new JMesa();
 	}
 
 }
