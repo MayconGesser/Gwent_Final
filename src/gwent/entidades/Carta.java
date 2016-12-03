@@ -1,4 +1,4 @@
-package src.gwent.entidades;
+package gwent.entidades;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 

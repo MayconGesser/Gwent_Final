@@ -1,4 +1,4 @@
-package src.gwent.entidades;
+package gwent.entidades;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -29,7 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
-import src.gwent.controladores.ControladorMesa;
+import gwent.controladores.ControladorMesa;
 
 /**
  *
@@ -491,6 +491,7 @@ public class Tabuleiro extends javax.swing.JFrame {
     private Group Hexibicao; 
     private Group Vexibicao;
     private Deck cartasDeck;
+    private Deck cartasCemiterio;
     private HashMap<String,Carta> cartasExibicao;
     private HashMap<String,Carta> cartasFileiraEx;
     private boolean passouTurno;

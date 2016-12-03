@@ -1,9 +1,11 @@
-package src.gwent.main;
+package gwent.main;
 
 
 
-import src.gwent.entidades.Tabuleiro;
-import src.gwent.util.blah;
+
+
+import gwent.entidades.Tabuleiro;
+import gwent.util.blah;
 
 public class Main {
 
