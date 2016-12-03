@@ -2,14 +2,13 @@ package gwent.controladores;
 
 import java.util.HashMap;
 
-import gwent.entidades.Carta;
-import gwent.entidades.CartaUnidade;
-import gwent.entidades.Fileira;
-import gwent.entidades.TipoUnidade;
+import br.ufsc.inf.leobr.cliente.Jogada;
+import gwent.entidades.*;
 
 public class ControladorMesa {
 	
-	private HashMap<TipoUnidade,Fileira> fileiras;
+	protected HashMap<TipoUnidade,Fileira> fileiras;
+    protected Jogador jogadorAtual;
 	
 	public ControladorMesa(Fileira fileiraInfantaria,
 							Fileira fileiraLongaDistancia,
@@ -29,4 +28,20 @@ public class ControladorMesa {
 			return;
 		}
 	}
+
+	public void exibeMensagem(String mensagem) {
+
+    }
+
+    public void receberJogada(Jogada jogada) {
+
+    }
+
+    public Jogador getJogadorAtual() {
+        return jogadorAtual;
+    }
+
+    public void setJogadorAtual(Jogador jogadorAtual) {
+        this.jogadorAtual = jogadorAtual;
+    }
 }
