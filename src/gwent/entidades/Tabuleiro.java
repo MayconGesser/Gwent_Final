@@ -671,6 +671,13 @@ public class Tabuleiro extends javax.swing.JFrame {
 						== JOptionPane.YES_OPTION){
 					btJogar.setEnabled(false);
 					btPassar.setEnabled(false);
+					
+					//trata do caso de passar turno com uma carta selecionada
+					if(cartaSelecionada != null){
+						cartaSelecionada.setBorder(null);
+						cartaSelecionada = null;
+						trocaCartaParaDummy();
+					}
 					passouTurno = true;
 					jogadorDaVez = false;
 				}				
