@@ -494,6 +494,7 @@ public class Tabuleiro extends javax.swing.JFrame {
     private HashMap<String,Carta> cartasExibicao;
     private HashMap<String,Carta> cartasFileiraEx;
     private boolean passouTurno;
+    private boolean jogadorDaVez;
     private javax.swing.JMenu jMenu;
     private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JMenuItem jMenuItemConectar;
@@ -569,12 +570,11 @@ public class Tabuleiro extends javax.swing.JFrame {
 			//se jah houver uma carta selecionada remove a borda vermelha
 			//da carta previamente selecionada
 			if(cartaSelecionada != null){
-				cartaSelecionada.setBorder(null);
-				//o nome de componente q foi dado a essa carta, q estava previamente selecionada,
-				//na linha 99 eh igual ao nome q getNome() retorna?
-				//se sim eh pq a mesma carta foi clicada duas vezes
-				//logo, deve-se anular a selecao
-				if(c.getName().equals(cartaSelecionada.getNomeCarta())){
+				cartaSelecionada.setBorder(null);				
+				
+				//verifica se eh a msma carta sendo clicada novamente
+				//se for deve anular a selecao
+				if(c.equals(cartaSelecionada)){
 					Carta cartaHover = (Carta)espacoExibicaoCarta.getComponent(0);
 					cartaHover.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));					
 					cartaSelecionada = null;
@@ -661,6 +661,8 @@ public class Tabuleiro extends javax.swing.JFrame {
 				ctrlMesa.processarCarta(cartaAdicionada);
 				cartaSelecionada = null;
 				trocaCartaParaDummy(); 
+				jogadorDaVez = false;
+				
 			}
 			else if(s.equals(btPassar.getActionCommand())){
 				if(JOptionPane.showConfirmDialog(null, 
@@ -670,6 +672,7 @@ public class Tabuleiro extends javax.swing.JFrame {
 					btJogar.setEnabled(false);
 					btPassar.setEnabled(false);
 					passouTurno = true;
+					jogadorDaVez = false;
 				}				
 			}
 		}    	

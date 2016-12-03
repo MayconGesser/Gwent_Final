@@ -10,10 +10,15 @@ public class CartaHabilidade extends Carta {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String nome;
+	protected Habilidade habilidade;
 
-	public CartaHabilidade(String nome, ImageIcon img){
+	public CartaHabilidade(String nome, ImageIcon img, Habilidade habilidade){
 		super(nome, img);
+		this.habilidade = habilidade;
+	}
+	
+	public void ativarHabilidade(){
+		
 	}
 
 	@Override

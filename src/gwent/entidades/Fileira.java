@@ -49,7 +49,7 @@ public class Fileira extends JPanel{
 		this.fileiraLayout.setHorizontalGroup(glHorizontal);
 		this.fileiraLayout.setVerticalGroup(glVertical);
 		//this.exibidorPoder.alterarPoder(this.poderTotal);
-		System.out.println(this.cartas.size());
+		System.out.println(this.poderTotal);
 	}
 	
 	public void sofrerEfeitoClima(){

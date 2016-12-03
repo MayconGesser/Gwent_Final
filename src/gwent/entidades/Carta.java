@@ -19,4 +19,13 @@ public abstract class Carta extends JLabel {
 	
 	public abstract String getNomeCarta();	
 	public abstract ImageIcon getEstampa();
+	
+	@Override
+	public boolean equals(Object o){
+		if(!(o instanceof Carta)){
+			return false;
+		}
+		Carta c = (Carta) o;
+		return (o == this || this.getNomeCarta().equals(c.getNomeCarta()));
+	}
 }
