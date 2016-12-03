@@ -1,9 +1,5 @@
 package gwent.main;
 
-
-
-
-
 import gwent.util.blah;
 import gwent.visao.JMesa;
 
