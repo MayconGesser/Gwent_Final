@@ -1,4 +1,4 @@
-package gwent.entidades;
+package src.gwent.entidades;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -24,12 +24,12 @@ import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Group;
-import javax.swing.border.BevelBorder;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
 
-import gwent.controladores.ControladorMesa;
+import src.gwent.controladores.ControladorMesa;
 
 /**
  *

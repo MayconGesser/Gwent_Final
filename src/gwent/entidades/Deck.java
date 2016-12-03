@@ -1,4 +1,4 @@
-package gwent.entidades;
+package src.gwent.entidades;
 
 import java.io.Serializable;
 import java.util.ArrayList;

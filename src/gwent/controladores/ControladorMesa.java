@@ -1,11 +1,11 @@
-package gwent.controladores;
+package src.gwent.controladores;
 
 import java.util.HashMap;
 
-import gwent.entidades.Carta;
-import gwent.entidades.CartaUnidade;
-import gwent.entidades.Fileira;
-import gwent.entidades.TipoUnidade;
+import src.gwent.entidades.Carta;
+import src.gwent.entidades.CartaUnidade;
+import src.gwent.entidades.Fileira;
+import src.gwent.entidades.TipoUnidade;
 
 public class ControladorMesa {
 	
