@@ -58,12 +58,13 @@ public class Tabuleiro extends javax.swing.JFrame {
         espaco.setPreferredSize(tamEspaco);
     }
     
+    //metodo wrapper para "esvaziar" o espaco com as cartas ampliadas
     private void trocaCartaParaDummy(){
     	java.awt.Component c = espacoExibicaoCarta.getComponent(0);
     	espacoExibicaoCartaLayout.replace(c, dummy);
     }
     
-    private void trocaDummyParaCarta(Carta carta){
+    private void trocaDummyExibicaoParaCarta(Carta carta){
     	java.awt.Component c = espacoExibicaoCarta.getComponent(0);
     	espacoExibicaoCartaLayout.replace(c, carta);
     }
@@ -100,7 +101,7 @@ public class Tabuleiro extends javax.swing.JFrame {
         Random r = new Random();
 		Group gh = espacoCartasLayout.createSequentialGroup();
 		Group gv = espacoCartasLayout.createParallelGroup();
-		blah b = new blah();
+		MouseCarta b = new MouseCarta();
 		
 		for(int x = 0; x<10; x++){
 			int i = r.nextInt(cartasDeck.getCartas().size());
@@ -113,6 +114,7 @@ public class Tabuleiro extends javax.swing.JFrame {
 		
 		espacoCartasLayout.setHorizontalGroup(gh);
 		espacoCartasLayout.setVerticalGroup(gv);
+		deck.setToolTipText("Seu deck tem " + this.cartasDeck.getCartas().size() + " cartas");
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
     
@@ -219,7 +221,7 @@ public class Tabuleiro extends javax.swing.JFrame {
         );
 
         criarEspaco(deck);
-        deck.setToolTipText("Esse é o deck");
+        
 
         javax.swing.GroupLayout deckLayout = new javax.swing.GroupLayout(deck);
         deck.setLayout(deckLayout);
@@ -438,7 +440,7 @@ public class Tabuleiro extends javax.swing.JFrame {
         btPassar.addActionListener(m);
         btJogar.addActionListener(m);
         
-        getContentPane().addMouseListener(new blah());
+        getContentPane().addMouseListener(new MouseGeral());
         pack();
 
     }// </editor-fold>
@@ -500,49 +502,94 @@ public class Tabuleiro extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemEncerrarPartida;
     // End of variables declaration        
     
-    private class blah implements MouseListener{
+    
+    private class MouseGeral implements MouseListener{
+    	
+    	//se nao for um componente carta q foi clicado
+		//como o resto da janela inteira estah vinculado a uma instancia dessa classe
+		//um clique em qlqr lugar fora da carta anulara a selecao dela
+		@Override
+		public void mouseClicked(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			if(cartaSelecionada == null){
+				return;
+			}
+			
+			cartaSelecionada.setBorder(null);
+			cartaSelecionada = null;
+			Carta cartaHover = (Carta)espacoExibicaoCarta.getComponent(0);
+			cartaHover.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+    	
+    }
+    
+    
+    
+    
+    private class MouseCarta implements MouseListener{
     	
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
-			if(passouTurno){return;}
-			Object o = e.getSource();
-			Carta cartaHover = (Carta)espacoExibicaoCarta.getComponent(0);
-			cartaHover.setBorder(BorderFactory.createLineBorder(Color.RED,3));
-			if(o instanceof Carta){
-				Carta c = (Carta) o;
-				java.awt.Component p = c.getParent();
-				if(p instanceof Fileira){return;}	//carta estah numa fileira, nao pode ser selecionada
-				if(cartaSelecionada != null){
-					cartaSelecionada.setBorder(null);					
-					
-					//o nome de componente q foi dado a essa carta
-					//na linha 99 eh igual ao nome q getNome() retorna?
-					//se sim eh pq a mesma carta foi clicada duas vezes
-					//logo, deve-se anular a selecao
-					if(cartaSelecionada.getName().equals(cartaSelecionada.getNomeCarta())){						
-						cartaSelecionada.setBorder(null);
-						cartaHover.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
-						cartaSelecionada = null;
-						return;
-					}
-				}
-				
-				Carta carta = (Carta) o;
-				cartaSelecionada = carta;				
-				carta.setBorder(BorderFactory.createLineBorder(Color.RED));
-				
-				
-			}
-			else{	//se nao for um componente carta q foi clicado
-					//como o resto da janela inteira estah vinculado a uma instancia dessa classe
-					//um clique em qlqr lugar fora da carta anulara a selecao dela
-				if(cartaSelecionada == null){return;}
+			if(passouTurno){
+				return;
+			}			
+			
+			Carta c = (Carta) e.getSource();
+			
+			//carta estah numa fileira, nao pode ser selecionada
+			if(c.getParent() instanceof Fileira){
+				return;
+			}							
+			
+			//se jah houver uma carta selecionada remove a borda vermelha
+			//da carta previamente selecionada
+			if(cartaSelecionada != null){
 				cartaSelecionada.setBorder(null);
-				cartaHover.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
-				cartaSelecionada = null;
+				//o nome de componente q foi dado a essa carta, q estava previamente selecionada,
+				//na linha 99 eh igual ao nome q getNome() retorna?
+				//se sim eh pq a mesma carta foi clicada duas vezes
+				//logo, deve-se anular a selecao
+				if(c.getName().equals(cartaSelecionada.getNomeCarta())){
+					Carta cartaHover = (Carta)espacoExibicaoCarta.getComponent(0);
+					cartaHover.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));					
+					cartaSelecionada = null;
+					return;
+				}
 			}
+			
+			cartaSelecionada = c;	
+			Carta novaCartaHover = cartasExibicao.get(c.getNomeCarta());
+			cartaSelecionada.setBorder(BorderFactory.createLineBorder(Color.RED));
+			java.awt.Component cartaAnterior = espacoExibicaoCarta.getComponent(0);			
+			espacoExibicaoCartaLayout.replace(cartaAnterior, novaCartaHover);
+			novaCartaHover.setBorder(BorderFactory.createLineBorder(Color.RED,3));			
 		}
+		
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
@@ -593,7 +640,6 @@ public class Tabuleiro extends javax.swing.JFrame {
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 			String s = arg0.getActionCommand();
-			System.out.println(s);
 			if(s.equals(btJogar.getActionCommand())){
 				if(cartaSelecionada == null){
 					JOptionPane.showMessageDialog(null, "Selecione uma carta para jogar!");
@@ -611,7 +657,7 @@ public class Tabuleiro extends javax.swing.JFrame {
 									
 				}
 				
-				cartaAdicionada.addMouseListener(new blah());
+				cartaAdicionada.addMouseListener(new MouseCarta());
 				ctrlMesa.processarCarta(cartaAdicionada);
 				cartaSelecionada = null;
 				trocaCartaParaDummy(); 
