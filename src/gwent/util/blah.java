@@ -42,10 +42,13 @@ public class blah {
 		}
 		
 		int poder = Integer.parseInt((nome.substring(
-				nome.indexOf('_')+1, nome.indexOf('_')+3)));
+				nome.indexOf('_')+1, nome.indexOf('_')+3)));		
 		
 		char tipoUnidade = 
-				nome.substring(nome.lastIndexOf('_')+1).charAt(0);
+				nome.substring(nome.indexOf('_',nome.indexOf('_')+1)+1).charAt(0);
+		
+		String habilidade = nome.substring(nome.lastIndexOf('_')+1,nome.length()-4);
+		
 		
 		System.out.println(nome);
 		System.out.println(poder);
@@ -67,6 +70,11 @@ public class blah {
 				break;
 		}
 		
+		switch(habilidade){
+			case "sh":
+				
+		}
+		
 		ImageIcon img = new ImageIcon(
 					new ImageIcon("BancoCartas/ReinosNorte/" + nome)
 					.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH));
@@ -80,7 +88,7 @@ public class blah {
 		File[] imgs = new File("BancoCartas/ReinosNorte").listFiles();
 		File f = new File("BancoCartas/ReinosNorte/cartas.bin");
 
-		ArrayList<Carta> deck = new ArrayList<>();
+		ArrayList<Carta> representacaoDeck = new ArrayList<>();
 		HashMap<String,Carta> cartasExibicao = new HashMap<>();
 		HashMap<String,Carta> cartasFileira = new HashMap<>();
 		FileOutputStream fos = null;
@@ -103,13 +111,13 @@ public class blah {
 			}
 			
 			Carta carta = criarCarta(nome,'d');
-			deck.add(carta);
+			representacaoDeck.add(carta);
 			carta = criarCarta(nome,'e');
 			cartasExibicao.put(nome,carta);
 			carta = criarCarta(nome,'f');
 			cartasFileira.put(nome, carta);
 		}
-		Deck reinosNorte = new Deck(Faccao.REINOS_DO_NORTE,deck);
+		Deck reinosNorte = new Deck(Faccao.REINOS_DO_NORTE,representacaoDeck);
 		try {
 			oos.writeObject(reinosNorte);
 			oos.writeObject(cartasExibicao);

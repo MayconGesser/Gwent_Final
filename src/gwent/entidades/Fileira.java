@@ -1,4 +1,5 @@
 package gwent.entidades;
+import java.awt.Color;
 import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
@@ -13,8 +14,10 @@ public class Fileira extends JPanel{
 	private final ArrayList<Carta> cartas;
 	private int poderTotal;
 	private boolean sobEfeitoClima;
+	private static final Color corEfeitoClima = new Color(156,73,0);;
+	private static final Color corNormal = Color.BLUE;
 	private final TipoUnidade tipo;
-	private final ExibidorPoderFileira exibidorPoder;
+	private final ExibidorPoderFileira exibidorPoder;	
 	private Group glHorizontal;
 	private Group glVertical;
 	private GroupLayout fileiraLayout;
@@ -55,10 +58,12 @@ public class Fileira extends JPanel{
 	public void sofrerEfeitoClima(){
 		this.sobEfeitoClima = true;
 		setPoderTotal(this.cartas.size());
+		setBackground(corEfeitoClima);
 	}
 	
 	public void anularEfeitoClima(){
 		this.sobEfeitoClima = false;
+		setBackground(corNormal);
 	}
 	
 	public ArrayList<Carta> getCartas(){
