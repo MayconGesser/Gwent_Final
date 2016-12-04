@@ -17,8 +17,8 @@ public class Fileira extends JPanel implements Jogada {
 	private final ArrayList<Carta> cartas;
 	private int poderTotal;
 	private boolean sobEfeitoClima;
-	private static final Color corEfeitoClima = new Color(156,73,0);;
-	private static final Color corNormal = Color.BLUE;
+	private Carta ultimaCartaInclusa;
+	private static final Color corNormal = new Color(156,73,0);
 	private final TipoUnidade tipo;
 	//private final ExibidorPoderFileira exibidorPoder;	
 	private Group glHorizontal;
@@ -27,7 +27,7 @@ public class Fileira extends JPanel implements Jogada {
 	
 	
 	public Fileira(TipoUnidade tipo, ExibidorPoderFileira exibidorPoder){
-		this.tipo = tipo;
+		this.tipo = tipo;		
 		//this.exibidorPoder = exibidorPoder;
 		this.cartas = new ArrayList<>();
 		this.fileiraLayout = new GroupLayout(this);
@@ -43,6 +43,7 @@ public class Fileira extends JPanel implements Jogada {
 	
 	public void incluirCarta(Carta carta){
 		this.cartas.add(carta);
+		this.ultimaCartaInclusa = carta;
 		if(carta instanceof CartaUnidade){
 			CartaUnidade c = (CartaUnidade) carta;
 			if(sobEfeitoClima){
@@ -65,13 +66,31 @@ public class Fileira extends JPanel implements Jogada {
 	
 	public void sofrerEfeitoClima(){
 		this.sobEfeitoClima = true;
-		setPoderTotal(this.cartas.size());
+		this.poderTotal = this.cartas.size();
+		Color corEfeitoClima = null;
+		if(this.tipo.equals(TipoUnidade.INFANTARIA)){
+			corEfeitoClima = Color.BLUE;		//afetada por geada mordaz
+		}
+		else if(this.tipo.equals(TipoUnidade.LONGA_DISTANCIA)){		//afetada por neblina impenetravel
+			corEfeitoClima = Color.WHITE;
+		}
+		else if(this.tipo.equals(TipoUnidade.CERCO)){		//afetada por chuva torrencial
+			corEfeitoClima = Color.GRAY;
+		}
 		setBackground(corEfeitoClima);
+		revalidate();
+		repaint();
+		System.out.println("Fileira " + this.tipo.toString() + " está sob efeito de clima");
+		System.out.println("Novo poder total: " + this.poderTotal);
 	}
 	
 	public void anularEfeitoClima(){
 		this.sobEfeitoClima = false;
 		setBackground(corNormal);
+		revalidate();
+		repaint();		
+		System.out.println("Fileira " + this.tipo.toString() + "não está sob efeito de clima");
+		atualizaPoderTotal();
 	}
 	
 	public ArrayList<Carta> getCartas(){
@@ -88,17 +107,30 @@ public class Fileira extends JPanel implements Jogada {
 	
 	public void atualizaPoderTotal(){
 		int novoPoderTotal = 0;
-		for(Carta c : this.cartas){
-			if(c instanceof CartaUnidade){
-				CartaUnidade unidade = (CartaUnidade) c;
-				novoPoderTotal += unidade.getPoder();
-			}
+		if(this.sobEfeitoClima){
+			novoPoderTotal = this.cartas.size();
 		}
+		else{
+			for(Carta c : this.cartas){
+				if(c instanceof CartaUnidade){
+					CartaUnidade unidade = (CartaUnidade) c;
+					novoPoderTotal += unidade.getPoder();
+				}
+			}
+		}		
 		this.poderTotal = novoPoderTotal;
 		System.out.println("Novo poder total da fileira " + this.tipo.toString() + ": " + this.poderTotal);
 	}
 	
 	public TipoUnidade getTipo(){
 		return this.tipo;
+	}
+
+	public Carta getUltimaCartaInclusa() {
+		return ultimaCartaInclusa;
+	}
+
+	public void setUltimaCartaInclusa(Carta ultimaCartaInclusa) {
+		this.ultimaCartaInclusa = ultimaCartaInclusa;
 	}
 }

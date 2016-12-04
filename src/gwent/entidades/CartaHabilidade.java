@@ -15,6 +15,10 @@ public class CartaHabilidade extends Carta {
 		super(nome, img, habilidade);		
 	}
 	
+	public CartaHabilidade(String nome, Habilidade habilidade){
+		super(nome,habilidade);
+	}
+	
 	@Override
 	public Habilidade getHabilidade(){
 		return this.habilidade;
@@ -35,5 +39,11 @@ public class CartaHabilidade extends Carta {
 	public ImageIcon getEstampa() {
 		// TODO Auto-generated method stub
 		return this.estampa;
+	}
+	
+	@Override
+	public void setEstampa(ImageIcon estampa){
+		this.estampa = estampa;
+		this.setIcon(estampa);
 	}
 }

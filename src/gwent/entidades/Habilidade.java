@@ -34,8 +34,13 @@ public class Habilidade implements Jogada {
 			case ELEVAR_MORAL:
 				ArrayList<Carta> cartasFileira = referenciaFileira.getCartas();
 				for(Carta c : cartasFileira){
-					if(c instanceof CartaUnidade){
+					if(c instanceof CartaUnidade){						
 						CartaUnidade u = (CartaUnidade)c;
+						if(u.getHabilidade() != null){		//para ter certeza...
+							if(u == referenciaFileira.getUltimaCartaInclusa()){
+								continue;	//eh a carta q ativou a habilidade; nao deve aumentar poder
+							}
+						}
 						u.setPoder(u.getPoder()+1);
 					}
 				}

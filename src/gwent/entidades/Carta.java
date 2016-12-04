@@ -11,7 +11,7 @@ public abstract class Carta extends JLabel implements Jogada {
 	 */
 	private static final long serialVersionUID = 1L;
 	protected final String nome;
-	protected final ImageIcon estampa;
+	protected ImageIcon estampa;
 	protected final Habilidade habilidade;
 	
 	public Carta(String nome, ImageIcon img, Habilidade habilidade){
@@ -21,8 +21,14 @@ public abstract class Carta extends JLabel implements Jogada {
 		this.habilidade = habilidade;
 	}
 	
+	public Carta(String nome, Habilidade habilidade){
+		this.nome = nome;
+		this.habilidade = habilidade;
+	}
+	
 	public abstract String getNomeCarta();	
 	public abstract ImageIcon getEstampa();
+	public abstract void setEstampa(ImageIcon estampa);
 	public abstract Habilidade getHabilidade();
 	public abstract void ativarHabilidade();
 	

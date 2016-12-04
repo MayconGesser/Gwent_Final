@@ -28,7 +28,7 @@ public class JMesa extends javax.swing.JFrame {
     final Color marromFileira = new Color(156,73,0);
     final Color marromEspaco = new Color(51,25,0);
     final Dimension tamFileira = new Dimension(624,100);
-    final Dimension tamEspaco = new Dimension(90,110);
+    final Dimension tamEspaco = new Dimension(90,110);    
     protected AtorJogador atorJogador;
     protected static final int START = 1;
     protected static final int CONECTADO = 2;
@@ -137,28 +137,32 @@ public class JMesa extends javax.swing.JFrame {
 		Group gh = espacoCartasLayout.createSequentialGroup();
 		Group gv = espacoCartasLayout.createParallelGroup();
 		MouseCarta b = new MouseCarta();
-
-		for(int x = 0; x<9; x++) {
-			Carta carta = jogador.sacarCarta();
+		
+		//apenas para teste de carta de clima
+//		ArrayList<Carta> d = (ArrayList<Carta>)jogador.getDeck().getCartas();
+//		CartaClima geadamordaz = null;
+//		int i = 0;
+//		for(Carta c : d){
+//			i++;
+//			if(c instanceof CartaClima){
+//				geadamordaz = (CartaClima) c; 
+//			}
+//		}
+//		if(geadamordaz != null){
+//			jogador.getDeck().getCartas().remove(i);
+//			geadamordaz.addMouseListener(b);
+//			geadamordaz.setName(geadamordaz.getNomeCarta());
+//			gh.addComponent(geadamordaz);
+//			gv.addComponent(geadamordaz);
+//		}		
+//		
+		for(int x = 0; x<10; x++) {
+			Carta carta = jogador.mostrarCarta(x);
 			carta.addMouseListener(b);
 			carta.setName(carta.getNomeCarta());
 			gh.addComponent(carta);
 			gv.addComponent(carta);
-		}
-		
-		//apenas para teste de carta de clima
-		ArrayList<Carta> d = (ArrayList<Carta>)jogador.getDeck().getCartas();
-		CartaClima geadamordaz = null;
-		for(Carta c : d){
-			if(c instanceof CartaClima){
-				geadamordaz = (CartaClima) c;
-			}
-		}
-		
-		geadamordaz.addMouseListener(b);
-		geadamordaz.setName(geadamordaz.getNomeCarta());
-		gh.addComponent(geadamordaz);
-		gv.addComponent(geadamordaz);
+		}	
 		
 		espacoCartasLayout.setHorizontalGroup(gh);
 		espacoCartasLayout.setVerticalGroup(gv);
@@ -951,27 +955,28 @@ public class JMesa extends javax.swing.JFrame {
 				Carta cartaAdicionada = null;
 				String n = cartaSelecionada.getNomeCarta();
 				if(cartaSelecionada instanceof CartaUnidade){
-
 					cartaAdicionada = (CartaUnidade) cartasFileiraEx.get(n);  //precisa-se manter um ponteiro para o objeto da carta q vai ser add pra manter o mouselistener
+					cartaAdicionada.addMouseListener(new MouseCarta());
+					TipoHabilidade tipoHabilidadeCarta = null;
 
-				}
-
-				cartaAdicionada.addMouseListener(new MouseCarta());
-				TipoHabilidade tipoHabilidadeCarta = null;
-
-				if(cartaSelecionada.getHabilidade() != null){
-					tipoHabilidadeCarta = cartaSelecionada.getHabilidade().getTipoHabilidade();
-					switch(tipoHabilidadeCarta){
-						case MEDICO:
-							ctrlMesa.setCemiterio(cartasCemiterio);
-							break;							
-						
-						default:
-							break;
+					if(cartaSelecionada.getHabilidade() != null){
+						tipoHabilidadeCarta = cartaSelecionada.getHabilidade().getTipoHabilidade();
+						switch(tipoHabilidadeCarta){
+							case MEDICO:
+								ctrlMesa.setCemiterio(cartasCemiterio);
+								break;							
+							
+							default:
+								break;
+						}
 					}
+					precisaSelecionar = ctrlMesa.processarCarta(cartaAdicionada);
 				}
-
-				precisaSelecionar = ctrlMesa.processarCarta(cartaAdicionada);
+				else if(cartaSelecionada instanceof CartaClima){	//nao precisa adicionar na fileira, soh joga
+					CartaClima cartaClima = (CartaClima) cartaSelecionada;
+					ctrlMesa.processarCarta(cartaClima);					
+				}
+				
 //				if(precisaSelecionar){
 //					Fileira fileiraSelecionada = null;
 //					JOptionPane.showMessageDialog(null, "Selecione uma fileira para jogar a carta");
@@ -983,6 +988,8 @@ public class JMesa extends javax.swing.JFrame {
 				cartaSelecionada = null;
 				trocaCartaParaDummy();
 				jogadorDaVez = false;
+				revalidate();
+				repaint();
 			}
 			else if(s.equals(btPassar.getActionCommand())){
 				if(JOptionPane.showConfirmDialog(null,

@@ -1,0 +1,7 @@
+Script de persistencia alterado para reconhecer cartas q não são de unidade. 
+
+Construtor da SuperClasse Carta (e todas as suas sub-classes) alterado, bem como o atributo estampa (não eh mais final).
+
+Adicionei um atributo ultimaCartaIncluida no objeto Fileira, para poder fazer a lógica correta de ativar a habilidade Elevar Moral.
+
+Cartas de clima totalmente funcionais. Habilidade Elevar Moral funcionando corretamente.

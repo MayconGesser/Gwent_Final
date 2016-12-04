@@ -18,6 +18,12 @@ public class CartaUnidade extends Carta {
 		this.tipo = tipo;
 	}
 	
+	public CartaUnidade(String nome, Habilidade hab, int poder, TipoUnidade tipo){
+		super(nome,hab);
+		this.poder = poder;
+		this.tipo = tipo;
+	}
+	
 	@Override
 	public void ativarHabilidade(){
 		if(this.habilidade == null){
@@ -53,5 +59,11 @@ public class CartaUnidade extends Carta {
 	public ImageIcon getEstampa() {
 		// TODO Auto-generated method stub
 		return this.estampa;
+	}
+	
+	@Override
+	public void setEstampa(ImageIcon estampa){
+		this.estampa = estampa;
+		this.setIcon(estampa);
 	}
 }

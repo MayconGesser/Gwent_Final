@@ -24,6 +24,15 @@ import gwent.entidades.TipoUnidade;
 
 public class ScriptPersistencia {
 	
+	private static boolean ehNumerico(String s){
+		try{
+			int i = Integer.parseInt(s);
+		}catch(NumberFormatException e){
+			return false;
+		}
+		return true;
+	}
+	
 	private static Carta criarCarta(String nome, char modo, String faccao){
 		
 		int w = 0, h = 0; 
@@ -44,24 +53,26 @@ public class ScriptPersistencia {
 				h = 70;
 				break;
 		}
+		
+		Carta carta = null;
 		int poder = 0;
-		boolean ehCartaUnidade = true; 	//gambiarra basica
 		TipoUnidade tipo = null;
-		try{
-			poder = Integer.parseInt((nome.substring(
-					nome.indexOf('_')+1, nome.indexOf('_')+3)));		
+		Habilidade habilidadeCarta = null;
+		String s = (nome.substring(
+					nome.indexOf('_')+1, nome.indexOf('_')+3));
+		if(ehNumerico(s)){				//eh uma carta de unidade
+			
+			poder = Integer.parseInt(s);
 			
 			char tipoUnidade = 
 					nome.substring(nome.indexOf('_',nome.indexOf('_')+1)+1).charAt(0);
 			
-			String habilidade = nome.substring(nome.lastIndexOf('_')+1,nome.length()-4);
+			String habilidade = nome.substring(nome.lastIndexOf('_')+1,nome.length()-4);		
 			
 			System.out.println(nome);
 			System.out.println(poder);
 			System.out.println(tipoUnidade);
 			System.out.println(habilidade);
-			
-			
 			
 			switch (tipoUnidade){
 				case 'i':
@@ -77,49 +88,52 @@ public class ScriptPersistencia {
 					break;
 			}
 			
-		}catch(NumberFormatException e){
-			//significa q nao eh uma carta de unidade
-			ehCartaUnidade = false;
-		}		
-		
-		String habilidade = nome.substring(
-				nome.indexOf('_')+1, nome.indexOf('_')+3); //mesma posicao do poder em cartas de unidade
-		
-		Habilidade habilidadeCarta = null;
-		if(ehCartaUnidade){
 			switch(habilidade){
-
-			case "sh":
-				break;
-
-			case "em":
-				habilidadeCarta = new Habilidade(TipoHabilidade.ELEVAR_MORAL);
-				break;
-
-			case "m":
-				habilidadeCarta = new Habilidade(TipoHabilidade.MEDICO);
-				break;
+			
+				case "sh":
+					break;
+	
+				case "em":
+					habilidadeCarta = new Habilidade(TipoHabilidade.ELEVAR_MORAL);
+					break;
+	
+				case "m":
+					habilidadeCarta = new Habilidade(TipoHabilidade.MEDICO);
+					break;
 			}
-		}
+			
+			carta = new CartaUnidade(nome,habilidadeCarta,poder,tipo);
+		}					
+		
+		else{		//eh uma carta de habilidade
+			String habilidade = nome.substring(
+					nome.indexOf('_')+1, nome.indexOf('_')+3); //mesma posicao do poder em cartas de unidade
+				switch(habilidade){
+				case "gm":					
+					System.out.println(nome);
+					System.out.println(TipoCartaClima.GEADA_MORDAZ.toString());
+					carta = new CartaClima(nome,habilidadeCarta,TipoCartaClima.GEADA_MORDAZ);
+					break;
+					
+				case "ni":
+					System.out.println(nome);
+					System.out.println(TipoCartaClima.NEBLINA_IMPENETRAVEL.toString());
+					carta = new CartaClima(nome,habilidadeCarta,TipoCartaClima.NEBLINA_IMPENETRAVEL);
+					break;
+					
+				case "ct":
+					System.out.println(nome);
+					System.out.println(TipoCartaClima.CHUVA_TORRENCIAL.toString());
+					carta = new CartaClima(nome,habilidadeCarta,TipoCartaClima.CHUVA_TORRENCIAL);
+					break;
+			}
+		}		
 		
 		ImageIcon img = new ImageIcon(
 					new ImageIcon("BancoCartas/" + faccao + "/" + nome)
 					.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH));
 		
-		Carta carta = null;
-		
-		if(ehCartaUnidade){
-			carta = new CartaUnidade(nome,img,habilidadeCarta,poder,tipo);
-		}
-		else{
-			switch(habilidade){
-				case "gm":					
-					System.out.println(nome);
-					System.out.println(TipoCartaClima.GEADA_MORDAZ.toString());
-					carta = new CartaClima(nome,img,habilidadeCarta,TipoCartaClima.GEADA_MORDAZ);
-					break;
-			}
-		}
+		carta.setEstampa(img);		
 		return carta;
 	}
 

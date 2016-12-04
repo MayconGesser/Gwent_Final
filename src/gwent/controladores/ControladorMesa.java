@@ -97,6 +97,13 @@ public class ControladorMesa {
         	switch(tipo){
         		case GEADA_MORDAZ:
         			cc.setFileiraAtingida(this.fileiras.get(TipoUnidade.INFANTARIA));
+        			break;
+        		case NEBLINA_IMPENETRAVEL:
+        			cc.setFileiraAtingida(this.fileiras.get(TipoUnidade.LONGA_DISTANCIA));
+        			break;
+        		case CHUVA_TORRENCIAL:
+        			cc.setFileiraAtingida(this.fileiras.get(TipoUnidade.CERCO));
+        			break;
         	}
         	cc.ativarHabilidade();
         }
