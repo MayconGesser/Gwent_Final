@@ -63,23 +63,22 @@ public class ControladorMesa {
             TipoUnidade t = c.getTipo();
             Fileira f = this.fileiras.get(t);
             Habilidade habilidadeCarta = c.getHabilidade();
+            f.incluirCarta(carta);
             if(habilidadeCarta != null){
                 TipoHabilidade tipoHabilidadeCarta = habilidadeCarta.getTipoHabilidade();
                 switch(tipoHabilidadeCarta){
                     case MEDICO:
                         habilidadeCarta.setChamador(this);
-                        habilidadeCarta.setReferencia(this.cemiterio);
+                        habilidadeCarta.setReferenciaDeck(this.cemiterio);
                         break;
                     case AGILIDADE:
-                        precisaSelecionar = true;
-                        return precisaSelecionar;
-                    case AGRUPAR:
-                        break;
+//                        precisaSelecionar = true;
+//                        return precisaSelecionar;
+                    	break;
                     case CORNETA_COMANDANTE:
                         break;
-                    case ELEVAR_MORAL:
-                        break;
-                    case EPIDEMIA:
+                    case ELEVAR_MORAL:                    	
+                    	
                         break;
                     case ESPIAO:
                         break;
@@ -87,15 +86,19 @@ public class ControladorMesa {
                         break;
                     case ISCA:
                         break;
-                    case LACOS_FORTES:
-                        break;
                     default:
                         break;
                 }
             }
-
+            
         }
         return precisaSelecionar;
+    }
+    
+    //INSTAVEL: a nao ser q carta de habilidade q vai em fileira tb receba um atributo tipo
+    //isso vai quebrar qdo tiver q tratar cartas de habilidade 
+    public Fileira determinaFileiraCarta(CartaUnidade carta){
+    	return this.fileiras.get(carta.getTipo());
     }
 
     public boolean conectarRede(String nome, String servidor) {

@@ -942,26 +942,23 @@ public class JMesa extends javax.swing.JFrame {
 						case MEDICO:
 							ctrlMesa.setCemiterio(cartasCemiterio);
 							break;
+							
+						case ELEVAR_MORAL:
+							cartaSelecionada.getHabilidade().setReferenciaFileira(ctrlMesa.determinaFileiraCarta((CartaUnidade)cartaSelecionada));
 						default:
 							break;
 					}
 				}
 
 				precisaSelecionar = ctrlMesa.processarCarta(cartaAdicionada);
-				if(precisaSelecionar){
-					Fileira fileiraSelecionada = null;
-					JOptionPane.showMessageDialog(null, "Selecione uma fileira para jogar a carta");
-					while(precisaSelecionar){
-						try{
-							fileiraSelecionada = seletorFileira.getFileiraSelecionada();
-							precisaSelecionar = false;
-						}
-						catch(NullPointerException e){
-
-						}
-					}
-					fileiraSelecionada.incluirCarta(cartaAdicionada);
-				}
+//				if(precisaSelecionar){
+//					Fileira fileiraSelecionada = null;
+//					JOptionPane.showMessageDialog(null, "Selecione uma fileira para jogar a carta");
+//					while(precisaSelecionar){
+//						
+//					}
+//					fileiraSelecionada.incluirCarta(cartaAdicionada);
+//				}
 				cartaSelecionada = null;
 				trocaCartaParaDummy();
 				jogadorDaVez = false;

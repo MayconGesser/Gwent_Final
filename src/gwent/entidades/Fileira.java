@@ -57,7 +57,7 @@ public class Fileira extends JPanel implements Jogada {
 		this.fileiraLayout.setHorizontalGroup(glHorizontal);
 		this.fileiraLayout.setVerticalGroup(glVertical);
 		//this.exibidorPoder.alterarPoder(this.poderTotal);
-		System.out.println(this.poderTotal);
+		System.out.println("Poder da fileira " + this.getTipo().toString() + ": " + this.poderTotal);
 	}
 	
 	public void sofrerEfeitoClima(){
@@ -81,6 +81,18 @@ public class Fileira extends JPanel implements Jogada {
 	
 	public void setPoderTotal(int poderTotal){
 		this.poderTotal = poderTotal;
+	}
+	
+	public void atualizaPoderTotal(){
+		int novoPoderTotal = 0;
+		for(Carta c : this.cartas){
+			if(c instanceof CartaUnidade){
+				CartaUnidade unidade = (CartaUnidade) c;
+				novoPoderTotal += unidade.getPoder();
+			}
+		}
+		this.poderTotal = novoPoderTotal;
+		System.out.println("Novo poder total da fileira " + this.tipo.toString() + ": " + this.poderTotal);
 	}
 	
 	public TipoUnidade getTipo(){

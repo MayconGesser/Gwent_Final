@@ -1,6 +1,6 @@
 package gwent.entidades;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 
 import br.ufsc.inf.leobr.cliente.Jogada;
 import gwent.controladores.ControladorMesa;
@@ -12,7 +12,8 @@ public class Habilidade implements Jogada {
 	 */
 	private static final long serialVersionUID = 1L;
 	private final TipoHabilidade tipoHabilidade;
-	private Deck referencia;
+	private Deck referenciaDeck;
+	private Fileira referenciaFileira;
 	private ControladorMesa chamador;
 	
 	public Habilidade(TipoHabilidade tipoHabilidade){
@@ -26,10 +27,21 @@ public class Habilidade implements Jogada {
 				break;
 				
 			case MEDICO:
-				CartaUnidade cartaSacada = (CartaUnidade) referencia.sacarCarta();
+				CartaUnidade cartaSacada = (CartaUnidade) referenciaDeck.sacarCarta();
 				chamador.processarCarta(cartaSacada);
 				break;
-
+			
+			case ELEVAR_MORAL:
+				ArrayList<Carta> cartasFileira = referenciaFileira.getCartas();
+				for(Carta c : cartasFileira){
+					if(c instanceof CartaUnidade){
+						CartaUnidade u = (CartaUnidade)c;
+						u.setPoder(u.getPoder()+1);
+					}
+				}
+				referenciaFileira.atualizaPoderTotal();
+				break;
+				
 			default:
 				break;
 		}
@@ -39,16 +51,16 @@ public class Habilidade implements Jogada {
 	
 
 
-	public void setReferencia(Deck referencia) {
-		this.referencia = referencia;
+	public void setReferenciaDeck(Deck referencia) {		
+		this.referenciaDeck = referencia;
 	}
 
 	public void setChamador(ControladorMesa chamador) {
 		this.chamador = chamador;
 	}
 
-	public Deck getReferencia() {
-		return referencia;
+	public Deck getReferenciaDeck() {
+		return referenciaDeck;
 	}
 
 	public ControladorMesa getChamador() {
@@ -57,5 +69,13 @@ public class Habilidade implements Jogada {
 	
 	public TipoHabilidade getTipoHabilidade(){
 		return this.tipoHabilidade;
+	}
+
+	public Fileira getReferenciaFileira() {
+		return referenciaFileira;
+	}
+
+	public void setReferenciaFileira(Fileira referenciaFileira) {
+		this.referenciaFileira = referenciaFileira;
 	}
 }
