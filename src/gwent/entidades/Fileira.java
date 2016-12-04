@@ -2,6 +2,7 @@ package gwent.entidades;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Group;
 import javax.swing.JPanel;
@@ -17,7 +18,7 @@ public class Fileira extends JPanel{
 	private static final Color corEfeitoClima = new Color(156,73,0);;
 	private static final Color corNormal = Color.BLUE;
 	private final TipoUnidade tipo;
-	private final ExibidorPoderFileira exibidorPoder;	
+	//private final ExibidorPoderFileira exibidorPoder;	
 	private Group glHorizontal;
 	private Group glVertical;
 	private GroupLayout fileiraLayout;
@@ -25,7 +26,7 @@ public class Fileira extends JPanel{
 	
 	public Fileira(TipoUnidade tipo, ExibidorPoderFileira exibidorPoder){
 		this.tipo = tipo;
-		this.exibidorPoder = exibidorPoder;
+		//this.exibidorPoder = exibidorPoder;
 		this.cartas = new ArrayList<>();
 		this.fileiraLayout = new GroupLayout(this);
 		this.setLayout(fileiraLayout);
@@ -35,6 +36,7 @@ public class Fileira extends JPanel{
 				);
 		this.fileiraLayout.setHorizontalGroup(glHorizontal);
 		this.fileiraLayout.setVerticalGroup(glVertical);
+		setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
 	}
 	
 	public void incluirCarta(Carta carta){

@@ -77,7 +77,7 @@ public class blah {
 		switch(habilidade){
 			
 			case "sh":
-				habilidadeCarta = null;
+				habilidadeCarta = new Habilidade(TipoHabilidade.AGILIDADE);
 				break;
 				
 			case "m":

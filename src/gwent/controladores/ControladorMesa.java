@@ -26,7 +26,8 @@ public class ControladorMesa implements Serializable{
 		this.fileiras.put(TipoUnidade.CERCO, fileiraCerco);
 	}
 
-	public void processarCarta(Carta carta){
+	public boolean processarCarta(Carta carta){
+		boolean precisaSelecionar = false;
 		if(carta instanceof CartaUnidade){
 			CartaUnidade c = (CartaUnidade) carta;
 			TipoUnidade t = c.getTipo();
@@ -40,7 +41,8 @@ public class ControladorMesa implements Serializable{
 					habilidadeCarta.setReferencia(this.cemiterio);
 					break;
 				case AGILIDADE:
-					break;
+					precisaSelecionar = true;
+					return precisaSelecionar;
 				case AGRUPAR:
 					break;
 				case CORNETA_COMANDANTE:
@@ -61,10 +63,9 @@ public class ControladorMesa implements Serializable{
 					break;
 				}
 			}
-			
-			f.incluirCarta(c);
-			return;
+						
 		}
+		return precisaSelecionar;
 	}
 
 	public void exibeMensagem(String mensagem) {

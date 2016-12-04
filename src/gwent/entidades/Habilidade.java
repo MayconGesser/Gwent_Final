@@ -19,7 +19,11 @@ public class Habilidade implements Serializable{
 	}
 	
 	public void ativarHabilidade(){
-		switch(this.tipoHabilidade){
+		switch(this.tipoHabilidade){			
+				
+			case AGILIDADE:
+				break;
+				
 			case MEDICO:
 				CartaUnidade cartaSacada = (CartaUnidade) referencia.sacarCarta();
 				chamador.processarCarta(cartaSacada);

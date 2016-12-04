@@ -141,6 +141,10 @@ public class JMesa extends javax.swing.JFrame {
 		fileiraInfantariaAd = new Fileira(TipoUnidade.INFANTARIA,null);
 		fileiraLongaDistanciaAd = new Fileira(TipoUnidade.LONGA_DISTANCIA,null);
 		fileiraCercoAd = new Fileira(TipoUnidade.CERCO,null);
+		seletorFileira = new SeletorFileira();
+		fileiraCerco.addMouseListener(seletorFileira);
+		fileiraLongaDistancia.addMouseListener(seletorFileira);
+		fileiraInfantaria.addMouseListener(seletorFileira);
 		deck = new javax.swing.JPanel();
 		cemiterio = new javax.swing.JPanel();
 		deckAd = new javax.swing.JPanel();
@@ -149,7 +153,6 @@ public class JMesa extends javax.swing.JFrame {
 		espacoExibicaoCarta = new javax.swing.JPanel();
 		btPassar = new javax.swing.JButton();
 		btJogar = new javax.swing.JButton();
-
 		jMenuBar = new javax.swing.JMenuBar();
 		jMenu = new javax.swing.JMenu();
 		jMenuItemConectar = new javax.swing.JMenuItem();
@@ -491,6 +494,7 @@ public class JMesa extends javax.swing.JFrame {
 	private Fileira fileiraInfantariaAd;
 	private Fileira fileiraLongaDistancia;
 	private Fileira fileiraLongaDistanciaAd;
+	private SeletorFileira seletorFileira;
 	private JPanel expF_cerco;
 	private JPanel expF_longd;
 	private JPanel expF_inf;
@@ -507,6 +511,7 @@ public class JMesa extends javax.swing.JFrame {
 	private HashMap<String,Carta> cartasFileiraEx;
 	private boolean passouTurno;
 	private boolean jogadorDaVez;
+	private boolean precisaSelecionar;
 	private javax.swing.JMenu jMenu;
 	private javax.swing.JMenuBar jMenuBar;
 	private javax.swing.JMenuItem jMenuItemConectar;
@@ -681,7 +686,21 @@ public class JMesa extends javax.swing.JFrame {
 					}					
 				}
 
-				ctrlMesa.processarCarta(cartaAdicionada);
+				precisaSelecionar = ctrlMesa.processarCarta(cartaAdicionada);				
+				if(precisaSelecionar){
+					Fileira fileiraSelecionada = null;
+					JOptionPane.showMessageDialog(null, "Selecione uma fileira para jogar a carta");
+					while(precisaSelecionar){
+						try{
+							fileiraSelecionada = seletorFileira.getFileiraSelecionada();
+							precisaSelecionar = false;
+						}
+						catch(NullPointerException e){
+							
+						}
+					}
+					fileiraSelecionada.incluirCarta(cartaAdicionada);
+				}			
 				cartaSelecionada = null;
 				trocaCartaParaDummy(); 
 				jogadorDaVez = false;
@@ -705,5 +724,56 @@ public class JMesa extends javax.swing.JFrame {
 				}				
 			}
 		}    	
+	}
+	
+	private class SeletorFileira implements MouseListener{
+		
+		private Fileira fileiraSelecionada; 
+		
+		public Fileira getFileiraSelecionada(){
+			return this.fileiraSelecionada;
+		}	
+		
+		@Override
+		public void mouseClicked(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			if(!precisaSelecionar){
+				return;
+			}
+			this.fileiraSelecionada = (Fileira)arg0.getSource();
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			if(!precisaSelecionar){
+				return;
+			}
+			Fileira fileira = (Fileira) arg0.getSource();
+			fileira.setBorder(BorderFactory.createLineBorder(Color.RED,3));
+		}
+
+		@Override
+		public void mouseExited(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			if(!precisaSelecionar){
+				return;
+			}
+			Fileira fileira = (Fileira) arg0.getSource();
+			fileira.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
+		}
+
+		@Override
+		public void mousePressed(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	}
 }
