@@ -22,7 +22,7 @@ import gwent.entidades.TipoUnidade;
 
 public class blah {
 	
-	private static Carta criarCarta(String nome, char modo){
+	private static Carta criarCarta(String nome, char modo, String faccao){
 		
 		int w = 0, h = 0; 
 		
@@ -86,7 +86,7 @@ public class blah {
 		}
 		
 		ImageIcon img = new ImageIcon(
-					new ImageIcon("BancoCartas/ReinosNorte/" + nome)
+					new ImageIcon("BancoCartas/" + faccao + "/" + nome)
 					.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH));
 		
 		//CUIDADO COM ISSO 
@@ -122,11 +122,11 @@ public class blah {
 				continue;
 			}
 			
-			Carta carta = criarCarta(nome,'d');
+			Carta carta = criarCarta(nome,'d', "ReinosNorte");
 			representacaoDeck.add(carta);
-			carta = criarCarta(nome,'e');
+			carta = criarCarta(nome,'e', "ReinosNorte");
 			cartasExibicao.put(nome,carta);
-			carta = criarCarta(nome,'f');
+			carta = criarCarta(nome,'f', "ReinosNorte");
 			cartasFileira.put(nome, carta);
 		}
 		Deck reinosNorte = new Deck(Faccao.REINOS_DO_NORTE,representacaoDeck);
@@ -143,6 +143,54 @@ public class blah {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public static void persisteMonstro(){
+		File[] imgs = new File("BancoCartas/Monstros").listFiles();
+		File f = new File("BancoCartas/Monstros/cartas.bin");
+
+		ArrayList<Carta> representacaoDeck = new ArrayList<>();
+		HashMap<String,Carta> cartasExibicao = new HashMap<>();
+		HashMap<String,Carta> cartasFileira = new HashMap<>();
+		FileOutputStream fos = null;
+		ObjectOutputStream oos = null;
+		try {
+			fos = new FileOutputStream(f);
+			oos = new ObjectOutputStream(fos);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();			
+		}
+		catch(IOException e){
+			e.printStackTrace();			
+		}
+		for(int i = 0; i<imgs.length; i++){
+			String nome = imgs[i].getName();
+			if(!nome.substring(nome.length()-3, nome.length()).equals("jpg")){
+				System.out.println("Não entrou: " + nome);
+				continue;
+			}
+			
+			Carta carta = criarCarta(nome,'d', "Monstros");
+			representacaoDeck.add(carta);
+			carta = criarCarta(nome,'e', "Monstros");
+			cartasExibicao.put(nome,carta);
+			carta = criarCarta(nome,'f', "Monstros");
+			cartasFileira.put(nome, carta);
+		}
+		Deck monstros = new Deck(Faccao.MONSTROS,representacaoDeck);
+		try {
+			oos.writeObject(monstros);
+			oos.writeObject(cartasExibicao);
+			oos.writeObject(cartasFileira);
+			oos.flush();
+			oos.close();
+			oos = null;
+			System.out.println("tudo certo");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }
