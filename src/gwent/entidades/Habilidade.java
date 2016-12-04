@@ -1,47 +1,53 @@
 package gwent.entidades;
 
+import java.io.Serializable;
+
 import gwent.controladores.ControladorMesa;
 
-public class Habilidade {
+public class Habilidade implements Serializable{
 	
-	private final TipoHabilidade tipoHabilidade;
-	private final GatilhoHabilidade gatilhoHabilidade;
-	private final Object referencia;
-	private final ControladorMesa chamador;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private final TipoHabilidade tipoHabilidade;	
+	private Deck referencia;
+	private ControladorMesa chamador;
 	
-	public Habilidade(TipoHabilidade tipoHabilidade, Object referencia, ControladorMesa chamador){
-		this.tipoHabilidade = tipoHabilidade;
-		this.referencia = referencia;
-		this.gatilhoHabilidade = defineHabilidade(tipoHabilidade);
-		this.chamador = chamador;
-	} 
-	
-	
-	private GatilhoHabilidade defineHabilidade(TipoHabilidade tipoHabilidade){
-		GatilhoHabilidade retorno = null;
-		
-		switch(tipoHabilidade){
-			case AGILIDADE:
-				//
-				break;
-				
-			case MEDICO:
-				retorno = new GatilhoHabilidade(){
-				@Override
-				public void ativarHabilidade(){
-					Deck cemiterio = (Deck) referencia;					
-					CartaUnidade carta = (CartaUnidade) cemiterio.sacarCarta();
-					chamador.processarCarta(carta);
-				}
-					
-			};
-			break;
-		}
-		return retorno;
+	public Habilidade(TipoHabilidade tipoHabilidade){
+		this.tipoHabilidade = tipoHabilidade;		
 	}
 	
 	public void ativarHabilidade(){
+		switch(this.tipoHabilidade){
+			case MEDICO:
+				CartaUnidade cartaSacada = (CartaUnidade) referencia.sacarCarta();
+				chamador.processarCarta(cartaSacada);
+				break;
+				
+			default:
+				break;
+		}
 		
+		return;
+	}
+	
+	
+	
+	public void setReferencia(Deck referencia) {
+		this.referencia = referencia;
+	}
+
+	public void setChamador(ControladorMesa chamador) {
+		this.chamador = chamador;
+	}
+
+	public Deck getReferencia() {
+		return referencia;
+	}
+
+	public ControladorMesa getChamador() {
+		return chamador;
 	}
 	
 	public TipoHabilidade getTipoHabilidade(){

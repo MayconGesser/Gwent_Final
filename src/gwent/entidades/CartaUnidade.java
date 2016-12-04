@@ -8,18 +8,24 @@ public class CartaUnidade extends Carta {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private int poder; 
-	private final Habilidade habilidade;
+	private int poder; 	
 	private final TipoUnidade tipo;
 	
-	public CartaUnidade(String nome, ImageIcon img, int poder, Habilidade hab,
+	public CartaUnidade(String nome, ImageIcon img, Habilidade hab, int poder, 
 			TipoUnidade tipo){
-		super(nome,img);
+		super(nome,img,hab);
 		this.poder = poder; 
-		this.habilidade = hab;
 		this.tipo = tipo;
 	}
-
+	
+	@Override
+	public void ativarHabilidade(){
+		if(this.habilidade == null){
+			return;
+		}		
+		this.habilidade.ativarHabilidade();
+	}
+	
 	public int getPoder() {
 		return poder;
 	}
@@ -27,9 +33,10 @@ public class CartaUnidade extends Carta {
 	public void setPoder(int poder) {
 		this.poder = poder;
 	}
-
+	
+	@Override
 	public Habilidade getHabilidade() {
-		return habilidade;
+		return this.habilidade;
 	}
 	
 	public TipoUnidade getTipo(){

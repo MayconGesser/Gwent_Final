@@ -45,7 +45,8 @@ public class Fileira extends JPanel{
 				this.poderTotal += 1;
 			}else{
 				this.poderTotal += c.getPoder();
-			}						
+			}		
+			c.ativarHabilidade();
 		}
 		this.glHorizontal.addComponent(carta);
 		this.glVertical.addComponent(carta);

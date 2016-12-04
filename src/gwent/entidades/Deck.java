@@ -17,15 +17,13 @@ public class Deck implements Serializable{
 	
 	public Deck(Faccao faccao, ArrayList<Carta> cartas){
 		this.faccao = faccao;
-		this.cartas = cartas;
-		//Collections.shuffle(this.cartas);
+		this.cartas = cartas;		
 	}
 	
 	//construtor usado pelo cemiterio
 	public Deck(Faccao faccao){
 		this.faccao = faccao;
-		this.cartas = new ArrayList<>();
-		//Collections.shuffle(this.cartas);
+		this.cartas = new ArrayList<>();		
 	}
 	
 	public void embaralhar(){

@@ -10,5 +10,5 @@ public enum TipoHabilidade {
 	CORNETA_COMANDANTE,
 	ISCA,
 	INCINERAR,
-	EPIDEMIA
+	EPIDEMIA;	
 }
