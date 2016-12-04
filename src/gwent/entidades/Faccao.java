@@ -7,7 +7,7 @@ public enum Faccao implements Jogada {
 	REINOS_DO_NORTE("Reinos do Norte", "BancoCartas/ReinosNorte/cartas.bin"),
 	IMPERIO_DE_NILFGAARD("", ""),
 	SCOIATAEL("", ""),
-	MONSTROS("", "");
+	MONSTROS("Monstros", "BancoCartas/Monstros/cartas.bin");
 
 	private String nome;
 	private String uri;

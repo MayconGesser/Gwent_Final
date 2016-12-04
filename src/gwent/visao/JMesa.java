@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import javax.swing.*;
@@ -43,9 +44,16 @@ public class JMesa extends javax.swing.JFrame {
         String nomeAtual = this.getNomeJogador();
         String  servidor = this.getNomeServidor();
         boolean conectou = atorJogador.conectar(nomeAtual, servidor);
-        atorJogador.setJogadorAtual(new Jogador(0, nomeAtual));
         if (conectou) {
-            this.adicionarTitulo(nomeAtual);
+//			Faccao faccao = this.getFaccao();
+//			Map<String, Object> mapDeck = BancoCartas.resgatarDeck(faccao);
+			Jogador jogador = new Jogador(0, nomeAtual);
+//			jogador.setDeck((Deck) mapDeck.get("deck"));
+			this.atorJogador.setJogadorAtual(jogador);
+//			cartasDeck = this.atorJogador.getJogadorAtual().getDeck();
+//			cartasExibicao = (HashMap<String, Carta>) mapDeck.get("exibicao");
+//			cartasFileiraEx = (HashMap<String, Carta>) mapDeck.get("fileiras");
+			this.adicionarTitulo(nomeAtual);
             this.atualizarVisibilidadeTela(CONECTADO);
             this.exibeMensagem("Conectado com sucesso!");
         } else {
@@ -67,11 +75,20 @@ public class JMesa extends javax.swing.JFrame {
         }
     }
 
+    public void recebeLance(Lance lance) {
+        if (lance.getCarta() == null) {
+            this.exibeMensagem("O adversário passou o turno");
+            this.acaoBotao(true);
+        } else {
+
+        }
+    }
+
     public void recebeMesa(Mesa mesa) {
         if (mesa.getStatusMesa().equals(StatusMesa.INICAR_PARTIDA)) {
             this.iniciarPartida(mesa);
 //            this.setNomeJogadoresLabel(mesa);
-            JOptionPane.showMessageDialog(this, "Uma nova partida vai iniciar");
+            this.exibeMensagem("Uma nova partida vai iniciar");
         }  else if (mesa.getStatusMesa().equals(StatusMesa.INICIAR_RODADA)) {
 //            this.iniciarNovaRodada(mesa);
 //            this.atualizarPontosJogadores(mesa);
@@ -87,16 +104,27 @@ public class JMesa extends javax.swing.JFrame {
         this.atualizaCamposInicioPartida(mesa);
     }
 
+    public void inicioPartida(Mesa mesa) {
+        this.preencherCartas(mesa.getJogadorUm());
+        this.ctrlMesa.setJogadorAtual(mesa.getJogadorUm());
+        this.acaoBotao(true);
+        this.exibeMensagem("Uma nova partida vai iniciar");
+    }
+
     private void atualizaCamposInicioPartida(Mesa mesa) {
-//        this.limparPanelsCartas();
-//
-//        Jogador jogadorAtual = this.getJogadorAtualNaMesa(mesa);
-//
-//        this.atualizaCartasJogadorAtual(jogadorAtual);
-//        this.atualizaCartasAdversarios(jogadorAtual);
-//        mesa.setStatusMesa(StatusMesa.INICIAR_RODADA);
-//        this.atualizaBaralho(mesa);
-//        this.iniciarNovaRodada(mesa);
+        this.preencherCartas(mesa.getJogadorDois());
+        this.acaoBotao(false);
+        mesa.setStatusMesa(StatusMesa.INICIAR_RODADA);
+        this.iniciarRound(mesa);
+    }
+
+    public void acaoBotao(boolean ativa) {
+        this.btJogar.setEnabled(ativa);
+        this.btPassar.setEnabled(ativa);
+    }
+
+    private void iniciarRound(Mesa mesa) {
+        mesa.iniciarRound(mesa.getJogadorDaVez());
     }
 
     private Faccao getFaccao() {
@@ -104,9 +132,30 @@ public class JMesa extends javax.swing.JFrame {
                 JOptionPane.PLAIN_MESSAGE , null, Faccao.values(),"");
     }
 
+    private void preencherCartas(Jogador jogador) {
+		Group gh = espacoCartasLayout.createSequentialGroup();
+		Group gv = espacoCartasLayout.createParallelGroup();
+		MouseCarta b = new MouseCarta();
+
+		for(int x = 0; x<10; x++) {
+			Carta carta = jogador.sacarCarta();
+			carta.addMouseListener(b);
+			carta.setName(carta.getNomeCarta());
+			gh.addComponent(carta);
+			gv.addComponent(carta);
+		}
+
+		espacoCartasLayout.setHorizontalGroup(gh);
+		espacoCartasLayout.setVerticalGroup(gv);
+
+        Map<String, Object> mapDeck = BancoCartas.resgatarDeck(jogador.getDeck().getFaccao());
+
+        cartasExibicao = (HashMap<String, Carta>) mapDeck.get("exibicao");
+		cartasFileiraEx = (HashMap<String, Carta>) mapDeck.get("fileiras");
+	}
+
     private void iniciarPartida() {
-        Faccao faccao = this.getFaccao();
-        this.atorJogador.iniciarPartida(faccao);
+		this.atorJogador.iniciarPartida();
     }
 
     private void adicionarTitulo(String nome) {
@@ -145,45 +194,8 @@ public class JMesa extends javax.swing.JFrame {
         getContentPane().setBackground(marrom);
         setVisible(true);
         this.atualizarVisibilidadeTela(1);
-//        btJogar.setEnabled(false);
-//        btPassar.setEnabled(false);
+        this.acaoBotao(false);
 
-        File bin = new File("BancoCartas/ReinosNorte/cartas.bin");
-        FileInputStream fis = null;
-        ObjectInputStream ois = null;
-        try {
-			fis = new FileInputStream(bin);
-			ois = new ObjectInputStream(fis);
-		} catch(IOException e){
-			e.printStackTrace();
-		}
-        try {
-			cartasDeck = (Deck)ois.readObject();
-			cartasExibicao = (HashMap<String,Carta>)ois.readObject();
-			cartasFileiraEx = (HashMap<String,Carta>)ois.readObject();
-		} catch (ClassNotFoundException | IOException e) {
-			e.printStackTrace();
-		}
-
-        cartasDeck.embaralhar();
-		Group gh = espacoCartasLayout.createSequentialGroup();
-		Group gv = espacoCartasLayout.createParallelGroup();
-		MouseCarta b = new MouseCarta();
-
-		for(int x = 0; x<10; x++){
-			Carta carta = cartasDeck.sacarCarta();
-			carta.addMouseListener(b);
-			carta.setName(carta.getNomeCarta());
-			gh.addComponent(carta);
-			gv.addComponent(carta);
-		}
-
-		Carta carta = this.cartasDeck.sacarCarta();
-		cartasCemiterio = new Deck(cartasDeck.getFaccao());
-		cartasCemiterio.addCarta(carta);
-
-		espacoCartasLayout.setHorizontalGroup(gh);
-		espacoCartasLayout.setVerticalGroup(gv);
 //		deck.setToolTipText("Seu deck tem " + this.cartasDeck.getCartas().size() + " cartas");
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
@@ -966,15 +978,14 @@ public class JMesa extends javax.swing.JFrame {
 						"Tem certeza que deseja passar seu turno?",
 						"Passar Turno", JOptionPane.YES_NO_OPTION)
 						== JOptionPane.YES_OPTION){
-					btJogar.setEnabled(false);
-					btPassar.setEnabled(false);
-
 					//trata do caso de passar turno com uma carta selecionada
 					if(cartaSelecionada != null){
 						cartaSelecionada.setBorder(null);
 						cartaSelecionada = null;
 						trocaCartaParaDummy();
 					}
+					acaoBotao(false);
+					atorJogador.passarTurno();
 					passouTurno = true;
 					jogadorDaVez = false;
 				}				

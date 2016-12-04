@@ -5,6 +5,9 @@ import br.ufsc.inf.leobr.cliente.OuvidorProxy;
 import br.ufsc.inf.leobr.cliente.Proxy;
 import br.ufsc.inf.leobr.cliente.exception.*;
 import gwent.controladores.ControladorMesa;
+import gwent.entidades.BancoCartas;
+import gwent.entidades.Deck;
+import gwent.entidades.Faccao;
 import gwent.entidades.Jogador;
 
 import java.util.ArrayList;
@@ -50,6 +53,10 @@ public class AtorNetGames implements OuvidorProxy {
                 Jogador jogador = null;
                 try {
                     jogador = new Jogador(i, proxy.obterNomeAdversario(i));
+                    if (jogador.getIdJogador() == 1)
+                        jogador.setDeck((Deck) BancoCartas.resgatarDeck(Faccao.REINOS_DO_NORTE).get("deck"));
+                    else
+                        jogador.setDeck((Deck) BancoCartas.resgatarDeck(Faccao.MONSTROS).get("deck"));
                     jogadores.add(jogador);
                 } catch (Exception e) {
                     System.out.println("Sem jogadores suficientes");
@@ -57,8 +64,10 @@ public class AtorNetGames implements OuvidorProxy {
             }
         } else {
             Jogador jogador = controladorMesa.getJogadorAtual();
+            jogador.setDeck((Deck) BancoCartas.resgatarDeck(Faccao.REINOS_DO_NORTE).get("deck"));
             jogadores.add(jogador);
             jogador = new Jogador(2, proxy.obterNomeAdversario(2));
+            jogador.setDeck((Deck) BancoCartas.resgatarDeck(Faccao.MONSTROS).get("deck"));
             jogadores.add(jogador);
         }
 

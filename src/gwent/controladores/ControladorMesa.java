@@ -16,11 +16,11 @@ public class ControladorMesa {
     protected Mesa mesa;
     protected JMesa jMesa;
     protected AtorNetGames atorNetGames;
-    private Deck cemiterio;
+    protected Deck cemiterio;
 
     public ControladorMesa(Fileira fileiraInfantaria,
-							Fileira fileiraLongaDistancia,
-							Fileira fileiraCerco){
+                           Fileira fileiraLongaDistancia,
+                           Fileira fileiraCerco){
 
 		this.fileiras = new HashMap<>();
 		this.fileiras.put(TipoUnidade.INFANTARIA, fileiraInfantaria);
@@ -34,14 +34,14 @@ public class ControladorMesa {
         this.mesa = new Mesa();
     }
 
-    public void iniciarPartida(Faccao faccao) {
+    public void iniciarPartida() {
         this.atorNetGames.iniciarPartida();
 
         List<Jogador> jogadores = this.atorNetGames.getJogadores();
 
         if (jogadores.size() == 2) {
             this.mesa.setJogadores(jogadores);
-            this.mesa.criarJogadores(faccao);
+            this.mesa.criarJogadores();
 
             this.iniciarNovaPartida();
         }
@@ -53,7 +53,7 @@ public class ControladorMesa {
         this.mesa.setStatusMesa(StatusMesa.INICAR_PARTIDA);
         this.mesa.iniciarRound(jogadorAtual);
         this.enviarJogada(this.mesa);
-        this.receberJogada(this.mesa);
+        this.jMesa.inicioPartida(mesa);
     }
 
     public boolean processarCarta(Carta carta){
@@ -135,12 +135,13 @@ public class ControladorMesa {
 
         if (jogada instanceof Mesa) {
             this.mesa = (Mesa) jogada;
-            this.setJogadorAtualIniciarPartida(mesa);
+//            this.setJogadorAtualIniciarPartida(mesa);
             jMesa.recebeMesa(mesa);
         } else {
             lance = (Lance) jogada;
             if (lance.getCarta() == null) {
-                //TODO passar turno
+                this.jogadorAtual = this.mesa.getJogadorNaoAtual(this.jogadorAtual);
+                jMesa.recebeLance(lance);
             } else {
                 //TODO baixar carta
             }
@@ -211,11 +212,34 @@ public class ControladorMesa {
     }
 
     private void setJogadorAtualIniciarPartida(Mesa mesa) {
+//        jogadorAtual = mesa.getJogadorUm();
         if (mesa.getStatusMesa().equals(StatusMesa.INICAR_PARTIDA)) {
             for (Jogador jog : mesa.getJogadores()) {
                 if (jog.getNome().equals(jogadorAtual.getNome()))
                     jogadorAtual = jog;
             }
         }
+    }
+
+    public void passarTurno() {
+        if (this.tratarPossibilidadeJogada()) {
+            Lance lance = new Lance();
+            this.mesa.getJogadorDaVez().setStatusJogador(StatusJogador.INATIVO);
+            lance.setJogador(this.jogadorAtual);
+
+            this.enviarJogada(lance);
+            this.jogadorAtual = this.mesa.getJogadorNaoAtual(this.jogadorAtual);
+        } else {
+            this.exibeMensagem("Espere a sua vez.");
+        }
+//        this.receberJogada(lance);
+    }
+
+    private boolean tratarPossibilidadeJogada() {
+        return this.isVezJogador(this.jogadorAtual) && this.isConectado();
+    }
+
+    private boolean isVezJogador(Jogador jogador) {
+        return jogador.getNome().equals(this.mesa.getJogadorDaVez().getNome());
     }
 }

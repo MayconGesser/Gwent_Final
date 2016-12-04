@@ -4,6 +4,7 @@ import br.ufsc.inf.leobr.cliente.Jogada;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public class Mesa implements Jogada {
 
@@ -16,25 +17,23 @@ public class Mesa implements Jogada {
     protected Round roundAtual;
     protected List<Jogador> jogadores;
 
-    public void criarJogadores(Faccao faccao) {
+    public void criarJogadores() {
         jogadorUm = jogadores.get(0);
         jogadorUm.setIdJogador(1);
 
         jogadorDois = jogadores.get(1);
         jogadorDois.setIdJogador(2);
-
-        if (jogadorUm.getDeck() == null)
-            jogadorUm.setDeck(BancoCartas.resgatarCartas(faccao));
-        else if (jogadorDois.getDeck() == null)
-            jogadorDois.setDeck(BancoCartas.resgatarCartas(faccao));
-
     }
 
     public void embaralhar() {
-        if (this.jogadorUm.getDeck() != null)
+        if (this.jogadorUm.getDeck() != null) {
             this.jogadorUm.getDeck().embaralhar();
-        if (this.jogadorDois.getDeck() != null)
+            this.jogadorUm.preencheCartasMao();
+        }
+        if (this.jogadorDois.getDeck() != null) {
             this.jogadorDois.getDeck().embaralhar();
+            this.jogadorDois.preencheCartasMao();
+        }
     }
 
     public void iniciarRound(Jogador jogadorDaVez) {
@@ -110,5 +109,9 @@ public class Mesa implements Jogada {
 
     public void setStatusMesa(StatusMesa statusMesa) {
         this.statusMesa = statusMesa;
+    }
+
+    public Jogador getJogadorNaoAtual(Jogador jogadorAtual) {
+        return jogadorAtual.equals(this.jogadorUm) ? this.jogadorDois : this.jogadorUm;
     }
 }

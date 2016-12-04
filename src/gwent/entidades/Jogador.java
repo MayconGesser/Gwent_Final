@@ -4,12 +4,13 @@ import br.ufsc.inf.leobr.cliente.Jogada;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class Jogador implements Jogada {
 
     protected Integer idJogador;
     protected String nome;
-    protected Collection<Carta> cartasMao;
+    protected List<Carta> cartasMao;
     protected Integer pontuacao;
     protected StatusJogador statusJogador;
     protected Deck deck;
@@ -20,6 +21,29 @@ public class Jogador implements Jogada {
         this.cartasMao = new ArrayList<>();
         this.pontuacao = 0;
         this.statusJogador = StatusJogador.ATIVO;
+    }
+
+    public Jogador(Integer idJogador, String nome, Deck deck) {
+        this.idJogador = idJogador;
+        this.nome = nome;
+        this.pontuacao = 0;
+        this.deck = deck;
+        this.preencheCartasMao();
+        this.statusJogador = StatusJogador.ATIVO;
+    }
+
+    public Carta sacarCarta() {
+        Carta carta = this.cartasMao.get(0);
+        this.cartasMao.remove(carta);
+        return carta;
+    }
+
+    public void preencheCartasMao() {
+        if (this.cartasMao == null)
+            this.cartasMao = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            this.cartasMao.add(this.deck.sacarCarta());
+        }
     }
 
     public Integer getIdJogador() {
@@ -42,7 +66,7 @@ public class Jogador implements Jogada {
         return cartasMao;
     }
 
-    public void setCartasMao(Collection<Carta> cartasMao) {
+    public void setCartasMao(List<Carta> cartasMao) {
         this.cartasMao = cartasMao;
     }
 

@@ -2,9 +2,12 @@ package gwent.controladores;
 
 
 import gwent.entidades.Carta;
+import gwent.entidades.Deck;
 import gwent.entidades.Faccao;
 import gwent.entidades.Jogador;
 import gwent.visao.JMesa;
+
+import java.util.Map;
 
 public class AtorJogador {
 
@@ -38,8 +41,12 @@ public class AtorJogador {
         this.controladorMesa.desconectarRede();
     }
 
-    public void iniciarPartida(Faccao faccao) {
-        this.controladorMesa.iniciarPartida(faccao);
+    public void iniciarPartida() {
+        this.controladorMesa.iniciarPartida();
+    }
+
+    public void passarTurno() {
+        this.controladorMesa.passarTurno();
     }
 
     public void jogarCarta(Carta carta) {
