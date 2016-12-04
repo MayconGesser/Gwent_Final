@@ -22,7 +22,7 @@ import gwent.entidades.TipoCartaClima;
 import gwent.entidades.TipoHabilidade;
 import gwent.entidades.TipoUnidade;
 
-public class blah {
+public class ScriptPersistencia {
 	
 	private static Carta criarCarta(String nome, char modo, String faccao){
 		

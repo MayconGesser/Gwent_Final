@@ -698,7 +698,7 @@ public class JMesa extends javax.swing.JFrame {
 
         btPassar.setActionCommand(btPassar.getText());
         btJogar.setActionCommand(btJogar.getText());
-        meh m = new meh();
+        MouseBotoes m = new MouseBotoes();
         btPassar.addActionListener(m);
         btJogar.addActionListener(m);
 
@@ -922,7 +922,7 @@ public class JMesa extends javax.swing.JFrame {
 
     }
 
-    private class meh implements ActionListener{
+    private class MouseBotoes implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {

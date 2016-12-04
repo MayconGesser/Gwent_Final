@@ -1,6 +1,6 @@
 package gwent.main;
 
-import gwent.util.blah;
+import gwent.util.ScriptPersistencia;
 import gwent.visao.JMesa;
 
 public class Main {
@@ -12,5 +12,4 @@ public class Main {
 		new JMesa();
 
 	}
-
 }
