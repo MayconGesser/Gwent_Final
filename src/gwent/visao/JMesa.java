@@ -941,10 +941,8 @@ public class JMesa extends javax.swing.JFrame {
 					switch(tipoHabilidadeCarta){
 						case MEDICO:
 							ctrlMesa.setCemiterio(cartasCemiterio);
-							break;
-							
-						case ELEVAR_MORAL:
-							cartaSelecionada.getHabilidade().setReferenciaFileira(ctrlMesa.determinaFileiraCarta((CartaUnidade)cartaSelecionada));
+							break;							
+						
 						default:
 							break;
 					}

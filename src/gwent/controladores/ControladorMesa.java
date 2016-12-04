@@ -63,22 +63,20 @@ public class ControladorMesa {
             TipoUnidade t = c.getTipo();
             Fileira f = this.fileiras.get(t);
             Habilidade habilidadeCarta = c.getHabilidade();
-            f.incluirCarta(carta);
+            
             if(habilidadeCarta != null){
                 TipoHabilidade tipoHabilidadeCarta = habilidadeCarta.getTipoHabilidade();
                 switch(tipoHabilidadeCarta){
                     case MEDICO:
                         habilidadeCarta.setChamador(this);
                         habilidadeCarta.setReferenciaDeck(this.cemiterio);
+                        
                         break;
                     case AGILIDADE:
 //                        precisaSelecionar = true;
 //                        return precisaSelecionar;
                     	break;
                     case CORNETA_COMANDANTE:
-                        break;
-                    case ELEVAR_MORAL:                    	
-                    	
                         break;
                     case ESPIAO:
                         break;
@@ -90,7 +88,17 @@ public class ControladorMesa {
                         break;
                 }
             }
-            
+            f.incluirCarta(carta);
+        }
+        
+        else if(carta instanceof CartaClima){
+        	CartaClima cc = (CartaClima) carta;
+        	TipoCartaClima tipo = cc.getTipo();
+        	switch(tipo){
+        		case GEADA_MORDAZ:
+        			cc.setFileiraAtingida(this.fileiras.get(TipoUnidade.INFANTARIA));
+        	}
+        	cc.ativarHabilidade();
         }
         return precisaSelecionar;
     }

@@ -49,7 +49,10 @@ public class Fileira extends JPanel implements Jogada {
 				this.poderTotal += 1;
 			}else{
 				this.poderTotal += c.getPoder();
-			}		
+			}
+			if(c.getHabilidade() != null && c.getHabilidade().getTipoHabilidade().equals(TipoHabilidade.ELEVAR_MORAL)){
+				c.getHabilidade().setReferenciaFileira(this);
+			}
 			c.ativarHabilidade();
 		}
 		this.glHorizontal.addComponent(carta);

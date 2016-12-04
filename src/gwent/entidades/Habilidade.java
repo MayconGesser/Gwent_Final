@@ -39,6 +39,7 @@ public class Habilidade implements Jogada {
 						u.setPoder(u.getPoder()+1);
 					}
 				}
+				//TODO: tratar alteracao de poder da carta q ativa a habilidade
 				referenciaFileira.atualizaPoderTotal();
 				break;
 				
