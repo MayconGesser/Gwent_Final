@@ -132,6 +132,7 @@ public class JMesa extends javax.swing.JFrame {
     
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
+    	placarInimigo = new javax.swing.JPanel();
     	placar = new javax.swing.JPanel();
         fileiraCerco = new Fileira(TipoUnidade.CERCO,null);
         fileiraLongaDistancia = new Fileira(TipoUnidade.LONGA_DISTANCIA,null);
@@ -155,24 +156,205 @@ public class JMesa extends javax.swing.JFrame {
         jMenuItemIniciarPartida = new javax.swing.JMenuItem();
         jMenuItemEncerrarPartida = new javax.swing.JMenuItem();
         jMenuItemDesconectar = new javax.swing.JMenuItem();
+        
+        //Placar Inimigo
+        placarInimigoJLabel1 = new javax.swing.JLabel();
+        placarInimigoNumeroCartasMao = new javax.swing.JLabel();
+        placarInimigoJLabel3 = new javax.swing.JLabel();
+        placarInimigoUmRound = new javax.swing.JRadioButton();
+        placarInimigoDoisRound = new javax.swing.JRadioButton();
+        placarInimigoNomeFaccao = new javax.swing.JLabel();
+        placarInimigoJLabel5 = new javax.swing.JLabel();
+        placarInimigoJLabel6 = new javax.swing.JLabel();
+        placarInimigoJLabel7 = new javax.swing.JLabel();
+
+        setForeground(new java.awt.Color(0, 0, 0));
+
+        placarInimigoJLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        placarInimigoJLabel1.setText("Rodrigo");
+
+        placarInimigoNumeroCartasMao.setForeground(new java.awt.Color(0, 0, 0));
+        placarInimigoNumeroCartasMao.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        placarInimigoNumeroCartasMao.setText("7");
+
+        placarInimigoJLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        placarInimigoJLabel3.setText("56");
+
+        placarInimigoUmRound.setForeground(new java.awt.Color(204, 0, 0));
+
+        placarInimigoDoisRound.setForeground(new java.awt.Color(204, 0, 0));
+
+        placarInimigoNomeFaccao.setForeground(new java.awt.Color(0, 0, 0));
+        placarInimigoNomeFaccao.setText("Reinos do Norte");
+
+        placarInimigoJLabel5.setForeground(new java.awt.Color(0, 0, 0));
+        placarInimigoJLabel5.setText("Tem");
+
+        placarInimigoJLabel6.setForeground(new java.awt.Color(0, 0, 0));
+        placarInimigoJLabel6.setText("cartas na mão");
+
+        placarInimigoJLabel7.setIcon(new javax.swing.ImageIcon("BancoCartas/gandalf.png")); 
+        
+        //Placar do jogador
+        jLabel1 = new javax.swing.JLabel();
+        numeroCartasMao = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        umRound = new javax.swing.JRadioButton();
+        doisRound = new javax.swing.JRadioButton();
+        nomeFaccao = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+
+        setForeground(new java.awt.Color(0, 0, 0));
+
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setText("Rodrigo");
+
+        numeroCartasMao.setForeground(new java.awt.Color(0, 0, 0));
+        numeroCartasMao.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        numeroCartasMao.setText("7");
+
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel3.setText("56");
+
+        umRound.setForeground(new java.awt.Color(204, 0, 0));
+
+        doisRound.setForeground(new java.awt.Color(204, 0, 0));
+
+        nomeFaccao.setForeground(new java.awt.Color(0, 0, 0));
+        nomeFaccao.setText("Reinos do Norte");
+
+        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel5.setText("Tem");
+
+        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel6.setText("cartas na mão");
+
+        jLabel7.setIcon(new javax.swing.ImageIcon("/home/rodrigo/workspace/Gwent_Final/BancoCartas/saruman.png")); // NOI18N
+
+
+
 
 
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        JPanel placar = new JPanel();
-        placar.setBackground(Color.BLUE);
+        JPanel placarInimigo = new JPanel();
+        placarInimigo.setBackground(marrom);
+        placarInimigo.setBorder(BorderFactory.createBevelBorder(
+        		BevelBorder.LOWERED));
 
-        javax.swing.GroupLayout placarLayout = new javax.swing.GroupLayout(placar);
-        placar.setLayout(placarLayout);
-        placarLayout.setHorizontalGroup(
-            placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 191, Short.MAX_VALUE)
-        );
-        placarLayout.setVerticalGroup(
-            placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 110, Short.MAX_VALUE)
-        );
+        javax.swing.GroupLayout placarInimigoLayout = new javax.swing.GroupLayout(placarInimigo);
+        placarInimigo.setLayout(placarInimigoLayout);
+        placarInimigoLayout.setHorizontalGroup(
+	            placarInimigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+	            .addGroup(placarInimigoLayout.createSequentialGroup()
+	                .addContainerGap()
+	                .addComponent(placarInimigoJLabel7)
+	                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+	                .addGroup(placarInimigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+	                    .addGroup(placarInimigoLayout.createSequentialGroup()
+	                        .addComponent(placarInimigoUmRound)
+	                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+	                        .addComponent(placarInimigoDoisRound)
+	                        .addGap(127, 127, 127)
+	                        .addComponent(placarInimigoJLabel3))
+	                    .addComponent(placarInimigoNomeFaccao)
+	                    .addComponent(placarInimigoJLabel1)
+	                    .addGroup(placarInimigoLayout.createSequentialGroup()
+	                        .addComponent(placarInimigoJLabel5)
+	                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+	                        .addComponent(placarInimigoNumeroCartasMao, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+	                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+	                        .addComponent(placarInimigoJLabel6)))
+	                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+	        );
+	        placarInimigoLayout.setVerticalGroup(
+	            placarInimigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+	            .addGroup(placarInimigoLayout.createSequentialGroup()
+	                .addContainerGap()
+	                .addGroup(placarInimigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+	                    .addComponent(placarInimigoJLabel7)
+	                    .addGroup(placarInimigoLayout.createSequentialGroup()
+	                        .addComponent(placarInimigoNomeFaccao)
+	                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+	                        .addGroup(placarInimigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+	                            .addComponent(placarInimigoUmRound)
+	                            .addComponent(placarInimigoDoisRound)
+	                            .addComponent(placarInimigoJLabel3))
+	                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+	                        .addComponent(placarInimigoJLabel1)
+	                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+	                        .addGroup(placarInimigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+	                            .addComponent(placarInimigoNumeroCartasMao)
+	                            .addComponent(placarInimigoJLabel5)
+	                            .addComponent(placarInimigoJLabel6))))
+	                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+	        );
+
+	        placarInimigoJLabel1.getAccessibleContext().setAccessibleName("nomeJogador");
+	        placarInimigoNumeroCartasMao.getAccessibleContext().setAccessibleName("numeroCartas");
+	        placarInimigoJLabel3.getAccessibleContext().setAccessibleName("qtdPoderTotal");
+	        
+	        JPanel placar = new JPanel();
+	        placarInimigo.setBackground(marrom);
+	        placarInimigo.setBorder(BorderFactory.createBevelBorder(
+	        		BevelBorder.LOWERED));
+	        
+	        javax.swing.GroupLayout placarLayout = new javax.swing.GroupLayout(this);
+	        this.setLayout(placarLayout);
+	        placarLayout.setHorizontalGroup(
+	            placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+	            .addGroup(placarLayout.createSequentialGroup()
+	                .addContainerGap()
+	                .addComponent(jLabel7)
+	                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+	                .addGroup(placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+	                    .addGroup(placarLayout.createSequentialGroup()
+	                        .addComponent(umRound)
+	                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+	                        .addComponent(doisRound)
+	                        .addGap(127, 127, 127)
+	                        .addComponent(jLabel3))
+	                    .addComponent(nomeFaccao)
+	                    .addComponent(jLabel1)
+	                    .addGroup(placarLayout.createSequentialGroup()
+	                        .addComponent(jLabel5)
+	                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+	                        .addComponent(numeroCartasMao, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+	                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+	                        .addComponent(jLabel6)))
+	                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+	        );
+	        placarLayout.setVerticalGroup(
+	            placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+	            .addGroup(placarLayout.createSequentialGroup()
+	                .addContainerGap()
+	                .addGroup(placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+	                    .addComponent(jLabel7)
+	                    .addGroup(placarLayout.createSequentialGroup()
+	                        .addComponent(nomeFaccao)
+	                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+	                        .addGroup(placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+	                            .addComponent(umRound)
+	                            .addComponent(doisRound)
+	                            .addComponent(jLabel3))
+	                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+	                        .addComponent(jLabel1)
+	                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+	                        .addGroup(placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+	                            .addComponent(numeroCartasMao)
+	                            .addComponent(jLabel5)
+	                            .addComponent(jLabel6))))
+	                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+	        );
+
+	        jLabel1.getAccessibleContext().setAccessibleName("nomeJogador");
+	        numeroCartasMao.getAccessibleContext().setAccessibleName("numeroCartas");
+	        jLabel3.getAccessibleContext().setAccessibleName("qtdPoderTotal");
+        
+        
 
         criarFileira(fileiraCerco);
         criarFileira(fileiraLongaDistancia);
@@ -333,7 +515,9 @@ public class JMesa extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(62, 62, 62)
-                        .addComponent(placar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(placarInimigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(62, 62, 62)
+                	.addComponent(placar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(espacoCartas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -387,7 +571,9 @@ public class JMesa extends javax.swing.JFrame {
                                         .addComponent(fileiraCercoAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(fileiraLongaDistanciaAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(placar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(placarInimigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(62, 62, 62)
+                                	.addComponent(placar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(fileiraInfantariaAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -493,6 +679,7 @@ public class JMesa extends javax.swing.JFrame {
     private JPanel expF_cerco;
     private JPanel expF_longd;
     private JPanel expF_inf;
+    private javax.swing.JPanel placarInimigo;
     private javax.swing.JPanel placar;
     private javax.swing.JButton btPassar;
     private javax.swing.JButton btJogar;
@@ -512,6 +699,26 @@ public class JMesa extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemDesconectar;
     private javax.swing.JMenuItem jMenuItemIniciarPartida;
     private javax.swing.JMenuItem jMenuItemEncerrarPartida;
+    //Placar Iinimigo
+    private javax.swing.JRadioButton placarInimigoDoisRound;
+    private javax.swing.JLabel placarInimigoJLabel1;
+    private javax.swing.JLabel placarInimigoNumeroCartasMao;
+    private javax.swing.JLabel placarInimigoJLabel3;
+    private javax.swing.JLabel placarInimigoJLabel5;
+    private javax.swing.JLabel placarInimigoJLabel6;
+    private javax.swing.JLabel placarInimigoJLabel7;
+    private javax.swing.JLabel placarInimigoNomeFaccao;
+    private javax.swing.JRadioButton placarInimigoUmRound;
+    //Placar Jogador
+    private javax.swing.JRadioButton doisRound;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel numeroCartasMao;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel nomeFaccao;
+    private javax.swing.JRadioButton umRound;
     // End of variables declaration        
     
     
