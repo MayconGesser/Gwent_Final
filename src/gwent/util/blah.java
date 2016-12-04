@@ -16,6 +16,8 @@ import gwent.entidades.Carta;
 import gwent.entidades.CartaUnidade;
 import gwent.entidades.Deck;
 import gwent.entidades.Faccao;
+import gwent.entidades.Habilidade;
+import gwent.entidades.TipoHabilidade;
 import gwent.entidades.TipoUnidade;
 
 public class blah {
@@ -53,6 +55,7 @@ public class blah {
 		System.out.println(nome);
 		System.out.println(poder);
 		System.out.println(tipoUnidade);
+		System.out.println(habilidade);
 		
 		TipoUnidade tipo = null;
 		
@@ -70,16 +73,25 @@ public class blah {
 				break;
 		}
 		
+		Habilidade habilidadeCarta = null;
 		switch(habilidade){
+			
 			case "sh":
+				habilidadeCarta = new Habilidade(TipoHabilidade.AGILIDADE);
+				break;
 				
+			case "m":
+				habilidadeCarta = new Habilidade(TipoHabilidade.MEDICO);
+				break;
 		}
 		
 		ImageIcon img = new ImageIcon(
 					new ImageIcon("BancoCartas/ReinosNorte/" + nome)
 					.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH));
-
-		CartaUnidade carta = new CartaUnidade(nome,img,poder,null,tipo);
+		
+		//CUIDADO COM ISSO 
+		//PERSISTINDO UM TIPO APENAS DE CARTA
+		CartaUnidade carta = new CartaUnidade(nome,img,habilidadeCarta,poder,tipo);
 		return carta;
 	}
 
@@ -106,7 +118,7 @@ public class blah {
 		for(int i = 0; i<imgs.length; i++){
 			String nome = imgs[i].getName();
 			if(!nome.substring(nome.length()-3, nome.length()).equals("jpg")){
-				System.out.println(nome);
+				System.out.println("Não entrou: " + nome);
 				continue;
 			}
 			

@@ -12,10 +12,15 @@ public class CartaClima extends CartaHabilidade {
 	public CartaClima(String nome, ImageIcon img, Habilidade habilidade) {
 		super(nome, img, habilidade);
 		// TODO Auto-generated constructor stub
+	}	
+	
+	@Override
+	public Habilidade getHabilidade(){
+		return this.habilidade;
 	}
-
+	
 	@Override
 	public void ativarHabilidade(){
-		
+		//
 	}
 }
