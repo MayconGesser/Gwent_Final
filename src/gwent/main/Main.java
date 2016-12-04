@@ -7,8 +7,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-//		blah.persisteRN();
-//		blah.persisteMonstro();
+//		ScriptPersistencia.persisteRN();
+//		ScriptPersistencia.persisteMonstro();
 		new JMesa();
 
 	}

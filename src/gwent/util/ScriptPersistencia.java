@@ -114,6 +114,8 @@ public class ScriptPersistencia {
 		else{
 			switch(habilidade){
 				case "gm":					
+					System.out.println(nome);
+					System.out.println(TipoCartaClima.GEADA_MORDAZ.toString());
 					carta = new CartaClima(nome,img,habilidadeCarta,TipoCartaClima.GEADA_MORDAZ);
 					break;
 			}

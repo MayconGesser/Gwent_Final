@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -137,14 +138,28 @@ public class JMesa extends javax.swing.JFrame {
 		Group gv = espacoCartasLayout.createParallelGroup();
 		MouseCarta b = new MouseCarta();
 
-		for(int x = 0; x<10; x++) {
+		for(int x = 0; x<9; x++) {
 			Carta carta = jogador.sacarCarta();
 			carta.addMouseListener(b);
 			carta.setName(carta.getNomeCarta());
 			gh.addComponent(carta);
 			gv.addComponent(carta);
 		}
-
+		
+		//apenas para teste de carta de clima
+		ArrayList<Carta> d = (ArrayList<Carta>)jogador.getDeck().getCartas();
+		CartaClima geadamordaz = null;
+		for(Carta c : d){
+			if(c instanceof CartaClima){
+				geadamordaz = (CartaClima) c;
+			}
+		}
+		
+		geadamordaz.addMouseListener(b);
+		geadamordaz.setName(geadamordaz.getNomeCarta());
+		gh.addComponent(geadamordaz);
+		gv.addComponent(geadamordaz);
+		
 		espacoCartasLayout.setHorizontalGroup(gh);
 		espacoCartasLayout.setVerticalGroup(gv);
 
@@ -833,11 +848,7 @@ public class JMesa extends javax.swing.JFrame {
 			// TODO Auto-generated method stub
 
 		}
-
     }
-
-
-
 
     private class MouseCarta implements MouseListener{
 
