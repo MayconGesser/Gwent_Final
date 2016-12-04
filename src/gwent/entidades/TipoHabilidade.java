@@ -1,6 +1,8 @@
 package gwent.entidades;
 
-public enum TipoHabilidade {
+import br.ufsc.inf.leobr.cliente.Jogada;
+
+public enum TipoHabilidade implements Jogada {
 	AGILIDADE,
 	MEDICO,
 	ELEVAR_MORAL,

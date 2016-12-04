@@ -1,18 +1,8 @@
 package gwent.visao;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-//package tabuleironetbeans;
-
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -21,97 +11,166 @@ import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.Random;
 
-import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
+import javax.swing.*;
 import javax.swing.GroupLayout.Group;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
+import gwent.controladores.AtorJogador;
 import gwent.controladores.ControladorMesa;
-import gwent.entidades.Carta;
-import gwent.entidades.CartaUnidade;
-import gwent.entidades.Deck;
-import gwent.entidades.Fileira;
-import gwent.entidades.TipoHabilidade;
-import gwent.entidades.TipoUnidade;
+import gwent.entidades.*;
+import gwent.netGames.AtorNetGames;
 
-/**
- *
- * @author viwjcq
- */
 public class JMesa extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
-	/**
-	 * Creates new form Tabuleiro
-	 */
-	final Color marrom = new Color(102,51,0);
-	final Color marromFileira = new Color(156,73,0);
-	final Color marromEspaco = new Color(51,25,0);
-	final Dimension tamFileira = new Dimension(624,100);
-	final Dimension tamEspaco = new Dimension(90,110);
+    final Color marrom = new Color(102,51,0);
+    final Color marromFileira = new Color(156,73,0);
+    final Color marromEspaco = new Color(51,25,0);
+    final Dimension tamFileira = new Dimension(624,100);
+    final Dimension tamEspaco = new Dimension(90,110);
+    protected AtorJogador atorJogador;
+    protected static final int START = 1;
+    protected static final int CONECTADO = 2;
 
-	private void criarFileira(JPanel fileira){
-		fileira.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		fileira.setBackground(marromFileira);
-		fileira.setPreferredSize(tamFileira);
-	}
+    private String getNomeJogador() {
+        return JOptionPane.showInputDialog(this, "Digite seu nome: ", "jogador");
+    }
 
-	private void criarEspaco(JPanel espaco){
-		espaco.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		espaco.setBackground(marromEspaco);
-		espaco.setPreferredSize(tamEspaco);
-	}
+    private String getNomeServidor() {
+        return JOptionPane.showInputDialog(this, "Digite o servidor: ", "localhost");
+    }
 
-	//metodo wrapper para "esvaziar" o espaco com as cartas ampliadas
-	private void trocaCartaParaDummy(){
-		java.awt.Component c = espacoExibicaoCarta.getComponent(0);
-		espacoExibicaoCartaLayout.replace(c, dummy);
-	}
+    private void conectar() {
+        String nomeAtual = this.getNomeJogador();
+        String  servidor = this.getNomeServidor();
+        boolean conectou = atorJogador.conectar(nomeAtual, servidor);
+        atorJogador.setJogadorAtual(new Jogador(0, nomeAtual));
+        if (conectou) {
+            this.adicionarTitulo(nomeAtual);
+            this.atualizarVisibilidadeTela(CONECTADO);
+            this.exibeMensagem("Conectado com sucesso!");
+        } else {
+            this.exibeMensagem("Não foi possível se conectar!");
+        }
+    }
 
-	private void trocaDummyExibicaoParaCarta(Carta carta){
-		java.awt.Component c = espacoExibicaoCarta.getComponent(0);
-		espacoExibicaoCartaLayout.replace(c, carta);
-	}
+    public void atualizarVisibilidadeTela(int mode) {
+        if (mode == START) {
+            jMenuItemConectar.setEnabled(true);
+            jMenuItemDesconectar.setEnabled(false);
+            jMenuItemIniciarPartida.setEnabled(false);
+            jMenuItemEncerrarPartida.setEnabled(false);
+        } else if (mode == CONECTADO) {
+            jMenuItemDesconectar.setEnabled(true);
+            jMenuItemIniciarPartida.setEnabled(true);
+            jMenuItemConectar.setEnabled(false);
+            jMenuItemEncerrarPartida.setEnabled(true);
+        }
+    }
 
-	@SuppressWarnings("unchecked")
+    public void recebeMesa(Mesa mesa) {
+        if (mesa.getStatusMesa().equals(StatusMesa.INICAR_PARTIDA)) {
+            this.iniciarPartida(mesa);
+//            this.setNomeJogadoresLabel(mesa);
+            JOptionPane.showMessageDialog(this, "Uma nova partida vai iniciar");
+        }  else if (mesa.getStatusMesa().equals(StatusMesa.INICIAR_RODADA)) {
+//            this.iniciarNovaRodada(mesa);
+//            this.atualizarPontosJogadores(mesa);
+        } else if (mesa.getStatusMesa().equals(StatusMesa.ENCERRAR_PARTIDA)) {
+//            this.exibeMensagem(mesa.getMensagemFim());
+            System.exit(0);
+        }
+//        this.atualizaJogadorDaVez(mesa);
+        this.validate();
+    }
+
+    private void iniciarPartida(Mesa mesa) {
+        this.atualizaCamposInicioPartida(mesa);
+    }
+
+    private void atualizaCamposInicioPartida(Mesa mesa) {
+//        this.limparPanelsCartas();
+//
+//        Jogador jogadorAtual = this.getJogadorAtualNaMesa(mesa);
+//
+//        this.atualizaCartasJogadorAtual(jogadorAtual);
+//        this.atualizaCartasAdversarios(jogadorAtual);
+//        mesa.setStatusMesa(StatusMesa.INICIAR_RODADA);
+//        this.atualizaBaralho(mesa);
+//        this.iniciarNovaRodada(mesa);
+    }
+
+    private Faccao getFaccao() {
+        return (Faccao) JOptionPane.showInputDialog(null, "Escolha uma facção" , "Seleção de facção" ,
+                JOptionPane.PLAIN_MESSAGE , null, Faccao.values(),"");
+    }
+
+    private void iniciarPartida() {
+        Faccao faccao = this.getFaccao();
+        this.atorJogador.iniciarPartida(faccao);
+    }
+
+    private void adicionarTitulo(String nome) {
+        this.setTitle(nome);
+    }
+
+    private void criarFileira(JPanel fileira){
+        fileira.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        fileira.setBackground(marromFileira);
+        fileira.setPreferredSize(tamFileira);
+    }
+
+    private void criarEspaco(JPanel espaco){
+        espaco.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        espaco.setBackground(marromEspaco);
+        espaco.setPreferredSize(tamEspaco);
+    }
+
+    //metodo wrapper para "esvaziar" o espaco com as cartas ampliadas
+    private void trocaCartaParaDummy(){
+    	java.awt.Component c = espacoExibicaoCarta.getComponent(0);
+    	espacoExibicaoCartaLayout.replace(c, dummy);
+    }
+
+    private void trocaDummyExibicaoParaCarta(Carta carta){
+    	java.awt.Component c = espacoExibicaoCarta.getComponent(0);
+    	espacoExibicaoCartaLayout.replace(c, carta);
+    }
+
+    @SuppressWarnings("unchecked")
 	public JMesa() {
-		initComponents();
+        initComponents();
 
-		ctrlMesa = new ControladorMesa(
-				fileiraInfantaria, fileiraLongaDistancia, fileiraCerco
-				);
-		getContentPane().setBackground(marrom);
-		setVisible(true);
+        ctrlMesa = new ControladorMesa(fileiraInfantaria, fileiraLongaDistancia, fileiraCerco);
+        this.atorJogador = new AtorJogador(this);
+        getContentPane().setBackground(marrom);
+        setVisible(true);
+        this.atualizarVisibilidadeTela(1);
+//        btJogar.setEnabled(false);
+//        btPassar.setEnabled(false);
 
-		File bin = new File("BancoCartas/ReinosNorte/cartas.bin");
-		FileInputStream fis = null;
-		ObjectInputStream ois = null;
-		try {
+        File bin = new File("BancoCartas/ReinosNorte/cartas.bin");
+        FileInputStream fis = null;
+        ObjectInputStream ois = null;
+        try {
 			fis = new FileInputStream(bin);
 			ois = new ObjectInputStream(fis);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch(IOException e){
 			e.printStackTrace();
 		}
-		try {
+        try {
 			cartasDeck = (Deck)ois.readObject();
 			cartasExibicao = (HashMap<String,Carta>)ois.readObject();
 			cartasFileiraEx = (HashMap<String,Carta>)ois.readObject();
 		} catch (ClassNotFoundException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		cartasDeck.embaralhar();
+        cartasDeck.embaralhar();
 		Group gh = espacoCartasLayout.createSequentialGroup();
 		Group gv = espacoCartasLayout.createParallelGroup();
 		MouseCarta b = new MouseCarta();
 
-		for(int x = 0; x<10; x++){			
+		for(int x = 0; x<10; x++){
 			Carta carta = cartasDeck.sacarCarta();
 			carta.addMouseListener(b);
 			carta.setName(carta.getNomeCarta());
@@ -125,11 +184,13 @@ public class JMesa extends javax.swing.JFrame {
 
 		espacoCartasLayout.setHorizontalGroup(gh);
 		espacoCartasLayout.setVerticalGroup(gv);
-		deck.setToolTipText("Seu deck tem " + this.cartasDeck.getCartas().size() + " cartas");
+//		deck.setToolTipText("Seu deck tem " + this.cartasDeck.getCartas().size() + " cartas");
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
-	}
+    }
 
-
+    public void exibeMensagem(String message) {
+        JOptionPane.showMessageDialog(null, message);
+    }
 
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">                          
 	private void initComponents() {
@@ -162,318 +223,318 @@ public class JMesa extends javax.swing.JFrame {
 
 
 
-		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-		JPanel placar = new JPanel();
-		placar.setBackground(Color.BLUE);
+        JPanel placar = new JPanel();
+        placar.setBackground(Color.BLUE);
 
-		javax.swing.GroupLayout placarLayout = new javax.swing.GroupLayout(placar);
-		placar.setLayout(placarLayout);
-		placarLayout.setHorizontalGroup(
-				placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 191, Short.MAX_VALUE)
-				);
-		placarLayout.setVerticalGroup(
-				placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 110, Short.MAX_VALUE)
-				);
+        javax.swing.GroupLayout placarLayout = new javax.swing.GroupLayout(placar);
+        placar.setLayout(placarLayout);
+        placarLayout.setHorizontalGroup(
+            placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 191, Short.MAX_VALUE)
+        );
+        placarLayout.setVerticalGroup(
+            placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 110, Short.MAX_VALUE)
+        );
 
-		criarFileira(fileiraCerco);
-		criarFileira(fileiraLongaDistancia);
-		criarFileira(fileiraInfantaria);
+        criarFileira(fileiraCerco);
+        criarFileira(fileiraLongaDistancia);
+        criarFileira(fileiraInfantaria);
 
-		divisor.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        divisor.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-		javax.swing.GroupLayout divisorLayout = new javax.swing.GroupLayout(divisor);
-		divisor.setLayout(divisorLayout);
-		divisorLayout.setHorizontalGroup(
-				divisorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 647, Short.MAX_VALUE)
-				);
-		divisorLayout.setVerticalGroup(
-				divisorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 0, Short.MAX_VALUE)
-				);
+        javax.swing.GroupLayout divisorLayout = new javax.swing.GroupLayout(divisor);
+        divisor.setLayout(divisorLayout);
+        divisorLayout.setHorizontalGroup(
+            divisorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 647, Short.MAX_VALUE)
+        );
+        divisorLayout.setVerticalGroup(
+            divisorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
 
-		criarFileira(fileiraInfantariaAd);
+        criarFileira(fileiraInfantariaAd);
 
-		javax.swing.GroupLayout fileiraInfantariaAdLayout = new javax.swing.GroupLayout(fileiraInfantariaAd);
-		fileiraInfantariaAd.setLayout(fileiraInfantariaAdLayout);
-		fileiraInfantariaAdLayout.setHorizontalGroup(
-				fileiraInfantariaAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 100, Short.MAX_VALUE)
-				);
-		fileiraInfantariaAdLayout.setVerticalGroup(
-				fileiraInfantariaAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 100, Short.MAX_VALUE)
-				);
+        javax.swing.GroupLayout fileiraInfantariaAdLayout = new javax.swing.GroupLayout(fileiraInfantariaAd);
+        fileiraInfantariaAd.setLayout(fileiraInfantariaAdLayout);
+        fileiraInfantariaAdLayout.setHorizontalGroup(
+            fileiraInfantariaAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        fileiraInfantariaAdLayout.setVerticalGroup(
+            fileiraInfantariaAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
-		criarFileira(fileiraLongaDistanciaAd);
+        criarFileira(fileiraLongaDistanciaAd);
 
-		javax.swing.GroupLayout fileiraLongaDistanciaAdLayout = new javax.swing.GroupLayout(fileiraLongaDistanciaAd);
-		fileiraLongaDistanciaAd.setLayout(fileiraLongaDistanciaAdLayout);
-		fileiraLongaDistanciaAdLayout.setHorizontalGroup(
-				fileiraLongaDistanciaAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 100, Short.MAX_VALUE)
-				);
-		fileiraLongaDistanciaAdLayout.setVerticalGroup(
-				fileiraLongaDistanciaAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 100, Short.MAX_VALUE)
-				);
+        javax.swing.GroupLayout fileiraLongaDistanciaAdLayout = new javax.swing.GroupLayout(fileiraLongaDistanciaAd);
+        fileiraLongaDistanciaAd.setLayout(fileiraLongaDistanciaAdLayout);
+        fileiraLongaDistanciaAdLayout.setHorizontalGroup(
+            fileiraLongaDistanciaAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        fileiraLongaDistanciaAdLayout.setVerticalGroup(
+            fileiraLongaDistanciaAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
-		criarFileira(fileiraCercoAd);
+        criarFileira(fileiraCercoAd);
 
-		javax.swing.GroupLayout fileiraCercoAdLayout = new javax.swing.GroupLayout(fileiraCercoAd);
-		fileiraCercoAd.setLayout(fileiraCercoAdLayout);
-		fileiraCercoAdLayout.setHorizontalGroup(
-				fileiraCercoAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 100, Short.MAX_VALUE)
-				);
-		fileiraCercoAdLayout.setVerticalGroup(
-				fileiraCercoAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 100, Short.MAX_VALUE)
-				);
+        javax.swing.GroupLayout fileiraCercoAdLayout = new javax.swing.GroupLayout(fileiraCercoAd);
+        fileiraCercoAd.setLayout(fileiraCercoAdLayout);
+        fileiraCercoAdLayout.setHorizontalGroup(
+            fileiraCercoAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        fileiraCercoAdLayout.setVerticalGroup(
+            fileiraCercoAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
-		criarEspaco(deck);
+        criarEspaco(deck);
 
 
-		javax.swing.GroupLayout deckLayout = new javax.swing.GroupLayout(deck);
-		deck.setLayout(deckLayout);
-		deckLayout.setHorizontalGroup(
-				deckLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 100, Short.MAX_VALUE)
-				);
-		deckLayout.setVerticalGroup(
-				deckLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 100, Short.MAX_VALUE)
-				);
+        javax.swing.GroupLayout deckLayout = new javax.swing.GroupLayout(deck);
+        deck.setLayout(deckLayout);
+        deckLayout.setHorizontalGroup(
+            deckLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        deckLayout.setVerticalGroup(
+            deckLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
-		criarEspaco(cemiterio);
+        criarEspaco(cemiterio);
 
-		javax.swing.GroupLayout cemiterioLayout = new javax.swing.GroupLayout(cemiterio);
-		cemiterio.setLayout(cemiterioLayout);
-		cemiterioLayout.setHorizontalGroup(
-				cemiterioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 100, Short.MAX_VALUE)
-				);
-		cemiterioLayout.setVerticalGroup(
-				cemiterioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 100, Short.MAX_VALUE)
-				);
+        javax.swing.GroupLayout cemiterioLayout = new javax.swing.GroupLayout(cemiterio);
+        cemiterio.setLayout(cemiterioLayout);
+        cemiterioLayout.setHorizontalGroup(
+            cemiterioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        cemiterioLayout.setVerticalGroup(
+            cemiterioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
-		criarEspaco(deckAd);
+        criarEspaco(deckAd);
 
-		javax.swing.GroupLayout deckAdLayout = new javax.swing.GroupLayout(deckAd);
-		deckAd.setLayout(deckAdLayout);
-		deckAdLayout.setHorizontalGroup(
-				deckAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 100, Short.MAX_VALUE)
-				);
-		deckAdLayout.setVerticalGroup(
-				deckAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 100, Short.MAX_VALUE)
-				);
+        javax.swing.GroupLayout deckAdLayout = new javax.swing.GroupLayout(deckAd);
+        deckAd.setLayout(deckAdLayout);
+        deckAdLayout.setHorizontalGroup(
+            deckAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        deckAdLayout.setVerticalGroup(
+            deckAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
-		criarEspaco(cemiterioAd);
+        criarEspaco(cemiterioAd);
 
-		javax.swing.GroupLayout cemiterioAdLayout = new javax.swing.GroupLayout(cemiterioAd);
-		cemiterioAd.setLayout(cemiterioAdLayout);
-		cemiterioAdLayout.setHorizontalGroup(
-				cemiterioAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 100, Short.MAX_VALUE)
-				);
-		cemiterioAdLayout.setVerticalGroup(
-				cemiterioAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 100, Short.MAX_VALUE)
-				);
+        javax.swing.GroupLayout cemiterioAdLayout = new javax.swing.GroupLayout(cemiterioAd);
+        cemiterioAd.setLayout(cemiterioAdLayout);
+        cemiterioAdLayout.setHorizontalGroup(
+            cemiterioAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        cemiterioAdLayout.setVerticalGroup(
+            cemiterioAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
-		espacoCartas.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		espacoCartas.setBackground(marrom);
-		espacoCartas.setPreferredSize(new java.awt.Dimension(300,72));
+        espacoCartas.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        espacoCartas.setBackground(marrom);
+        espacoCartas.setPreferredSize(new java.awt.Dimension(300,72));
 
-		espacoCartasLayout = new javax.swing.GroupLayout(espacoCartas);
-		espacoCartas.setLayout(espacoCartasLayout);
-		espacoCartasLayout.setHorizontalGroup(
-				espacoCartasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 295, Short.MAX_VALUE)
-				);
-		espacoCartasLayout.setVerticalGroup(
-				espacoCartasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 72, Short.MAX_VALUE)
-				);
+        espacoCartasLayout = new javax.swing.GroupLayout(espacoCartas);
+        espacoCartas.setLayout(espacoCartasLayout);
+        espacoCartasLayout.setHorizontalGroup(
+            espacoCartasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 295, Short.MAX_VALUE)
+        );
+        espacoCartasLayout.setVerticalGroup(
+            espacoCartasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 72, Short.MAX_VALUE)
+        );
 
-		espacoExibicaoCarta.setBackground(marrom);
-		espacoExibicaoCarta.setPreferredSize(new java.awt.Dimension(180,244));
-		espacoExibicaoCarta.setBorder(BorderFactory.createBevelBorder(
-				BevelBorder.LOWERED));
+        espacoExibicaoCarta.setBackground(marrom);
+        espacoExibicaoCarta.setPreferredSize(new java.awt.Dimension(180,244));
+        espacoExibicaoCarta.setBorder(BorderFactory.createBevelBorder(
+        		BevelBorder.LOWERED));
 
-		espacoExibicaoCartaLayout = new javax.swing.GroupLayout(espacoExibicaoCarta);
-		espacoExibicaoCarta.setLayout(espacoExibicaoCartaLayout);
-		dummy = new JPanel();
-		dummy.setBackground(marrom);
-		dummy.setPreferredSize(new java.awt.Dimension(168,234));
-		Hexibicao = espacoExibicaoCartaLayout.createSequentialGroup();
+        espacoExibicaoCartaLayout = new javax.swing.GroupLayout(espacoExibicaoCarta);
+        espacoExibicaoCarta.setLayout(espacoExibicaoCartaLayout);
+        dummy = new JPanel();
+        dummy.setBackground(marrom);
+        dummy.setPreferredSize(new java.awt.Dimension(168,234));
+        Hexibicao = espacoExibicaoCartaLayout.createSequentialGroup();
 
-		Hexibicao.addComponent(dummy);
-		espacoExibicaoCartaLayout.setHorizontalGroup(
-				Hexibicao
-				);
+        Hexibicao.addComponent(dummy);
+        espacoExibicaoCartaLayout.setHorizontalGroup(
+            Hexibicao
+        );
 
-		Vexibicao = espacoExibicaoCartaLayout.createParallelGroup();
-		Vexibicao.addComponent(dummy);
-		espacoExibicaoCartaLayout.setVerticalGroup(
-				Vexibicao
-				);
+        Vexibicao = espacoExibicaoCartaLayout.createParallelGroup();
+        Vexibicao.addComponent(dummy);
+        espacoExibicaoCartaLayout.setVerticalGroup(
+            Vexibicao
+        );
 
-		btPassar.setText("Passar Turno");
+        btPassar.setText("Passar Turno");
 
-		btJogar.setText("Jogar Carta");
+        btJogar.setText("Jogar Carta");
 
-		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-		getContentPane().setLayout(layout);
-		layout.setHorizontalGroup(
-				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addGroup(layout.createSequentialGroup()
-										.addGap(62, 62, 62)
-										.addComponent(placar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-								.addGroup(layout.createSequentialGroup()
-										.addContainerGap()
-										.addComponent(espacoCartas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addGap(31, 31, 31)
-										.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-												.addComponent(btJogar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-												.addComponent(btPassar, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)))
-								.addGroup(layout.createSequentialGroup()
-										.addGap(21, 21, 21)
-										.addComponent(espacoExibicaoCarta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
-						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addComponent(fileiraLongaDistancia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(fileiraCerco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(fileiraCercoAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(fileiraLongaDistanciaAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(fileiraInfantaria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(divisor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(fileiraInfantariaAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addGap(92,92,92)
-						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addComponent(deck, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(cemiterio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(deckAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(cemiterioAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addContainerGap())
-				);
-		layout.setVerticalGroup(
-				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-								.addGroup(layout.createSequentialGroup()
-										.addComponent(deckAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(cemiterioAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(cemiterio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(deck, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addGap(21, 21, 21))
-								.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-										.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-												.addGroup(layout.createSequentialGroup()
-														.addComponent(btPassar)
-														.addGap(33, 33, 33)
-														.addComponent(btJogar))
-												.addGroup(layout.createSequentialGroup()
-														.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-																.addGroup(layout.createSequentialGroup()
-																		.addComponent(fileiraCercoAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-																		.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																		.addComponent(fileiraLongaDistanciaAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-																.addComponent(placar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-														.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addComponent(fileiraInfantariaAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-														.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-																.addGroup(layout.createSequentialGroup()
-																		.addComponent(divisor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-																		.addGap(18, 18, 18)
-																		.addComponent(fileiraInfantaria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-																		.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																		.addComponent(fileiraLongaDistancia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-																.addComponent(espacoExibicaoCarta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-														.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-																.addComponent(fileiraCerco, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-																.addComponent(espacoCartas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-										.addContainerGap())))
-				);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addComponent(placar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(espacoCartas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btJogar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btPassar, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(espacoExibicaoCarta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(fileiraLongaDistancia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fileiraCerco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fileiraCercoAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fileiraLongaDistanciaAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fileiraInfantaria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(divisor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fileiraInfantariaAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(92,92,92)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(deck, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cemiterio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(deckAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cemiterioAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                        .addComponent(deckAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cemiterioAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cemiterio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(deck, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btPassar)
+                                .addGap(33, 33, 33)
+                                .addComponent(btJogar))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(fileiraCercoAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(fileiraLongaDistanciaAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(placar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(fileiraInfantariaAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(divisor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(fileiraInfantaria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(fileiraLongaDistancia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(espacoExibicaoCarta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(fileiraCerco, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(espacoCartas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addContainerGap())))
+        );
 
-		jMenu.setText("Menu");
+        jMenu.setText("Menu");
 
-		jMenuItemConectar.setText("Conectar");
-		jMenuItemConectar.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jMenuItemConectarActionPerformed(evt);
-			}
-		});
-		jMenu.add(jMenuItemConectar);
+        jMenuItemConectar.setText("Conectar");
+        jMenuItemConectar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemConectarActionPerformed(evt);
+            }
+        });
+        jMenu.add(jMenuItemConectar);
 
-		jMenuItemIniciarPartida.setText("Iniciar Partida");
-		jMenuItemIniciarPartida.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jMenuItemIniciarPartidaActionPerformed(evt);
-			}
-		});
-		jMenu.add(jMenuItemIniciarPartida);
+        jMenuItemIniciarPartida.setText("Iniciar Partida");
+        jMenuItemIniciarPartida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemIniciarPartidaActionPerformed(evt);
+            }
+        });
+        jMenu.add(jMenuItemIniciarPartida);
 
-		jMenuItemEncerrarPartida.setText("Encerrar Partida");
-		jMenuItemEncerrarPartida.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jMenuItemEncerrarPartidaActionPerformed(evt);
-			}
-		});
-		jMenu.add(jMenuItemEncerrarPartida);
+        jMenuItemEncerrarPartida.setText("Encerrar Partida");
+        jMenuItemEncerrarPartida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemEncerrarPartidaActionPerformed(evt);
+            }
+        });
+        jMenu.add(jMenuItemEncerrarPartida);
 
-		jMenuItemDesconectar.setText("Desconectar");
-		jMenuItemDesconectar.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jMenuItemDesconectarActionPerformed(evt);
-			}
-		});
-		jMenu.add(jMenuItemDesconectar);
+        jMenuItemDesconectar.setText("Desconectar");
+        jMenuItemDesconectar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemDesconectarActionPerformed(evt);
+            }
+        });
+        jMenu.add(jMenuItemDesconectar);
 
-		jMenuBar.add(jMenu);
+        jMenuBar.add(jMenu);
 
-		setJMenuBar(jMenuBar);
+        setJMenuBar(jMenuBar);
 
-		btPassar.setActionCommand(btPassar.getText());
-		btJogar.setActionCommand(btJogar.getText());
-		meh m = new meh();
-		btPassar.addActionListener(m);
-		btJogar.addActionListener(m);
+        btPassar.setActionCommand(btPassar.getText());
+        btJogar.setActionCommand(btJogar.getText());
+        meh m = new meh();
+        btPassar.addActionListener(m);
+        btJogar.addActionListener(m);
 
-		getContentPane().addMouseListener(new MouseGeral());
-		pack();
+        getContentPane().addMouseListener(new MouseGeral());
+        pack();
 
-	}// </editor-fold>
+    }// </editor-fold>
 
-	protected void jMenuItemDesconectarActionPerformed(ActionEvent evt) {
-		//        atorJogador.desconectar();
-	}
+    private void jMenuItemDesconectarActionPerformed(ActionEvent evt) {
+        this.atorJogador.desconectar();
+    }
 
-	protected void jMenuItemIniciarPartidaActionPerformed(ActionEvent evt) {
-		//        atorJogador.iniciarPartida();
-	}
+    private void jMenuItemIniciarPartidaActionPerformed(ActionEvent evt) {
+        this.iniciarPartida();
+    }
 
-	protected void jMenuItemEncerrarPartidaActionPerformed(ActionEvent evt) {
-		//        atorJogador.encerrarPartida();
-	}
+    private void jMenuItemEncerrarPartidaActionPerformed(ActionEvent evt) {
+//        atorJogador.encerrarPartida();
+    }
 
-	protected void jMenuItemConectarActionPerformed(ActionEvent evt) {
-		//        this.conectar();
-	}
+    private void jMenuItemConectarActionPerformed(ActionEvent evt) {
+        this.conectar();
+    }
 
 
 
@@ -503,7 +564,7 @@ public class JMesa extends javax.swing.JFrame {
 	private javax.swing.JButton btJogar;
 	private javax.swing.JPanel espacoExibicaoCarta;
 	private Carta cartaSelecionada;
-	private Group Hexibicao; 
+	private Group Hexibicao;
 	private Group Vexibicao;
 	private Deck cartasDeck;
 	private Deck cartasCemiterio;
@@ -520,10 +581,13 @@ public class JMesa extends javax.swing.JFrame {
 	private javax.swing.JMenuItem jMenuItemEncerrarPartida;
 	// End of variables declaration        
 
+	public void atualizaJogadorDaVez(Jogador jogadorDaVez) {
+//        jLabelTextoJogadorDaVez.setText(mesa.getJogadorDaVez().getNome());
+	}
 
-	private class MouseGeral implements MouseListener{
+    private class MouseGeral implements MouseListener{
 
-		//se nao for um componente carta q foi clicado
+    	//se nao for um componente carta q foi clicado
 		//como o resto da janela inteira estah vinculado a uma instancia dessa classe
 		//um clique em qlqr lugar fora da carta anulara a selecao dela
 		@Override
@@ -563,48 +627,48 @@ public class JMesa extends javax.swing.JFrame {
 
 		}
 
-	}
+    }
 
 
 
 
-	private class MouseCarta implements MouseListener{
+    private class MouseCarta implements MouseListener{
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
 			if(passouTurno){
 				return;
-			}			
+			}
 
 			Carta c = (Carta) e.getSource();
 
 			//carta estah numa fileira, nao pode ser selecionada
 			if(c.getParent() instanceof Fileira){
 				return;
-			}							
+			}
 
 			//se jah houver uma carta selecionada remove a borda vermelha
 			//da carta previamente selecionada
 			if(cartaSelecionada != null){
-				cartaSelecionada.setBorder(null);				
+				cartaSelecionada.setBorder(null);
 
 				//verifica se eh a msma carta sendo clicada novamente
 				//se for deve anular a selecao
 				if(c.equals(cartaSelecionada)){
 					Carta cartaHover = (Carta)espacoExibicaoCarta.getComponent(0);
-					cartaHover.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));					
+					cartaHover.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
 					cartaSelecionada = null;
 					return;
 				}
 			}
 
-			cartaSelecionada = c;	
+			cartaSelecionada = c;
 			Carta novaCartaHover = cartasExibicao.get(c.getNomeCarta());
 			cartaSelecionada.setBorder(BorderFactory.createLineBorder(Color.RED));
-			java.awt.Component cartaAnterior = espacoExibicaoCarta.getComponent(0);			
+			java.awt.Component cartaAnterior = espacoExibicaoCarta.getComponent(0);
 			espacoExibicaoCartaLayout.replace(cartaAnterior, novaCartaHover);
-			novaCartaHover.setBorder(BorderFactory.createLineBorder(Color.RED,3));			
+			novaCartaHover.setBorder(BorderFactory.createLineBorder(Color.RED,3));
 		}
 
 
@@ -631,9 +695,9 @@ public class JMesa extends javax.swing.JFrame {
 			if(cartaSelecionada != null){return;}
 			Object o = e.getSource();
 			if(!(o instanceof Carta)){return;}
-			java.awt.Component  c = espacoExibicaoCarta.getComponent(0);
-			espacoExibicaoCartaLayout.replace(
-					c, dummy);
+				java.awt.Component  c = espacoExibicaoCarta.getComponent(0);
+				espacoExibicaoCartaLayout.replace(
+						c, dummy);
 
 		}
 
@@ -649,9 +713,9 @@ public class JMesa extends javax.swing.JFrame {
 
 		}
 
-	}
+    }
 
-	private class meh implements ActionListener{
+    private class meh implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
@@ -664,12 +728,14 @@ public class JMesa extends javax.swing.JFrame {
 				}
 				java.awt.Container c = cartaSelecionada.getParent();
 				c.remove(cartaSelecionada);
-				c.repaint();				
+				c.repaint();
 				cartaSelecionada.setBorder(null);
 				Carta cartaAdicionada = null;
 				String n = cartaSelecionada.getNomeCarta();
 				if(cartaSelecionada instanceof CartaUnidade){
+
 					cartaAdicionada = (CartaUnidade) cartasFileiraEx.get(n);  //precisa-se manter um ponteiro para o objeto da carta q vai ser add pra manter o mouselistener
+
 				}
 
 				cartaAdicionada.addMouseListener(new MouseCarta());
@@ -683,10 +749,10 @@ public class JMesa extends javax.swing.JFrame {
 							break;
 						default:
 							break;
-					}					
+					}
 				}
 
-				precisaSelecionar = ctrlMesa.processarCarta(cartaAdicionada);				
+				precisaSelecionar = ctrlMesa.processarCarta(cartaAdicionada);
 				if(precisaSelecionar){
 					Fileira fileiraSelecionada = null;
 					JOptionPane.showMessageDialog(null, "Selecione uma fileira para jogar a carta");
@@ -696,17 +762,17 @@ public class JMesa extends javax.swing.JFrame {
 							precisaSelecionar = false;
 						}
 						catch(NullPointerException e){
-							
+
 						}
 					}
 					fileiraSelecionada.incluirCarta(cartaAdicionada);
-				}			
+				}
 				cartaSelecionada = null;
-				trocaCartaParaDummy(); 
+				trocaCartaParaDummy();
 				jogadorDaVez = false;
 			}
 			else if(s.equals(btPassar.getActionCommand())){
-				if(JOptionPane.showConfirmDialog(null, 
+				if(JOptionPane.showConfirmDialog(null,
 						"Tem certeza que deseja passar seu turno?",
 						"Passar Turno", JOptionPane.YES_NO_OPTION)
 						== JOptionPane.YES_OPTION){
@@ -725,15 +791,15 @@ public class JMesa extends javax.swing.JFrame {
 			}
 		}    	
 	}
-	
+
 	private class SeletorFileira implements MouseListener{
-		
-		private Fileira fileiraSelecionada; 
-		
+
+		private Fileira fileiraSelecionada;
+
 		public Fileira getFileiraSelecionada(){
 			return this.fileiraSelecionada;
-		}	
-		
+		}
+
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
 			// TODO Auto-generated method stub
@@ -766,14 +832,14 @@ public class JMesa extends javax.swing.JFrame {
 		@Override
 		public void mousePressed(MouseEvent arg0) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent arg0) {
 			// TODO Auto-generated method stub
-			
+
 		}
-		
+
 	}
 }

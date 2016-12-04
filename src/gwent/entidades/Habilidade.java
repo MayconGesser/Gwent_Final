@@ -2,20 +2,21 @@ package gwent.entidades;
 
 import java.io.Serializable;
 
+import br.ufsc.inf.leobr.cliente.Jogada;
 import gwent.controladores.ControladorMesa;
 
-public class Habilidade implements Serializable{
+public class Habilidade implements Jogada {
 	
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	private final TipoHabilidade tipoHabilidade;	
+	private final TipoHabilidade tipoHabilidade;
 	private Deck referencia;
 	private ControladorMesa chamador;
 	
 	public Habilidade(TipoHabilidade tipoHabilidade){
-		this.tipoHabilidade = tipoHabilidade;		
+		this.tipoHabilidade = tipoHabilidade;
 	}
 	
 	public void ativarHabilidade(){
@@ -28,16 +29,16 @@ public class Habilidade implements Serializable{
 				CartaUnidade cartaSacada = (CartaUnidade) referencia.sacarCarta();
 				chamador.processarCarta(cartaSacada);
 				break;
-				
+
 			default:
 				break;
 		}
-		
+
 		return;
 	}
 	
-	
-	
+
+
 	public void setReferencia(Deck referencia) {
 		this.referencia = referencia;
 	}

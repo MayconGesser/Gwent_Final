@@ -1,4 +1,6 @@
 package gwent.entidades;
+import br.ufsc.inf.leobr.cliente.Jogada;
+
 import java.awt.Color;
 import java.util.ArrayList;
 
@@ -7,7 +9,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Group;
 import javax.swing.JPanel;
 
-public class Fileira extends JPanel{
+public class Fileira extends JPanel implements Jogada {
 	/**
 	 * 
 	 */

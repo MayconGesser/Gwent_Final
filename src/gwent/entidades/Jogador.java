@@ -1,15 +1,18 @@
 package gwent.entidades;
 
+import br.ufsc.inf.leobr.cliente.Jogada;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class Jogador {
+public class Jogador implements Jogada {
 
     protected Integer idJogador;
     protected String nome;
     protected Collection<Carta> cartasMao;
     protected Integer pontuacao;
     protected StatusJogador statusJogador;
+    protected Deck deck;
 
     public Jogador(Integer idJogador, String nome) {
         this.idJogador = idJogador;
@@ -57,5 +60,13 @@ public class Jogador {
 
     public void setStatusJogador(StatusJogador statusJogador) {
         this.statusJogador = statusJogador;
+    }
+
+    public Deck getDeck() {
+        return deck;
+    }
+
+    public void setDeck(Deck deck) {
+        this.deck = deck;
     }
 }

@@ -1,8 +1,10 @@
 package gwent.entidades;
+import br.ufsc.inf.leobr.cliente.Jogada;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-public abstract class Carta extends JLabel {
+public abstract class Carta extends JLabel implements Jogada {
 
 	/**
 	 * 
