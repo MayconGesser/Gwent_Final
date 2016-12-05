@@ -93,7 +93,8 @@ public class JMesa extends javax.swing.JFrame {
             System.exit(0);
         }
 //        this.atualizaJogadorDaVez(mesa);
-        this.validate();
+        revalidate();
+        repaint();
     }
 
     private void iniciarPartida(Mesa mesa) {
@@ -453,46 +454,10 @@ public class JMesa extends javax.swing.JFrame {
         );
 
         criarFileira(fileiraInfantariaAd);
-
-        javax.swing.GroupLayout fileiraInfantariaAdLayout = new javax.swing.GroupLayout(fileiraInfantariaAd);
-        fileiraInfantariaAd.setLayout(fileiraInfantariaAdLayout);
-        fileiraInfantariaAdLayout.setHorizontalGroup(
-            fileiraInfantariaAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        fileiraInfantariaAdLayout.setVerticalGroup(
-            fileiraInfantariaAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        criarFileira(fileiraLongaDistanciaAd);
-
-        javax.swing.GroupLayout fileiraLongaDistanciaAdLayout = new javax.swing.GroupLayout(fileiraLongaDistanciaAd);
-        fileiraLongaDistanciaAd.setLayout(fileiraLongaDistanciaAdLayout);
-        fileiraLongaDistanciaAdLayout.setHorizontalGroup(
-            fileiraLongaDistanciaAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        fileiraLongaDistanciaAdLayout.setVerticalGroup(
-            fileiraLongaDistanciaAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        criarFileira(fileiraCercoAd);
-
-        javax.swing.GroupLayout fileiraCercoAdLayout = new javax.swing.GroupLayout(fileiraCercoAd);
-        fileiraCercoAd.setLayout(fileiraCercoAdLayout);
-        fileiraCercoAdLayout.setHorizontalGroup(
-            fileiraCercoAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        fileiraCercoAdLayout.setVerticalGroup(
-            fileiraCercoAdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
+        criarFileira(fileiraLongaDistanciaAd);        
+        criarFileira(fileiraCercoAd);        
 
         criarEspaco(deck);
-
 
         javax.swing.GroupLayout deckLayout = new javax.swing.GroupLayout(deck);
         deck.setLayout(deckLayout);
@@ -966,7 +931,7 @@ public class JMesa extends javax.swing.JFrame {
 				}
 				else if(cartaSelecionada instanceof CartaClima){	//nao precisa adicionar na fileira, soh joga
 					CartaClima cartaClima = (CartaClima) cartaSelecionada;
-					ctrlMesa.processarCarta(cartaClima);
+					atorJogador.baixarCarta(cartaClima);
 				}
 
 //				if(precisaSelecionar){

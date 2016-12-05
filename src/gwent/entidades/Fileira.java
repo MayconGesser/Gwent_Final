@@ -62,6 +62,8 @@ public class Fileira extends JPanel implements Jogada {
 		this.fileiraLayout.setVerticalGroup(glVertical);
 		//this.exibidorPoder.alterarPoder(this.poderTotal);
 		System.out.println("Poder da fileira " + this.getTipo().toString() + ": " + this.poderTotal);
+		revalidate();
+		repaint();
 	}
 	
 	public void sofrerEfeitoClima(){
