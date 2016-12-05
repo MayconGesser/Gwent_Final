@@ -2,7 +2,9 @@ package gwent.entidades;
 
 import javax.swing.ImageIcon;
 
-public class CartaUnidade extends Carta {
+import br.ufsc.inf.leobr.cliente.Jogada;
+
+public class CartaUnidade extends Carta implements Jogada{
 
 	/**
 	 * 
@@ -24,12 +26,11 @@ public class CartaUnidade extends Carta {
 		this.tipo = tipo;
 	}
 	
-	@Override
-	public void ativarHabilidade(){
+	public void ativarHabilidade(Fileira fileira){
 		if(this.habilidade == null){
 			return;
 		}		
-		this.habilidade.ativarHabilidade();
+		this.habilidade.ativarHabilidadeFileira(fileira);
 	}
 	
 	public int getPoder() {

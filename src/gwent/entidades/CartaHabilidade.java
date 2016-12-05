@@ -2,7 +2,9 @@ package gwent.entidades;
 
 import javax.swing.ImageIcon;
 
-public class CartaHabilidade extends Carta {
+import br.ufsc.inf.leobr.cliente.Jogada;
+
+public class CartaHabilidade extends Carta implements Jogada{
 	
 	
 	
@@ -22,11 +24,10 @@ public class CartaHabilidade extends Carta {
 	@Override
 	public Habilidade getHabilidade(){
 		return this.habilidade;
-	}
+	}	
 	
-	@Override
-	public void ativarHabilidade(){
-		
+	public void ativarHabilidade(Fileira fileira){
+		//
 	}
 
 	@Override

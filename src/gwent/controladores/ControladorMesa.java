@@ -8,7 +8,7 @@ import gwent.entidades.*;
 import gwent.netGames.AtorNetGames;
 import gwent.visao.JMesa;
 
-public class ControladorMesa {
+public class ControladorMesa implements Jogada{
 
 	protected HashMap<TipoUnidade,Fileira> fileiras;
     protected HashMap<TipoUnidade,Fileira> fileirasAdversario;
@@ -107,16 +107,18 @@ public class ControladorMesa {
         	TipoCartaClima tipo = cc.getTipo();
         	switch(tipo){
         		case GEADA_MORDAZ:
-        			cc.setFileiraAtingida(this.fileiras.get(TipoUnidade.INFANTARIA));
+        			cc.ativarHabilidade(
+        					this.fileiras.get(TipoUnidade.INFANTARIA));
         			break;
         		case NEBLINA_IMPENETRAVEL:
-        			cc.setFileiraAtingida(this.fileiras.get(TipoUnidade.LONGA_DISTANCIA));
+        			cc.ativarHabilidade(
+        					this.fileiras.get(TipoUnidade.LONGA_DISTANCIA));
         			break;
         		case CHUVA_TORRENCIAL:
-        			cc.setFileiraAtingida(this.fileiras.get(TipoUnidade.CERCO));
+        			cc.ativarHabilidade(
+        					this.fileiras.get(TipoUnidade.CERCO));
         			break;
         	}
-        	cc.ativarHabilidade();
         }
         return precisaSelecionar;
     }
@@ -157,9 +159,8 @@ public class ControladorMesa {
             lance = (Lance) jogada;
             if (lance.getCarta() == null) {
                 this.mesa.inativarJogador(lance.getJogador());
-                this.jogadorAtual = this.mesa.getJogadorNaoAtual(lance.getJogador());
-                this.mesa.setJogadorDaVez(this.jogadorAtual);
-                this.jMesa.recebeLance(lance);
+
+
             } else {
                 if (this.mesa.getJogadorNaoAtual(lance.getJogador()).getStatusJogador().equals(StatusJogador.ATIVO)) {
                     this.jogadorAtual = this.mesa.getJogadorNaoAtual(lance.getJogador());
@@ -210,11 +211,7 @@ public class ControladorMesa {
         } else if(carta instanceof CartaClima){
             CartaClima cc = (CartaClima) carta;
             TipoCartaClima tipo = cc.getTipo();
-            switch(tipo){
-                case GEADA_MORDAZ:
-                    cc.setFileiraAtingida(this.fileirasAdversario.get(TipoUnidade.INFANTARIA));
-            }
-            cc.ativarHabilidade();
+            cc.ativarHabilidade(this.fileiras.get(cc.getTipoFileiraAtingida()));
         }
     }
 

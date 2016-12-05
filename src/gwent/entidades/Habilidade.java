@@ -13,14 +13,13 @@ public class Habilidade implements Jogada {
 	private static final long serialVersionUID = 1L;
 	private final TipoHabilidade tipoHabilidade;
 	private Deck referenciaDeck;
-	private Fileira referenciaFileira;
 	private ControladorMesa chamador;
 	
 	public Habilidade(TipoHabilidade tipoHabilidade){
 		this.tipoHabilidade = tipoHabilidade;
 	}
 	
-	public void ativarHabilidade(){
+	public void ativarHabilidadeFileira(Fileira fileiraAtingida){
 		switch(this.tipoHabilidade){			
 				
 			case AGILIDADE:
@@ -32,12 +31,12 @@ public class Habilidade implements Jogada {
 				break;
 			
 			case ELEVAR_MORAL:
-				ArrayList<Carta> cartasFileira = referenciaFileira.getCartas();
+				ArrayList<Carta> cartasFileira = fileiraAtingida.getCartas();
 				for(Carta c : cartasFileira){
 					if(c instanceof CartaUnidade){						
 						CartaUnidade u = (CartaUnidade)c;
 						if(u.getHabilidade() != null){		//para ter certeza...
-							if(u == referenciaFileira.getUltimaCartaInclusa()){
+							if(u == fileiraAtingida.getUltimaCartaInclusa()){
 								continue;	//eh a carta q ativou a habilidade; nao deve aumentar poder
 							}
 						}
@@ -45,7 +44,7 @@ public class Habilidade implements Jogada {
 					}
 				}
 				//TODO: tratar alteracao de poder da carta q ativa a habilidade
-				referenciaFileira.atualizaPoderTotal();
+				fileiraAtingida.atualizaPoderTotal();
 				break;
 				
 			default:
@@ -77,11 +76,8 @@ public class Habilidade implements Jogada {
 		return this.tipoHabilidade;
 	}
 
-	public Fileira getReferenciaFileira() {
-		return referenciaFileira;
-	}
-
-	public void setReferenciaFileira(Fileira referenciaFileira) {
-		this.referenciaFileira = referenciaFileira;
+	@Override 
+	public String toString(){
+		return this.tipoHabilidade.toString();
 	}
 }

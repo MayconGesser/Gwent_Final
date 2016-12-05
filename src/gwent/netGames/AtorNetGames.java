@@ -15,7 +15,11 @@ import java.util.List;
 
 public class AtorNetGames implements OuvidorProxy {
 
-    protected ControladorMesa controladorMesa;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	protected ControladorMesa controladorMesa;
     protected Proxy proxy;
 
     public AtorNetGames(ControladorMesa controladorMesa) {
@@ -75,6 +79,7 @@ public class AtorNetGames implements OuvidorProxy {
     }
 
     public void enviarJogada(Jogada jogada) {
+    	System.out.println(jogada.toString());
         try {
             proxy.enviaJogada(jogada);
         } catch (NaoJogandoException ignored) {

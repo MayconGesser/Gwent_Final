@@ -4,7 +4,11 @@ import br.ufsc.inf.leobr.cliente.Jogada;
 
 public class Lance implements Jogada {
 
-    protected Carta carta;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	protected Carta carta;
     protected Jogador jogador;
 
     public Lance(Jogador jogador) {
@@ -34,5 +38,13 @@ public class Lance implements Jogada {
 
     public boolean isInicioPartida() {
         return carta == null && jogador == null;
+    }
+    
+    @Override
+    public String toString(){
+    	String detalhes = "";
+    	detalhes += "Carta Jogada : " + (this.carta != null ? this.carta.toString() : "");
+    	detalhes += "\nJogador : " + this.jogador.toString();
+    	return detalhes;
     }
 }

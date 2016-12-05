@@ -7,7 +7,9 @@ import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BancoCartas {
+import br.ufsc.inf.leobr.cliente.Jogada;
+
+public class BancoCartas implements Jogada{
 
     public static Map<String, Object> resgatarDeck(Faccao faccao) {
         File bin = new File(faccao.getUri());

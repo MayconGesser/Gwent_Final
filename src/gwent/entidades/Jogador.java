@@ -106,4 +106,12 @@ public class Jogador implements Jogada {
     public boolean removeCartaMao(Carta carta) {
         return this.cartasMao.remove(carta);
     }
+    
+    @Override
+    public String toString(){
+    	String detalhes = "";
+    	detalhes += "\nNome do jogador : " + this.nome;
+    	detalhes += "\nId do jogador : " + this.idJogador;
+    	return detalhes;
+    }
 }

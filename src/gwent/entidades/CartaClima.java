@@ -2,14 +2,16 @@ package gwent.entidades;
 
 import javax.swing.ImageIcon;
 
-public class CartaClima extends CartaHabilidade {
+import br.ufsc.inf.leobr.cliente.Jogada;
+
+public class CartaClima extends CartaHabilidade implements Jogada{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private Fileira fileiraAtingida;
+	private TipoUnidade tipoFileiraAtingida;	//aponta para a fileira; mudanca devido a problemas de serializacao
 	private final TipoCartaClima tipo;
 	
 	public CartaClima(String nome, ImageIcon img, Habilidade habilidade,TipoCartaClima tipo) {
@@ -29,15 +31,15 @@ public class CartaClima extends CartaHabilidade {
 	}
 	
 	@Override
-	public void ativarHabilidade(){
-		fileiraAtingida.sofrerEfeitoClima();
+	public void ativarHabilidade(Fileira fileira){
+		fileira.sofrerEfeitoClima();
 	}
 	
 	public TipoCartaClima getTipo(){
 		return this.tipo;
-	}
+	}	
 	
-	public void setFileiraAtingida(Fileira fileira){
-		this.fileiraAtingida = fileira;
+	public TipoUnidade getTipoFileiraAtingida(){
+		return this.tipoFileiraAtingida;
 	}
 }

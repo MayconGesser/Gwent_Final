@@ -3,7 +3,9 @@ package gwent.entidades;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class ExibidorPoderFileira extends JPanel {
+import br.ufsc.inf.leobr.cliente.Jogada;
+
+public class ExibidorPoderFileira extends JPanel implements Jogada{
 
 	/**
 	 * 

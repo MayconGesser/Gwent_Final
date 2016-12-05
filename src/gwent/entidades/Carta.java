@@ -30,7 +30,6 @@ public abstract class Carta extends JLabel implements Jogada {
 	public abstract ImageIcon getEstampa();
 	public abstract void setEstampa(ImageIcon estampa);
 	public abstract Habilidade getHabilidade();
-	public abstract void ativarHabilidade();
 	
 	@Override
 	public boolean equals(Object o){
@@ -39,5 +38,22 @@ public abstract class Carta extends JLabel implements Jogada {
 		}
 		Carta c = (Carta) o;
 		return (o == this || this.getNomeCarta().equals(c.getNomeCarta()));
+	}
+	
+	@Override
+	public String toString(){
+		String detalhesCarta = "";
+		detalhesCarta += "\nNome da Carta : " + this.nome;
+		detalhesCarta += "\nHabilidade da Carta : " + (this.habilidade != null ? this.habilidade.toString() : "");
+		if(this instanceof CartaUnidade){
+			CartaUnidade u = (CartaUnidade) this;
+			detalhesCarta += "\nPoder da carta : " + u.getPoder();
+			detalhesCarta += "\nTipo de unidade : " + u.getTipo();
+		}
+		else if(this instanceof CartaClima){
+			CartaClima cc = (CartaClima) this;
+			detalhesCarta += "\nTipo carta clima : " + cc.getTipo();
+		}
+		return detalhesCarta;
 	}
 }
