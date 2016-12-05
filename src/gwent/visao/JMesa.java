@@ -20,7 +20,6 @@ import javax.swing.border.BevelBorder;
 import gwent.controladores.AtorJogador;
 import gwent.controladores.ControladorMesa;
 import gwent.entidades.*;
-import gwent.netGames.AtorNetGames;
 
 public class JMesa extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
@@ -28,7 +27,7 @@ public class JMesa extends javax.swing.JFrame {
     final Color marromFileira = new Color(156,73,0);
     final Color marromEspaco = new Color(51,25,0);
     final Dimension tamFileira = new Dimension(624,100);
-    final Dimension tamEspaco = new Dimension(90,110);    
+    final Dimension tamEspaco = new Dimension(90,110);
     protected AtorJogador atorJogador;
     protected static final int START = 1;
     protected static final int CONECTADO = 2;
@@ -46,14 +45,8 @@ public class JMesa extends javax.swing.JFrame {
         String  servidor = this.getNomeServidor();
         boolean conectou = atorJogador.conectar(nomeAtual, servidor);
         if (conectou) {
-//			Faccao faccao = this.getFaccao();
-//			Map<String, Object> mapDeck = BancoCartas.resgatarDeck(faccao);
 			Jogador jogador = new Jogador(0, nomeAtual);
-//			jogador.setDeck((Deck) mapDeck.get("deck"));
 			this.atorJogador.setJogadorAtual(jogador);
-//			cartasDeck = this.atorJogador.getJogadorAtual().getDeck();
-//			cartasExibicao = (HashMap<String, Carta>) mapDeck.get("exibicao");
-//			cartasFileiraEx = (HashMap<String, Carta>) mapDeck.get("fileiras");
 			this.adicionarTitulo(nomeAtual);
             this.atualizarVisibilidadeTela(CONECTADO);
             this.exibeMensagem("Conectado com sucesso!");
@@ -81,7 +74,9 @@ public class JMesa extends javax.swing.JFrame {
             this.exibeMensagem("O adversário passou o turno");
             this.acaoBotao(true);
         } else {
-
+            Map<String, Object> mapDeck = BancoCartas.resgatarDeck(lance.getJogador().getDeck().getFaccao());
+            this.exibeMensagem("Sua vez de jogar");
+            this.acaoBotao(true);
         }
     }
 
@@ -128,16 +123,11 @@ public class JMesa extends javax.swing.JFrame {
         mesa.iniciarRound(mesa.getJogadorDaVez());
     }
 
-    private Faccao getFaccao() {
-        return (Faccao) JOptionPane.showInputDialog(null, "Escolha uma facção" , "Seleção de facção" ,
-                JOptionPane.PLAIN_MESSAGE , null, Faccao.values(),"");
-    }
-
     private void preencherCartas(Jogador jogador) {
 		Group gh = espacoCartasLayout.createSequentialGroup();
 		Group gv = espacoCartasLayout.createParallelGroup();
 		MouseCarta b = new MouseCarta();
-		
+
 		//apenas para teste de carta de clima
 //		ArrayList<Carta> d = (ArrayList<Carta>)jogador.getDeck().getCartas();
 //		CartaClima geadamordaz = null;
@@ -145,7 +135,7 @@ public class JMesa extends javax.swing.JFrame {
 //		for(Carta c : d){
 //			i++;
 //			if(c instanceof CartaClima){
-//				geadamordaz = (CartaClima) c; 
+//				geadamordaz = (CartaClima) c;
 //			}
 //		}
 //		if(geadamordaz != null){
@@ -154,15 +144,15 @@ public class JMesa extends javax.swing.JFrame {
 //			geadamordaz.setName(geadamordaz.getNomeCarta());
 //			gh.addComponent(geadamordaz);
 //			gv.addComponent(geadamordaz);
-//		}		
-//		
+//		}
+//
 		for(int x = 0; x<10; x++) {
 			Carta carta = jogador.mostrarCarta(x);
 			carta.addMouseListener(b);
 			carta.setName(carta.getNomeCarta());
 			gh.addComponent(carta);
 			gv.addComponent(carta);
-		}	
+		}
 		
 		espacoCartasLayout.setHorizontalGroup(gh);
 		espacoCartasLayout.setVerticalGroup(gv);
@@ -208,8 +198,8 @@ public class JMesa extends javax.swing.JFrame {
 	public JMesa() {
         initComponents();
 
-        ctrlMesa = new ControladorMesa(fileiraInfantaria, fileiraLongaDistancia, fileiraCerco);
-        this.atorJogador = new AtorJogador(this);
+        ctrlMesa = new ControladorMesa(this, fileiraInfantaria, fileiraLongaDistancia, fileiraCerco, fileiraInfantariaAd, fileiraLongaDistanciaAd, fileiraCercoAd);
+        this.atorJogador = new AtorJogador(ctrlMesa);
         getContentPane().setBackground(marrom);
         setVisible(true);
         this.atualizarVisibilidadeTela(1);
@@ -888,7 +878,7 @@ public class JMesa extends javax.swing.JFrame {
 			cartaSelecionada = c;
 			Carta novaCartaHover = cartasExibicao.get(c.getNomeCarta());
 			cartaSelecionada.setBorder(BorderFactory.createLineBorder(Color.RED));
-			java.awt.Component cartaAnterior = espacoExibicaoCarta.getComponent(0);
+            java.awt.Component cartaAnterior = espacoExibicaoCarta.getComponent(0);
 			espacoExibicaoCartaLayout.replace(cartaAnterior, novaCartaHover);
 			novaCartaHover.setBorder(BorderFactory.createLineBorder(Color.RED,3));
 		}
@@ -964,19 +954,21 @@ public class JMesa extends javax.swing.JFrame {
 						switch(tipoHabilidadeCarta){
 							case MEDICO:
 								ctrlMesa.setCemiterio(cartasCemiterio);
-								break;							
-							
+								break;
+
 							default:
 								break;
 						}
 					}
-					precisaSelecionar = ctrlMesa.processarCarta(cartaAdicionada);
+//                    precisaSelecionar = ctrlMesa.processarCarta(cartaAdicionada);
+                    acaoBotao(false);
+                    atorJogador.baixarCarta(cartaAdicionada);
 				}
 				else if(cartaSelecionada instanceof CartaClima){	//nao precisa adicionar na fileira, soh joga
 					CartaClima cartaClima = (CartaClima) cartaSelecionada;
-					ctrlMesa.processarCarta(cartaClima);					
+					ctrlMesa.processarCarta(cartaClima);
 				}
-				
+
 //				if(precisaSelecionar){
 //					Fileira fileiraSelecionada = null;
 //					JOptionPane.showMessageDialog(null, "Selecione uma fileira para jogar a carta");

@@ -2,19 +2,14 @@ package gwent.controladores;
 
 
 import gwent.entidades.Carta;
-import gwent.entidades.Deck;
-import gwent.entidades.Faccao;
 import gwent.entidades.Jogador;
-import gwent.visao.JMesa;
-
-import java.util.Map;
 
 public class AtorJogador {
 
     protected ControladorMesa controladorMesa;
 
-    public AtorJogador(JMesa jMesa) {
-        this.controladorMesa = new ControladorMesa(jMesa);
+    public AtorJogador(ControladorMesa controladorMesa) {
+        this.controladorMesa = controladorMesa;
     }
 
     public ControladorMesa getControladorMesa() {
@@ -49,8 +44,8 @@ public class AtorJogador {
         this.controladorMesa.passarTurno();
     }
 
-    public void jogarCarta(Carta carta) {
-        controladorMesa.processarCarta(carta);
+    public void baixarCarta(Carta carta) {
+        controladorMesa.baixarCarta(carta);
     }
 }
 

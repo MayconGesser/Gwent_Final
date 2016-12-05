@@ -112,6 +112,21 @@ public class Mesa implements Jogada {
     }
 
     public Jogador getJogadorNaoAtual(Jogador jogadorAtual) {
-        return jogadorAtual.equals(this.jogadorUm) ? this.jogadorDois : this.jogadorUm;
+        Jogador jogador = jogadorAtual.getNome().equals(this.jogadorUm.getNome()) ? this.jogadorDois : this.jogadorUm;
+        this.jogadorDaVez = jogador;
+        return jogador;
+    }
+
+    public void inativarJogador(Jogador jogadorAtual) {
+        Jogador jogador = jogadorAtual.getNome().equals(this.jogadorUm.getNome()) ? this.jogadorDois : this.jogadorUm;
+        jogador.setStatusJogador(StatusJogador.INATIVO);
+    }
+
+    public void removeCartaMaoJogador(Lance lance) {
+        if (lance.getJogador().getNome().equals(this.getJogadorUm().getNome())) {
+            this.jogadorUm.removeCartaMao(lance.getCarta());
+        } else {
+            this.jogadorDois.removeCartaMao(lance.getCarta());
+        }
     }
 }

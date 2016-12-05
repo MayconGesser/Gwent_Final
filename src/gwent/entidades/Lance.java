@@ -7,6 +7,15 @@ public class Lance implements Jogada {
     protected Carta carta;
     protected Jogador jogador;
 
+    public Lance(Jogador jogador) {
+        this.jogador = jogador;
+    }
+
+    public Lance(Carta carta, Jogador jogador) {
+        this.carta = carta;
+        this.jogador = jogador;
+    }
+
     public Carta getCarta() {
         return carta;
     }

@@ -31,17 +31,11 @@ public class Jogador implements Jogada {
         this.preencheCartasMao();
         this.statusJogador = StatusJogador.ATIVO;
     }
-    
+
     //metodo para montar a mao na GUI
     public Carta mostrarCarta(int i){
     	Carta carta = this.cartasMao.get(i);
     	return carta;
-    }
-    
-    public Carta sacarCarta() {
-        Carta carta = this.cartasMao.get(0);
-        this.cartasMao.remove(carta);
-        return carta;
     }
 
     public void preencheCartasMao() {
@@ -52,7 +46,7 @@ public class Jogador implements Jogada {
         }
         //garantir q vai cartas de clima na mao
         //apenas para fins de teste
-        //adiciona as 3 cartas de clima 
+        //adiciona as 3 cartas de clima
 //        List<Carta> cs = this.deck.getCartas();
 //        for(Carta c : cs){
 //        	if(c instanceof CartaClima){
@@ -107,5 +101,9 @@ public class Jogador implements Jogada {
 
     public void setDeck(Deck deck) {
         this.deck = deck;
+    }
+
+    public boolean removeCartaMao(Carta carta) {
+        return this.cartasMao.remove(carta);
     }
 }
