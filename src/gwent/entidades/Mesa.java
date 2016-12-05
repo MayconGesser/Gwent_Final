@@ -112,13 +112,11 @@ public class Mesa implements Jogada {
     }
 
     public Jogador getJogadorNaoAtual(Jogador jogadorAtual) {
-        Jogador jogador = jogadorAtual.getNome().equals(this.jogadorUm.getNome()) ? this.jogadorDois : this.jogadorUm;
-        this.jogadorDaVez = jogador;
-        return jogador;
+        return jogadorAtual.getNome().equals(this.jogadorUm.getNome()) ? this.jogadorDois : this.jogadorUm;
     }
 
     public void inativarJogador(Jogador jogadorAtual) {
-        Jogador jogador = jogadorAtual.getNome().equals(this.jogadorUm.getNome()) ? this.jogadorDois : this.jogadorUm;
+        Jogador jogador = jogadorAtual.getNome().equals(this.jogadorUm.getNome()) ? this.jogadorUm : this.jogadorDois;
         jogador.setStatusJogador(StatusJogador.INATIVO);
     }
 

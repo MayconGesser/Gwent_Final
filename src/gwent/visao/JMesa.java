@@ -926,7 +926,6 @@ public class JMesa extends javax.swing.JFrame {
 						}
 					}
 //                    precisaSelecionar = ctrlMesa.processarCarta(cartaAdicionada);
-                    acaoBotao(false);
                     atorJogador.baixarCarta(cartaAdicionada);
 				}
 				else if(cartaSelecionada instanceof CartaClima){	//nao precisa adicionar na fileira, soh joga

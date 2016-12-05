@@ -148,7 +148,6 @@ public class ControladorMesa {
     }
 
     public void receberJogada(Jogada jogada) {
-        Jogador jogando = this.mesa.getJogadorDaVez();
         Lance lance = null;
 
         if (jogada instanceof Mesa) {
@@ -157,16 +156,20 @@ public class ControladorMesa {
         } else {
             lance = (Lance) jogada;
             if (lance.getCarta() == null) {
+                this.mesa.inativarJogador(lance.getJogador());
                 this.jogadorAtual = this.mesa.getJogadorNaoAtual(lance.getJogador());
+                this.mesa.setJogadorDaVez(this.jogadorAtual);
                 this.jMesa.recebeLance(lance);
             } else {
-                this.jogadorAtual = this.mesa.getJogadorNaoAtual(lance.getJogador());
+                if (this.mesa.getJogadorNaoAtual(lance.getJogador()).getStatusJogador().equals(StatusJogador.ATIVO)) {
+                    this.jogadorAtual = this.mesa.getJogadorNaoAtual(lance.getJogador());
+                    this.mesa.setJogadorDaVez(this.jogadorAtual);
+                    this.jMesa.recebeLance(lance);
+                }
                 this.processarCartaAdversario(lance.getCarta());
                 this.mesa.removeCartaMaoJogador(lance);
-                this.jMesa.recebeLance(lance);
             }
-            alterarJogadorDaVezNaMesa(jogando);
-            this.jMesa.atualizaJogadorDaVez(this.mesa.getJogadorDaVez());
+//            this.jMesa.atualizaJogadorDaVez(this.mesa.getJogadorDaVez());
             this.mesa.addLance(lance);
 
         }
@@ -280,6 +283,7 @@ public class ControladorMesa {
             Lance lance = new Lance(this.jogadorAtual);
             this.enviarJogada(lance);
             this.jogadorAtual = this.mesa.getJogadorNaoAtual(lance.getJogador());
+            this.mesa.setJogadorDaVez(this.jogadorAtual);
         } else {
             this.exibeMensagem("Espere a sua vez.");
         }
@@ -290,7 +294,12 @@ public class ControladorMesa {
             this.processarCarta(carta);
             Lance lance = new Lance(carta, this.jogadorAtual);
             this.enviarJogada(lance);
-            this.jogadorAtual = this.mesa.getJogadorNaoAtual(lance.getJogador());
+            Jogador jogadorNaoAtual = this.mesa.getJogadorNaoAtual(lance.getJogador());
+            if (jogadorNaoAtual.getStatusJogador().equals(StatusJogador.ATIVO)) {
+                this.jogadorAtual = jogadorNaoAtual;
+                this.mesa.setJogadorDaVez(jogadorNaoAtual);
+                this.jMesa.acaoBotao(false);
+            }
         } else {
             this.exibeMensagem("Espere a sua vez.");
         }
