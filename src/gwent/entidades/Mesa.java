@@ -2,9 +2,10 @@ package gwent.entidades;
 
 import br.ufsc.inf.leobr.cliente.Jogada;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
+import java.util.Random;
 
 public class Mesa implements Jogada {
 
@@ -16,6 +17,11 @@ public class Mesa implements Jogada {
     protected StatusMesa statusMesa;
     protected Round roundAtual;
     protected List<Jogador> jogadores;
+
+    public Mesa() {
+        this.roundAtual = new Round();
+        this.rounds = new ArrayList<>();
+    }
 
     public void criarJogadores() {
         jogadorUm = jogadores.get(0);
@@ -126,5 +132,30 @@ public class Mesa implements Jogada {
         } else {
             this.jogadorDois.removeCartaMao(lance.getCarta());
         }
+    }
+
+    public boolean verificaFimDoRound() {
+        return this.jogadorUm.getStatusJogador().equals(StatusJogador.INATIVO) &&
+                this.jogadorDois.getStatusJogador().equals(StatusJogador.INATIVO);
+    }
+
+    public Jogador verificaVencedorRound() {
+        if (this.jogadorUm.getPontuacao() > this.jogadorDois.getPontuacao())
+            return this.jogadorUm;
+        else if (this.jogadorUm.getPontuacao() < this.jogadorDois.getPontuacao())
+            return this.jogadorDois;
+        else {
+            int idJogadorAleatorio = new Random().nextInt(1);
+            return this.jogadores.get(idJogadorAleatorio);
+        }
+    }
+
+    public void atualizaRoundAtual(Jogador jogadorVencedor) {
+        this.roundAtual.setVencedor(jogadorVencedor);
+        this.roundAtual.setNumeroRound(this.rounds.size() + 1);
+    }
+
+    public Jogador getJogador(Jogador jogador) {
+        return this.jogadorUm.getIdJogador().equals(jogador.getIdJogador()) ? this.jogadorUm : this.jogadorDois;
     }
 }

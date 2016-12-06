@@ -55,6 +55,10 @@ public class Jogador implements Jogada {
 //        }
     }
 
+    public void addPontuacao(int pontuacao) {
+        this.pontuacao += pontuacao;
+    }
+
     public Integer getIdJogador() {
         return idJogador;
     }
@@ -106,12 +110,13 @@ public class Jogador implements Jogada {
     public boolean removeCartaMao(Carta carta) {
         return this.cartasMao.remove(carta);
     }
-    
+
     @Override
     public String toString(){
     	String detalhes = "";
     	detalhes += "\nNome do jogador : " + this.nome;
     	detalhes += "\nId do jogador : " + this.idJogador;
+        detalhes += "\nPontuacao : " + this.pontuacao;
     	return detalhes;
     }
 }

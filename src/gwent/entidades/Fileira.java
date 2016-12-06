@@ -41,15 +41,17 @@ public class Fileira extends JPanel implements Jogada {
 		setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
 	}
 	
-	public void incluirCarta(Carta carta){
+	public int incluirCarta(Carta carta){
+		int poderRetorno = 1;
 		this.cartas.add(carta);
 		this.ultimaCartaInclusa = carta;
 		if(carta instanceof CartaUnidade){
 			CartaUnidade c = (CartaUnidade) carta;
 			if(sobEfeitoClima){
-				this.poderTotal += 1;
+				this.poderTotal += poderRetorno;
 			}else{
-				this.poderTotal += c.getPoder();
+				poderRetorno = c.getPoder();
+				this.poderTotal += poderRetorno;
 			}
 			if(c.getHabilidade() != null && c.getHabilidade().getTipoHabilidade().equals(TipoHabilidade.ELEVAR_MORAL)){
 				c.ativarHabilidade(this);
@@ -63,6 +65,7 @@ public class Fileira extends JPanel implements Jogada {
 		System.out.println("Poder da fileira " + this.getTipo().toString() + ": " + this.poderTotal);
 		revalidate();
 		repaint();
+		return poderRetorno;
 	}
 	
 	public void sofrerEfeitoClima(){

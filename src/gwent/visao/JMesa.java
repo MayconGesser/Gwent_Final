@@ -3,15 +3,8 @@ package gwent.visao;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import javax.swing.*;
 import javax.swing.GroupLayout.Group;
@@ -82,7 +75,7 @@ public class JMesa extends javax.swing.JFrame {
 
     public void recebeMesa(Mesa mesa) {
         if (mesa.getStatusMesa().equals(StatusMesa.INICAR_PARTIDA)) {
-            this.iniciarPartida(mesa);
+            this.iniciarPartidaJogadorDois(mesa);
 //            this.setNomeJogadoresLabel(mesa);
             this.exibeMensagem("Uma nova partida vai iniciar");
         }  else if (mesa.getStatusMesa().equals(StatusMesa.INICIAR_RODADA)) {
@@ -97,11 +90,11 @@ public class JMesa extends javax.swing.JFrame {
         repaint();
     }
 
-    private void iniciarPartida(Mesa mesa) {
+    private void iniciarPartidaJogadorDois(Mesa mesa) {
         this.atualizaCamposInicioPartida(mesa);
     }
 
-    public void inicioPartida(Mesa mesa) {
+    public void inicioPartidaJogadorUm(Mesa mesa) {
         this.preencherCartas(mesa.getJogadorUm());
         this.ctrlMesa.setJogadorAtual(mesa.getJogadorUm());
         this.acaoBotao(true);
@@ -164,7 +157,7 @@ public class JMesa extends javax.swing.JFrame {
 		cartasFileiraEx = (HashMap<String, Carta>) mapDeck.get("fileiras");
 	}
 
-    private void iniciarPartida() {
+    private void iniciarPartidaJogadorDois() {
 		this.atorJogador.iniciarPartida();
     }
 
@@ -686,7 +679,7 @@ public class JMesa extends javax.swing.JFrame {
     }
 
     private void jMenuItemIniciarPartidaActionPerformed(ActionEvent evt) {
-        this.iniciarPartida();
+        this.iniciarPartidaJogadorDois();
     }
 
     private void jMenuItemEncerrarPartidaActionPerformed(ActionEvent evt) {

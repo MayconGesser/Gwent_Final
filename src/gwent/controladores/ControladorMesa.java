@@ -8,7 +8,7 @@ import gwent.entidades.*;
 import gwent.netGames.AtorNetGames;
 import gwent.visao.JMesa;
 
-public class ControladorMesa implements Jogada{
+public class ControladorMesa {
 
 	protected HashMap<TipoUnidade,Fileira> fileiras;
     protected HashMap<TipoUnidade,Fileira> fileirasAdversario;
@@ -39,12 +39,6 @@ public class ControladorMesa implements Jogada{
         this.fileirasAdversario.put(TipoUnidade.CERCO, fileiraCercoAd);
 	}
 
-    public ControladorMesa(JMesa jMesa) {
-        this.jMesa = jMesa;
-        this.atorNetGames = new AtorNetGames(this);
-        this.mesa = new Mesa();
-    }
-
     public void iniciarPartida() {
         this.atorNetGames.iniciarPartida();
 
@@ -66,10 +60,24 @@ public class ControladorMesa implements Jogada{
         this.mesa.setStatusMesa(StatusMesa.INICAR_PARTIDA);
         this.mesa.iniciarRound(jogadorAtual);
         this.enviarJogada(this.mesa);
-        this.jMesa.inicioPartida(mesa);
+        this.jMesa.inicioPartidaJogadorUm(mesa);
     }
 
-    public boolean processarCarta(Carta carta){
+    public boolean processarCarta(Jogada jogada){
+        /*
+        Tive que fazer esse método receber uma jogada como parametro, podendo ser uma Carta
+        (somente utilizado na classe Habiliadde para alguma habilidade que o maycon implementou) e podendo ser Lance, pois
+        pego a carta e a referencia do jogador para poder adicionar a pontuacao dele na mesa
+        */
+        Carta carta;
+        Jogador jogador = null;
+        if (jogada instanceof Lance) {
+            Lance lance = (Lance) jogada;
+            carta = lance.getCarta();
+            jogador = lance.getJogador();
+        } else {
+            carta = (Carta) jogada;
+        }
         boolean precisaSelecionar = false;
         if(carta instanceof CartaUnidade){
             CartaUnidade c = (CartaUnidade) carta;
@@ -101,7 +109,11 @@ public class ControladorMesa implements Jogada{
                         break;
                 }
             }
-            f.incluirCarta(carta);
+            int pontuacaoCarta = f.incluirCarta(carta);
+            if (jogador != null) {
+                //Aqui eu atualizo a pontuacao do jogador que jogou a carta (chamado pelo metodo baixarCarta)
+                jogador.addPontuacao(pontuacaoCarta);
+            }
         } else if(carta instanceof CartaClima){
         	CartaClima cc = (CartaClima) carta;
         	cc.ativarHabilidade(
@@ -139,33 +151,50 @@ public class ControladorMesa implements Jogada{
     }
 
     public void receberJogada(Jogada jogada) {
-        Lance lance = null;
-
         if (jogada instanceof Mesa) {
             this.mesa = (Mesa) jogada;
             jMesa.recebeMesa(mesa);
         } else {
-            lance = (Lance) jogada;
+            Lance lance = (Lance) jogada;
             if (lance.getCarta() == null) {
                 this.mesa.inativarJogador(lance.getJogador());
-
-
+                this.jogadorAtual = this.mesa.getJogadorNaoAtual(lance.getJogador());
+                if (this.mesa.verificaFimDoRound()) {
+                    this.acabouRound();
+                } else {
+                    this.mesa.setJogadorDaVez(this.jogadorAtual);
+                    this.jMesa.recebeLance(lance);
+                }
             } else {
                 if (this.mesa.getJogadorNaoAtual(lance.getJogador()).getStatusJogador().equals(StatusJogador.ATIVO)) {
                     this.jogadorAtual = this.mesa.getJogadorNaoAtual(lance.getJogador());
                     this.mesa.setJogadorDaVez(this.jogadorAtual);
                     this.jMesa.recebeLance(lance);
                 }
-                this.processarCartaAdversario(lance.getCarta());
+                this.processarCartaAdversario(lance);
                 this.mesa.removeCartaMaoJogador(lance);
             }
 //            this.jMesa.atualizaJogadorDaVez(this.mesa.getJogadorDaVez());
             this.mesa.addLance(lance);
-
         }
     }
 
-    public void processarCartaAdversario(Carta carta) {
+    public void processarCartaAdversario(Jogada jogada) {
+        /*
+        Tive que fazer esse método receber uma jogada como parametro, podendo ser uma Carta
+        (somente utilizado na classe Habiliadde para alguma habilidade que o maycon implementou) e podendo ser Lance, pois
+        pego a carta e a referencia do jogador para poder adicionar a pontuacao dele na mesa
+        */
+        Carta carta;
+        Jogador jogador = null;
+        if (jogada instanceof Lance) {
+            Lance lance = (Lance) jogada;
+            carta = lance.getCarta();
+            jogador = lance.getJogador();
+        } else {
+            carta = (Carta) jogada;
+        }
+        boolean precisaSelecionar = false;
         if(carta instanceof CartaUnidade){
             CartaUnidade c = (CartaUnidade) carta;
             TipoUnidade t = c.getTipo();
@@ -196,7 +225,15 @@ public class ControladorMesa implements Jogada{
                         break;
                 }
             }
-            f.incluirCarta(carta);
+            int pontuacaoCarta = f.incluirCarta(carta);
+            if (jogador != null) {
+                /*
+                Aqui eu atualizo a pontuacao do jogador que baixou essa carta (sendo o outro lado do jogo)
+                tenho que fazer esse metodo de this.mesa.getJogador(jogador), para poder pegar a referencia do jogador correto
+                e adicionar o valor da carta jogada
+                 */
+                this.mesa.getJogador(jogador).addPontuacao(pontuacaoCarta);
+            }
         } else if(carta instanceof CartaClima){
             CartaClima cc = (CartaClima) carta;
             TipoCartaClima tipo = cc.getTipo();
@@ -209,7 +246,11 @@ public class ControladorMesa implements Jogada{
         this.jMesa.atualizarVisibilidadeTela(mode);
     }
 
-    private void verificarFimDaRodada() {
+    private void acabouRound() {
+        this.jMesa.exibeMensagem("Acabou o round");
+        Jogador jogadorVencedor = this.mesa.verificaVencedorRound();
+        this.mesa.atualizaRoundAtual(jogadorVencedor);
+        this.jMesa.exibeMensagem("Jogador vencedor: " + jogadorVencedor.toString());
 //        if (this.chegouFimDaRodada()) {
 //            this.computarPontos();
 //            this.interfaceMesa.atualizarPontosJogadores(mesa);
@@ -269,8 +310,12 @@ public class ControladorMesa implements Jogada{
             this.mesa.inativarJogador(this.jogadorAtual);
             Lance lance = new Lance(this.jogadorAtual);
             this.enviarJogada(lance);
-            this.jogadorAtual = this.mesa.getJogadorNaoAtual(lance.getJogador());
-            this.mesa.setJogadorDaVez(this.jogadorAtual);
+            if (this.mesa.verificaFimDoRound()) {
+                this.acabouRound();
+            } else {
+                this.jogadorAtual = this.mesa.getJogadorNaoAtual(lance.getJogador());
+                this.mesa.setJogadorDaVez(this.jogadorAtual);
+            }
         } else {
             this.exibeMensagem("Espere a sua vez.");
         }
@@ -278,8 +323,8 @@ public class ControladorMesa implements Jogada{
 
     public void baixarCarta(Carta carta) {
         if (this.tratarPossibilidadeJogada()) {
-            this.processarCarta(carta);
             Lance lance = new Lance(carta, this.jogadorAtual);
+            this.processarCarta(lance);
             this.enviarJogada(lance);
             Jogador jogadorNaoAtual = this.mesa.getJogadorNaoAtual(lance.getJogador());
             if (jogadorNaoAtual.getStatusJogador().equals(StatusJogador.ATIVO)) {
