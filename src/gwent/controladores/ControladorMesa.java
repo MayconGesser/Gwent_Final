@@ -62,6 +62,19 @@ public class ControladorMesa {
         this.enviarJogada(this.mesa);
         this.jMesa.inicioPartidaJogadorUm(mesa);
     }
+    
+    //metodo usado na habilidade AGRUPAR
+    //compara nomes de cartas
+    private String sanitizarString(String s){
+    	String saux = s.substring(0,s.indexOf("_"));
+		System.out.println("saux : " + saux);
+		int upos = saux.length()-1;
+		StringBuilder sb = new StringBuilder(saux);
+		if(Character.isDigit(saux.charAt(upos))){
+			sb.deleteCharAt(upos);
+		}
+		return sb.toString();
+    }
 
     public boolean processarCarta(Jogada jogada){
         /*
@@ -118,17 +131,19 @@ public class ControladorMesa {
                         
                     case AGRUPAR:
                     	Deck deckJogador = this.jogadorAtual.getDeck();
+                    	String nomeAComparar = sanitizarString(c.getNomeCarta());
                     	for(Carta cds : deckJogador.getCartas()){
                     		if(cds instanceof CartaUnidade){
                     			CartaUnidade u = (CartaUnidade)cds;
-                    			if(u.getNomeCarta().contains(c.getNomeCarta()) &&
+                    			String nomeDaCarta = sanitizarString(u.getNomeCarta());
+                    			if(nomeAComparar.equals(nomeDaCarta) && 
                     					u.getHabilidade().getTipoHabilidade().equals(TipoHabilidade.AGRUPAR)
-                    					&& u != c){	//c eh a referencia da carta q foi jogada
+                    					&& c != u){
                     				Fileira fi = this.fileiras.get(u.getTipo());
                     				fi.incluirCarta(u);
-                    			}
+                    			}                    				
                     		}
-                    	}                   	
+                    	}                    	                   	
                     	break;
                     default:
                         break;

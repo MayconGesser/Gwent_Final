@@ -100,6 +100,10 @@ public class ScriptPersistencia {
 //				case "m":
 //					habilidadeCarta = new Habilidade(TipoHabilidade.MEDICO);
 //					break;
+				
+				case "ag":
+					habilidadeCarta = new Habilidade(TipoHabilidade.AGRUPAR);
+					break;
 					
 				case "es":
 					habilidadeCarta = new Habilidade(TipoHabilidade.ESPIAO);
