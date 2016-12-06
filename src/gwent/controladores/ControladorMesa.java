@@ -121,6 +121,7 @@ public class ControladorMesa {
         	cc.ativarHabilidade(
         			this.fileirasAdversario.get(cc.getTipo().getFileiraAtingida()));       	
         }
+        getJogadorAtual().getCartasMao().remove(carta);
         return precisaSelecionar;
     }
 
@@ -164,6 +165,7 @@ public class ControladorMesa {
                 } else {
                     this.mesa.setJogadorDaVez(this.jogadorAtual);
                     this.jMesa.recebeLance(lance);
+                    getJogadorAtual().getCartasMao().remove(lance.getCarta());
                 }
             } else {
                 if (this.mesa.getJogadorNaoAtual(lance.getJogador()).getStatusJogador().equals(StatusJogador.ATIVO)) {
@@ -177,6 +179,8 @@ public class ControladorMesa {
 //            this.jMesa.atualizaJogadorDaVez(this.mesa.getJogadorDaVez());
             this.mesa.addLance(lance);
         }
+
+        this.jMesa.atualizarPlacar();
     }
 
     public void processarCartaAdversario(Jogada jogada) {
@@ -240,6 +244,7 @@ public class ControladorMesa {
             cc.ativarHabilidade(this.fileiras.get(cc.getTipo().getFileiraAtingida()));
             cc.ativarHabilidade(this.fileirasAdversario.get(cc.getTipo().getFileiraAtingida()));
         }
+        this.jMesa.atualizarPlacar();
     }
 
     public void atualizarVisibilidadeTela(int mode) {
@@ -343,5 +348,9 @@ public class ControladorMesa {
 
     private boolean isVezJogador(Jogador jogador) {
         return jogador.getNome().equals(this.mesa.getJogadorDaVez().getNome());
+    }
+
+    public Mesa getMesa (){
+        return this.mesa;
     }
 }

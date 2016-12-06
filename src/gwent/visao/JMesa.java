@@ -63,6 +63,7 @@ public class JMesa extends javax.swing.JFrame {
     }
 
     public void recebeLance(Lance lance) {
+        atualizarPlacar();
         if (lance.getCarta() == null) {
             this.exibeMensagem("O adversário passou o turno");
             this.acaoBotao(true);
@@ -74,6 +75,7 @@ public class JMesa extends javax.swing.JFrame {
     }
 
     public void recebeMesa(Mesa mesa) {
+        atualizarPlacar();
         if (mesa.getStatusMesa().equals(StatusMesa.INICAR_PARTIDA)) {
             this.iniciarPartidaJogadorDois(mesa);
 //            this.setNomeJogadoresLabel(mesa);
@@ -92,6 +94,7 @@ public class JMesa extends javax.swing.JFrame {
 
     private void iniciarPartidaJogadorDois(Mesa mesa) {
         this.atualizaCamposInicioPartida(mesa);
+        this.atualizarNomeFaccaoJogador();
     }
 
     public void inicioPartidaJogadorUm(Mesa mesa) {
@@ -99,6 +102,7 @@ public class JMesa extends javax.swing.JFrame {
         this.ctrlMesa.setJogadorAtual(mesa.getJogadorUm());
         this.acaoBotao(true);
         this.exibeMensagem("Uma nova partida vai iniciar");
+        this.atualizarNomeFaccaoJogador();
     }
 
     private void atualizaCamposInicioPartida(Mesa mesa) {
@@ -237,72 +241,36 @@ public class JMesa extends javax.swing.JFrame {
 		jMenuItemDesconectar = new javax.swing.JMenuItem();
 		
 		//Placar Inimigo
-        placarInimigoJLabel1 = new javax.swing.JLabel();
-        placarInimigoNumeroCartasMao = new javax.swing.JLabel();
-        placarInimigoJLabel3 = new javax.swing.JLabel();
-        placarInimigoUmRound = new javax.swing.JRadioButton();
-        placarInimigoDoisRound = new javax.swing.JRadioButton();
-        placarInimigoNomeFaccao = new javax.swing.JLabel();
-        placarInimigoJLabel5 = new javax.swing.JLabel();
-        placarInimigoJLabel6 = new javax.swing.JLabel();
-        placarInimigoJLabel7 = new javax.swing.JLabel();
-
-        setForeground(new java.awt.Color(0, 0, 0));
-
-        placarInimigoJLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        placarInimigoJLabel1.setText("Rodrigo");
-
-        placarInimigoNumeroCartasMao.setForeground(new java.awt.Color(0, 0, 0));
-        placarInimigoNumeroCartasMao.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        placarInimigoNumeroCartasMao.setText("7");
-
-        placarInimigoJLabel3.setForeground(new java.awt.Color(0, 0, 0));
-        placarInimigoJLabel3.setText("56");
-
-        placarInimigoUmRound.setForeground(new java.awt.Color(204, 0, 0));
-
-        placarInimigoDoisRound.setForeground(new java.awt.Color(204, 0, 0));
-
-        placarInimigoNomeFaccao.setForeground(new java.awt.Color(0, 0, 0));
-        placarInimigoNomeFaccao.setText("Reinos do Norte");
-
-        placarInimigoJLabel5.setForeground(new java.awt.Color(0, 0, 0));
-        placarInimigoJLabel5.setText("Tem");
-
-        placarInimigoJLabel6.setForeground(new java.awt.Color(0, 0, 0));
-        placarInimigoJLabel6.setText("cartas na mão");
-
-        placarInimigoJLabel7.setIcon(new javax.swing.ImageIcon("BancoCartas/gandalf.png")); 
-        
-        //Placar do jogador
-        jLabel1 = new javax.swing.JLabel();
-        numeroCartasMao = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        umRound = new javax.swing.JRadioButton();
-        doisRound = new javax.swing.JRadioButton();
-        nomeFaccao = new javax.swing.JLabel();
+        labelInimigoNome = new javax.swing.JLabel();
+        labelInimigoNumeroCartas = new javax.swing.JLabel();
+        labelInimigoPoder = new javax.swing.JLabel();
+        inimigoUmRound = new javax.swing.JRadioButton();
+        inimigoDoisRound = new javax.swing.JRadioButton();
+        labelInimicoFaccao = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        meuNome = new javax.swing.JLabel();
+        meuNumeroCartas = new javax.swing.JLabel();
+        meuPoder = new javax.swing.JLabel();
+        meuUmRound = new javax.swing.JRadioButton();
+        meuDoisRound = new javax.swing.JRadioButton();
+        minhaFaccao = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
 
-        setForeground(new java.awt.Color(0, 0, 0));
+        labelInimigoNome.setForeground(new java.awt.Color(0, 0, 0));
+        labelInimigoNome.setText("Inimigo");
 
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("Rodrigo");
+        labelInimigoNumeroCartas.setForeground(new java.awt.Color(0, 0, 0));
+        labelInimigoNumeroCartas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelInimigoNumeroCartas.setText("10");
 
-        numeroCartasMao.setForeground(new java.awt.Color(0, 0, 0));
-        numeroCartasMao.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        numeroCartasMao.setText("7");
+        labelInimigoPoder.setForeground(new java.awt.Color(0, 0, 0));
+        labelInimigoPoder.setText("56");
 
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel3.setText("56");
-
-        umRound.setForeground(new java.awt.Color(204, 0, 0));
-
-        doisRound.setForeground(new java.awt.Color(204, 0, 0));
-
-        nomeFaccao.setForeground(new java.awt.Color(0, 0, 0));
-        nomeFaccao.setText("Reinos do Norte");
+        labelInimicoFaccao.setForeground(new java.awt.Color(0, 0, 0));
+        labelInimicoFaccao.setText("Reinos do Norte");
 
         jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Tem");
@@ -310,124 +278,135 @@ public class JMesa extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(0, 0, 0));
         jLabel6.setText("cartas na mão");
 
-        jLabel7.setIcon(new javax.swing.ImageIcon("/home/rodrigo/workspace/Gwent_Final/BancoCartas/saruman.png")); // NOI18N
+        labelInimigoNome.setText("Inimigo");
 
+        labelInimigoNumeroCartas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelInimigoNumeroCartas.setText("10");
+
+        labelInimigoPoder.setText("56");
+
+        labelInimicoFaccao.setText("Reinos do Norte");
+
+        jLabel5.setText("Tem");
+
+        jLabel6.setText("cartas na mão");
+
+        jLabel7.setIcon(new javax.swing.ImageIcon("/home/rodrigo/workspace/Gwent_Final/BancoCartas/saruman.png"));
+
+        meuNome.setForeground(new java.awt.Color(0, 0, 0));
+        meuNome.setText("Você");
+
+        meuNumeroCartas.setForeground(new java.awt.Color(0, 0, 0));
+        meuNumeroCartas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        meuNumeroCartas.setText("10");
+
+        meuPoder.setForeground(new java.awt.Color(0, 0, 0));
+        meuPoder.setText("56");
+
+        minhaFaccao.setForeground(new java.awt.Color(0, 0, 0));
+        minhaFaccao.setText("Reinos do Norte");
+
+        jLabel10.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel10.setText("Tem");
+
+        jLabel11.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel11.setText("cartas na mão");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        JPanel placarInimigo = new JPanel();
-        placarInimigo.setBackground(marrom);
-        placarInimigo.setBorder(BorderFactory.createBevelBorder(
+        JPanel placar = new JPanel();
+        placar.setBackground(marrom);
+        placar.setBorder(BorderFactory.createBevelBorder(
                 BevelBorder.LOWERED));
 
-        javax.swing.GroupLayout placarInimigoLayout = new javax.swing.GroupLayout(placarInimigo);
-        placarInimigo.setLayout(placarInimigoLayout);
-        placarInimigoLayout.setHorizontalGroup(
-                placarInimigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(placarInimigoLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(placarInimigoJLabel7)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(placarInimigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(placarInimigoLayout.createSequentialGroup()
-                            .addComponent(placarInimigoUmRound)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(placarInimigoDoisRound)
-                            .addGap(127, 127, 127)
-                            .addComponent(placarInimigoJLabel3))
-                        .addComponent(placarInimigoNomeFaccao)
-                        .addComponent(placarInimigoJLabel1)
-                        .addGroup(placarInimigoLayout.createSequentialGroup()
-                            .addComponent(placarInimigoJLabel5)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(placarInimigoNumeroCartasMao, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(placarInimigoJLabel6)))
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            );
-            placarInimigoLayout.setVerticalGroup(
-                placarInimigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(placarInimigoLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(placarInimigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(placarInimigoJLabel7)
-                        .addGroup(placarInimigoLayout.createSequentialGroup()
-                            .addComponent(placarInimigoNomeFaccao)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(placarInimigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(placarInimigoUmRound)
-                                .addComponent(placarInimigoDoisRound)
-                                .addComponent(placarInimigoJLabel3))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(placarInimigoJLabel1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(placarInimigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(placarInimigoNumeroCartasMao)
-                                .addComponent(placarInimigoJLabel5)
-                                .addComponent(placarInimigoJLabel6))))
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            );
-
-            placarInimigoJLabel1.getAccessibleContext().setAccessibleName("nomeJogador");
-            placarInimigoNumeroCartasMao.getAccessibleContext().setAccessibleName("numeroCartas");
-            placarInimigoJLabel3.getAccessibleContext().setAccessibleName("qtdPoderTotal");
-            
-            JPanel placar = new JPanel();
-            placarInimigo.setBackground(marrom);
-            placarInimigo.setBorder(BorderFactory.createBevelBorder(
-                    BevelBorder.LOWERED));
-            
-            javax.swing.GroupLayout placarLayout = new javax.swing.GroupLayout(this);
-            this.setLayout(placarLayout);
-            placarLayout.setHorizontalGroup(
+        javax.swing.GroupLayout placarLayout = new javax.swing.GroupLayout(placar);
+        placar.setLayout(placarLayout);
+        placarLayout.setHorizontalGroup(
                 placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(placarLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jLabel7)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(placarLayout.createSequentialGroup()
-                            .addComponent(umRound)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(doisRound)
-                            .addGap(127, 127, 127)
-                            .addComponent(jLabel3))
-                        .addComponent(nomeFaccao)
-                        .addComponent(jLabel1)
-                        .addGroup(placarLayout.createSequentialGroup()
-                            .addComponent(jLabel5)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(numeroCartasMao, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jLabel6)))
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            );
-            placarLayout.setVerticalGroup(
+                                .addContainerGap()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(labelInimigoNome)
+                                        .addGroup(placarLayout.createSequentialGroup()
+                                                .addComponent(inimigoUmRound)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(inimigoDoisRound))
+                                        .addGroup(placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addGroup(placarLayout.createSequentialGroup()
+                                                        .addComponent(labelInimicoFaccao)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(labelInimigoPoder))
+                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, placarLayout.createSequentialGroup()
+                                                        .addComponent(jLabel5)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(labelInimigoNumeroCartas, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(jLabel6)))
+                                        .addComponent(meuNome)
+                                        .addGroup(placarLayout.createSequentialGroup()
+                                                .addComponent(meuUmRound)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(meuDoisRound))
+                                        .addGroup(placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addGroup(placarLayout.createSequentialGroup()
+                                                        .addComponent(minhaFaccao)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(meuPoder))
+                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, placarLayout.createSequentialGroup()
+                                                        .addComponent(jLabel10)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(meuNumeroCartas, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(jLabel11))))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        placarLayout.setVerticalGroup(
                 placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(placarLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel7)
                         .addGroup(placarLayout.createSequentialGroup()
-                            .addComponent(nomeFaccao)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(umRound)
-                                .addComponent(doisRound)
-                                .addComponent(jLabel3))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jLabel1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(numeroCartasMao)
-                                .addComponent(jLabel5)
-                                .addComponent(jLabel6))))
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            );
+                                //.addGap(18, 18, 18)
+                                .addComponent(labelInimigoNome)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(labelInimicoFaccao)
+                                        .addComponent(labelInimigoPoder))
+                                .addGroup(placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(placarLayout.createSequentialGroup()
+                                                //.addGap(4, 4, 4)
+                                                .addGroup(placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(inimigoDoisRound)
+                                                        .addComponent(inimigoUmRound, javax.swing.GroupLayout.Alignment.TRAILING))
+                                                .addGap(4, 4, 4)
+                                                .addGroup(placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(labelInimigoNumeroCartas)
+                                                        .addComponent(jLabel5)
+                                                        .addComponent(jLabel6))
+                                                .addGap(34, 34, 34)
+                                                .addComponent(meuNome)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(minhaFaccao)
+                                                        .addComponent(meuPoder))
+                                                .addGap(4, 4, 4))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, placarLayout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jLabel7)
+                                                .addGap(12, 12, 12)))
+                                .addGroup(placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(meuDoisRound)
+                                        .addComponent(meuUmRound, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addGap(6, 6, 6)
+                                .addGroup(placarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(meuNumeroCartas)
+                                        .addComponent(jLabel10)
+                                        .addComponent(jLabel11))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
-            jLabel1.getAccessibleContext().setAccessibleName("nomeJogador");
-            numeroCartasMao.getAccessibleContext().setAccessibleName("numeroCartas");
-            jLabel3.getAccessibleContext().setAccessibleName("qtdPoderTotal");
+        labelInimigoNome.getAccessibleContext().setAccessibleName("nomeJogador");
+        labelInimigoNumeroCartas.getAccessibleContext().setAccessibleName("numeroCartas");
+        labelInimigoPoder.getAccessibleContext().setAccessibleName("qtdPoderTotal");
 
         criarFileira(fileiraCerco);
         criarFileira(fileiraLongaDistancia);
@@ -552,7 +531,7 @@ public class JMesa extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(62, 62, 62)
-                        .addComponent(placarInimigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(placar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(espacoCartas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -606,7 +585,7 @@ public class JMesa extends javax.swing.JFrame {
                                         .addComponent(fileiraCercoAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(fileiraLongaDistanciaAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(placarInimigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(placar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(fileiraInfantariaAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -734,30 +713,66 @@ public class JMesa extends javax.swing.JFrame {
 	private javax.swing.JMenuItem jMenuItemIniciarPartida;
 	private javax.swing.JMenuItem jMenuItemEncerrarPartida;
     //Placar Iinimigo
-    private javax.swing.JRadioButton placarInimigoDoisRound;
-    private javax.swing.JLabel placarInimigoJLabel1;
-    private javax.swing.JLabel placarInimigoNumeroCartasMao;
-    private javax.swing.JLabel placarInimigoJLabel3;
-    private javax.swing.JLabel placarInimigoJLabel5;
-    private javax.swing.JLabel placarInimigoJLabel6;
-    private javax.swing.JLabel placarInimigoJLabel7;
-    private javax.swing.JLabel placarInimigoNomeFaccao;
-    private javax.swing.JRadioButton placarInimigoUmRound;
-    //Placar Jogador
-    private javax.swing.JRadioButton doisRound;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel numeroCartasMao;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JRadioButton inimigoDoisRound;
+    private javax.swing.JRadioButton inimigoUmRound;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel nomeFaccao;
-    private javax.swing.JRadioButton umRound;
+    private javax.swing.JLabel labelInimicoFaccao;
+    private javax.swing.JLabel labelInimigoNome;
+    private javax.swing.JLabel labelInimigoNumeroCartas;
+    private javax.swing.JLabel labelInimigoPoder;
+    private javax.swing.JRadioButton meuDoisRound;
+    private javax.swing.JLabel meuNome;
+    private javax.swing.JLabel meuNumeroCartas;
+    private javax.swing.JLabel meuPoder;
+    private javax.swing.JRadioButton meuUmRound;
+    private javax.swing.JLabel minhaFaccao;
 	// End of variables declaration        
 
 	public void atualizaJogadorDaVez(Jogador jogadorDaVez) {
 //        jLabelTextoJogadorDaVez.setText(mesa.getJogadorDaVez().getNome());
 	}
+
+    public void atualizarPlacar() {
+	    if(ctrlMesa.getJogadorAtual().getNome().equals(ctrlMesa.getMesa().getJogadorUm().getNome())){
+            meuPoder.setText(ctrlMesa.getMesa().getJogadorDois().getPontuacao().toString());
+            meuNumeroCartas.setText("" + ctrlMesa.getMesa().getJogadorDois().getCartasMao().size());
+
+            labelInimigoPoder.setText(ctrlMesa.getJogadorAtual().getPontuacao().toString());
+            labelInimigoNumeroCartas.setText("" + ctrlMesa.getJogadorAtual().getCartasMao().size());
+        } else{
+            meuPoder.setText(ctrlMesa.getJogadorAtual().getPontuacao().toString());
+            meuNumeroCartas.setText("" + ctrlMesa.getJogadorAtual().getCartasMao().size());
+
+            labelInimigoPoder.setText(ctrlMesa.getMesa().getJogadorUm().getPontuacao().toString());
+            labelInimigoNumeroCartas.setText("" + ctrlMesa.getMesa().getJogadorUm().getCartasMao().size());
+        }
+
+        System.out.println("JOGADOR ATUAL PODER: "+ctrlMesa.getJogadorAtual().getPontuacao());
+        System.out.println("JOGADOR UM PODER: "+ctrlMesa.getMesa().getJogadorUm().getPontuacao());
+        System.out.println("JOGADOR DOIS PODER: "+ctrlMesa.getMesa().getJogadorDois().getPontuacao());
+
+
+        System.out.println("JOGADOR ATUAL: "+ctrlMesa.getJogadorAtual().getNome());
+        System.out.println("JOGADOR UM: "+ctrlMesa.getMesa().getJogadorUm().getNome());
+        System.out.println("JOGADOR DOIS: "+ctrlMesa.getMesa().getJogadorDois().getNome());
+
+    }
+
+    public void atualizarNomeFaccaoJogador(){
+	    labelInimigoNome.setText(ctrlMesa.getMesa().getJogadorUm().getNome());
+	    labelInimicoFaccao.setText(ctrlMesa.getMesa().getJogadorUm().getDeck().getFaccao().getNome());
+	    labelInimigoNumeroCartas.setText("" + ctrlMesa.getMesa().getJogadorUm().getCartasMao().size());
+	    labelInimigoPoder.setText(ctrlMesa.getMesa().getJogadorUm().getPontuacao().toString());
+
+	    meuNome.setText(ctrlMesa.getMesa().getJogadorDois().getNome());
+        minhaFaccao.setText(ctrlMesa.getMesa().getJogadorDois().getDeck().getFaccao().getNome());
+        meuNumeroCartas.setText("" + ctrlMesa.getMesa().getJogadorDois().getCartasMao().size());
+        meuPoder.setText(ctrlMesa.getMesa().getJogadorDois().getPontuacao().toString());
+    }
 
     private class MouseGeral implements MouseListener{
 
@@ -934,6 +949,7 @@ public class JMesa extends javax.swing.JFrame {
 //					}
 //					fileiraSelecionada.incluirCarta(cartaAdicionada);
 //				}
+                atualizarPlacar();
 				cartaSelecionada = null;
 				trocaCartaParaDummy();
 				jogadorDaVez = false;
