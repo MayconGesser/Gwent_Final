@@ -6,4 +6,5 @@ public enum TipoHabilidade implements Jogada {
 	ELEVAR_MORAL,
 	ESPIAO,
 	AGRUPAR;
+//	MEDICO;
 }

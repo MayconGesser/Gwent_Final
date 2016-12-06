@@ -97,9 +97,9 @@ public class ScriptPersistencia {
 					habilidadeCarta = new Habilidade(TipoHabilidade.ELEVAR_MORAL);
 					break;
 	
-				case "m":
-					habilidadeCarta = new Habilidade(TipoHabilidade.MEDICO);
-					break;
+//				case "m":
+//					habilidadeCarta = new Habilidade(TipoHabilidade.MEDICO);
+//					break;
 					
 				case "es":
 					habilidadeCarta = new Habilidade(TipoHabilidade.ESPIAO);
