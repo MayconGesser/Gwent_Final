@@ -11,7 +11,6 @@ public class CartaClima extends CartaHabilidade implements Jogada{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private TipoUnidade tipoFileiraAtingida;	//aponta para a fileira; mudanca devido a problemas de serializacao
 	private final TipoCartaClima tipo;
 	
 	public CartaClima(String nome, ImageIcon img, Habilidade habilidade,TipoCartaClima tipo) {
@@ -38,8 +37,4 @@ public class CartaClima extends CartaHabilidade implements Jogada{
 	public TipoCartaClima getTipo(){
 		return this.tipo;
 	}	
-	
-	public TipoUnidade getTipoFileiraAtingida(){
-		return this.tipoFileiraAtingida;
-	}
 }

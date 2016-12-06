@@ -104,21 +104,10 @@ public class ControladorMesa implements Jogada{
             f.incluirCarta(carta);
         } else if(carta instanceof CartaClima){
         	CartaClima cc = (CartaClima) carta;
-        	TipoCartaClima tipo = cc.getTipo();
-        	switch(tipo){
-        		case GEADA_MORDAZ:
-        			cc.ativarHabilidade(
-        					this.fileiras.get(TipoUnidade.INFANTARIA));
-        			break;
-        		case NEBLINA_IMPENETRAVEL:
-        			cc.ativarHabilidade(
-        					this.fileiras.get(TipoUnidade.LONGA_DISTANCIA));
-        			break;
-        		case CHUVA_TORRENCIAL:
-        			cc.ativarHabilidade(
-        					this.fileiras.get(TipoUnidade.CERCO));
-        			break;
-        	}
+        	cc.ativarHabilidade(
+        			this.fileiras.get(cc.getTipo().getFileiraAtingida()));
+        	cc.ativarHabilidade(
+        			this.fileirasAdversario.get(cc.getTipo().getFileiraAtingida()));       	
         }
         return precisaSelecionar;
     }
@@ -211,7 +200,8 @@ public class ControladorMesa implements Jogada{
         } else if(carta instanceof CartaClima){
             CartaClima cc = (CartaClima) carta;
             TipoCartaClima tipo = cc.getTipo();
-            cc.ativarHabilidade(this.fileiras.get(cc.getTipoFileiraAtingida()));
+            cc.ativarHabilidade(this.fileiras.get(cc.getTipo().getFileiraAtingida()));
+            cc.ativarHabilidade(this.fileirasAdversario.get(cc.getTipo().getFileiraAtingida()));
         }
     }
 
