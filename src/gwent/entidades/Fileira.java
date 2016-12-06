@@ -2,6 +2,7 @@ package gwent.entidades;
 import br.ufsc.inf.leobr.cliente.Jogada;
 
 import java.awt.Color;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -18,6 +19,7 @@ public class Fileira extends JPanel implements Jogada {
 	private int poderTotal;
 	private boolean sobEfeitoClima;
 	private Carta ultimaCartaInclusa;
+	private MouseListener mouseCartas;
 	private static final Color corNormal = new Color(156,73,0);
 	private final TipoUnidade tipo;
 	//private final ExibidorPoderFileira exibidorPoder;	
@@ -45,6 +47,7 @@ public class Fileira extends JPanel implements Jogada {
 		int poderRetorno = 1;
 		this.cartas.add(carta);
 		this.ultimaCartaInclusa = carta;
+		carta.addMouseListener(mouseCartas);
 		if(carta instanceof CartaUnidade){
 			CartaUnidade c = (CartaUnidade) carta;
 			if(sobEfeitoClima){
@@ -63,6 +66,7 @@ public class Fileira extends JPanel implements Jogada {
 		this.fileiraLayout.setVerticalGroup(glVertical);
 		//this.exibidorPoder.alterarPoder(this.poderTotal);
 		System.out.println("Poder da fileira " + this.getTipo().toString() + ": " + this.poderTotal);
+		atualizaPoderTotal();
 		revalidate();
 		repaint();
 		return poderRetorno;
@@ -136,5 +140,13 @@ public class Fileira extends JPanel implements Jogada {
 
 	public void setUltimaCartaInclusa(Carta ultimaCartaInclusa) {
 		this.ultimaCartaInclusa = ultimaCartaInclusa;
+	}
+
+	public MouseListener getMouseCartas() {
+		return mouseCartas;
+	}
+
+	public void setMouseCartas(MouseListener mouseCartas) {
+		this.mouseCartas = mouseCartas;
 	}
 }

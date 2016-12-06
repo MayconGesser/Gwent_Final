@@ -128,9 +128,9 @@ public class Mesa implements Jogada {
 
     public void removeCartaMaoJogador(Lance lance) {
         if (lance.getJogador().getNome().equals(this.getJogadorUm().getNome())) {
-            this.jogadorUm.removeCartaMao(lance.getCarta());
+            this.jogadorUm.removeCartaMao(lance.getCartaJogada());
         } else {
-            this.jogadorDois.removeCartaMao(lance.getCarta());
+            this.jogadorDois.removeCartaMao(lance.getCartaJogada());
         }
     }
 

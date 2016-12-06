@@ -86,7 +86,7 @@ public class ControladorMesa {
         Jogador jogador = null;
         if (jogada instanceof Lance) {
             Lance lance = (Lance) jogada;
-            carta = lance.getCarta();
+            carta = lance.getCartaJogada();
             jogador = lance.getJogador();
         } else {
             carta = (Carta) jogada;
@@ -128,25 +128,7 @@ public class ControladorMesa {
 //                        break;
 //                    case ISCA:
 //                        break;
-                        
-                    case AGRUPAR:
-                    	Deck deckJogador = this.jogadorAtual.getDeck();
-                    	String nomeAComparar = sanitizarString(c.getNomeCarta());
-                    	HashMap<String,Carta> cartas = this.jMesa.getCartasFileira();
-                    	for(Carta cds : deckJogador.getCartas()){
-                    		if(cds instanceof CartaUnidade){
-                    			CartaUnidade u = (CartaUnidade)cds;
-                    			String nomeDaCarta = sanitizarString(u.getNomeCarta());
-                    			if(nomeAComparar.equals(nomeDaCarta) && 
-                    					u.getHabilidade().getTipoHabilidade().equals(TipoHabilidade.AGRUPAR)
-                    					&& c != u){
-                    				Fileira fi = this.fileiras.get(u.getTipo());
-                    				u = (CartaUnidade)cartas.get(u.getNomeCarta());
-                    				fi.incluirCarta(u);
-                    			}                    				
-                    		}
-                    	}                    	                   	
-                    	break;
+
                     default:
                         break;
                 }
@@ -171,7 +153,7 @@ public class ControladorMesa {
     	CartaUnidade carta = null;
     	Jogador jogador = null;
         LanceCartaAgrupar lance = (LanceCartaAgrupar) jogada;
-        carta = (CartaUnidade)lance.getCarta();
+        carta = (CartaUnidade)lance.getCartaJogada();
         jogador = lance.getJogador();
     	ListaCartasAgrupar<CartaUnidade> retorno = new ListaCartasAgrupar<>();
     	TipoUnidade t = carta.getTipo();
@@ -179,12 +161,13 @@ public class ControladorMesa {
         Deck deckJogador = this.jogadorAtual.getDeck();
     	String nomeAComparar = sanitizarString(carta.getNomeCarta());
     	HashMap<String,Carta> cartasFileira = this.jMesa.getCartasFileira();
-    	for(Carta cds : deckJogador.getCartas()){
+    	for(Carta cds : deckJogador.getCartas()){		//percorre o deck do jogador
     		if(cds instanceof CartaUnidade){
     			CartaUnidade u = (CartaUnidade)cds;
     			String nomeDaCarta = sanitizarString(u.getNomeCarta());
     			if(nomeAComparar.equals(nomeDaCarta) && 
-    					u.getHabilidade().getTipoHabilidade().equals(TipoHabilidade.AGRUPAR)
+    					(u.getHabilidade() != null) &&
+    					(u.getHabilidade().getTipoHabilidade().equals(TipoHabilidade.AGRUPAR))
     					&& carta != u){
     				Fileira fi = this.fileiras.get(u.getTipo());
     				u = (CartaUnidade)cartasFileira.get(u.getNomeCarta());
@@ -196,6 +179,27 @@ public class ControladorMesa {
     			}                    				
     		}
     	}
+    	//joga cartas q fazem parte da jogada de agrupar q estao na mao do jogador
+//    	for(Carta ccc : this.jogadorAtual.getCartasMao()){
+//    		if(ccc instanceof CartaUnidade){
+//    			CartaUnidade uu = (CartaUnidade)ccc;
+//    			String nomeUU = sanitizarString(uu.getNomeCarta());
+//    			if(nomeAComparar.equals(nomeUU) &&
+//    					uu.getHabilidade() != null &&
+//    					uu.getHabilidade().getTipoHabilidade().equals(TipoHabilidade.AGRUPAR)
+//    					&& carta != uu){
+//    						Fileira fi = this.fileiras.get(uu.getTipo());
+//    						uu = (CartaUnidade)cartasFileira.get(uu.getTipo());
+//    						int pontos = fi.incluirCarta(uu);
+//    						if(jogador != null){
+//    							jogador.addPontuacao(pontos);
+//    						}
+//    					retorno.add(uu);
+//    					getJogadorAtual().getCartasMao().remove(carta);
+//    			}
+//    		}
+//    	}
+    	
     	int pontuacaoCarta = f.incluirCarta(carta);		//inclui a carta q ocasionou a habilidade
         if (jogador != null) {
             //Aqui eu atualizo a pontuacao do jogador que jogou a carta (chamado pelo metodo baixarCarta)
@@ -236,7 +240,7 @@ public class ControladorMesa {
             jMesa.recebeMesa(mesa);
         } else {
             Lance lance = (Lance) jogada;
-            if (lance.getCarta() == null) {		//jogador adversario passou o round
+            if (lance.getCartaJogada() == null) {		//jogador adversario passou o round
                 this.mesa.inativarJogador(lance.getJogador());
                 this.jogadorAtual = this.mesa.getJogadorNaoAtual(lance.getJogador());
                 if (this.mesa.verificaFimDoRound()) {
@@ -244,7 +248,7 @@ public class ControladorMesa {
                 } else {
                     this.mesa.setJogadorDaVez(this.jogadorAtual);
                     this.jMesa.recebeLance(lance);
-                    getJogadorAtual().getCartasMao().remove(lance.getCarta());
+                    getJogadorAtual().getCartasMao().remove(lance.getCartaJogada());
                 }
             } else {		//jogador adversario jogou uma carta
                 if (this.mesa.getJogadorNaoAtual(lance.getJogador()).getStatusJogador().equals(StatusJogador.ATIVO)) {
@@ -277,7 +281,7 @@ public class ControladorMesa {
     		int poderCarta = f.incluirCarta(u);
     		jogador.addPontuacao(poderCarta);
     	}
-    	CartaUnidade cartaJogada = (CartaUnidade)lanceAgrupar.getCarta();
+    	CartaUnidade cartaJogada = (CartaUnidade)lanceAgrupar.getCartaJogada();
     	int poderCarta = this.fileirasAdversario.get(cartaJogada.getTipo()).incluirCarta(cartaJogada);
     	jogador.addPontuacao(poderCarta);
     	this.jMesa.atualizarPlacar();
@@ -289,18 +293,20 @@ public class ControladorMesa {
         (somente utilizado na classe Habiliadde para alguma habilidade que o maycon implementou) e podendo ser Lance, pois
         pego a carta e a referencia do jogador para poder adicionar a pontuacao dele na mesa
         */
-        Carta carta;
+        Carta cartaJogada;
+        Carta cartaExibicao = null;
         Jogador jogador = null;
         if (jogada instanceof Lance) {
             Lance lance = (Lance) jogada;
-            carta = lance.getCarta();
+            cartaJogada = lance.getCartaJogada();
+            cartaExibicao = lance.getCartaExibicao();
             jogador = lance.getJogador();
         } else {
-            carta = (Carta) jogada;
+            cartaJogada = (Carta) jogada;
         }
         boolean precisaSelecionar = false;
-        if(carta instanceof CartaUnidade){
-            CartaUnidade c = (CartaUnidade) carta;
+        if(cartaJogada instanceof CartaUnidade){
+            CartaUnidade c = (CartaUnidade) cartaJogada;
             TipoUnidade t = c.getTipo();
             Fileira f = this.fileirasAdversario.get(t);
             Habilidade habilidadeCarta = c.getHabilidade();
@@ -333,7 +339,8 @@ public class ControladorMesa {
                         break;
                 }
             }
-            int pontuacaoCarta = f.incluirCarta(carta);
+            int pontuacaoCarta = f.incluirCarta(cartaJogada);
+            this.jMesa.addCartasExibicaoAdversario(cartaExibicao);
             if (jogador != null) {
                 /*
                 Aqui eu atualizo a pontuacao do jogador que baixou essa carta (sendo o outro lado do jogo)
@@ -342,8 +349,8 @@ public class ControladorMesa {
                  */
                 this.mesa.getJogador(jogador).addPontuacao(pontuacaoCarta);
             }
-        } else if(carta instanceof CartaClima){
-            CartaClima cc = (CartaClima) carta;
+        } else if(cartaJogada instanceof CartaClima){
+            CartaClima cc = (CartaClima) cartaJogada;
             TipoCartaClima tipo = cc.getTipo();
             cc.ativarHabilidade(this.fileiras.get(cc.getTipo().getFileiraAtingida()));
             cc.ativarHabilidade(this.fileirasAdversario.get(cc.getTipo().getFileiraAtingida()));
@@ -430,9 +437,12 @@ public class ControladorMesa {
         }
     }
 
-    public void baixarCarta(Carta carta) {
+    public void baixarCarta(Carta cartaJogada, Carta cartaExibicao) {
         if (this.tratarPossibilidadeJogada()) {
-            Lance lance = new Lance(carta, this.jogadorAtual);
+            Lance lance = new Lance(cartaJogada, this.jogadorAtual);
+            if(cartaExibicao != null){
+            	lance.setCartaExibicao(cartaExibicao);	//qdo eh null eh uma carta de clima
+            }            
             this.processarCarta(lance);
             this.enviarJogada(lance);
             Jogador jogadorNaoAtual = this.mesa.getJogadorNaoAtual(lance.getJogador());
@@ -446,9 +456,9 @@ public class ControladorMesa {
         }
     }
     
-    public void baixarCartaAgrupar(Carta carta){
+    public void baixarCartaAgrupar(Carta cartaJogada, Carta cartaExibicao){
     	if (this.tratarPossibilidadeJogada()) {
-            LanceCartaAgrupar lance = new LanceCartaAgrupar(carta, this.jogadorAtual);
+            LanceCartaAgrupar lance = new LanceCartaAgrupar(cartaJogada, this.jogadorAtual);
             ListaCartasAgrupar<CartaUnidade> cartasLance = this.processarCartaAgrupar(lance);
             for(CartaUnidade u : cartasLance){
             	lance.setCartaAgrupar(u);

@@ -46,17 +46,17 @@ public class AtorJogador {
         this.controladorMesa.passarTurno();
     }
 
-    public void baixarCarta(Carta carta) {
-    	if(carta instanceof CartaUnidade){
-    		CartaUnidade un = (CartaUnidade) carta;
+    public void baixarCarta(Carta cartaJogada, Carta cartaExibicao) {
+    	if(cartaJogada instanceof CartaUnidade){
+    		CartaUnidade un = (CartaUnidade) cartaJogada;
     		if(un.getHabilidade() != null){
     			if(un.getHabilidade().getTipoHabilidade().equals(TipoHabilidade.AGRUPAR)){
-    				controladorMesa.baixarCartaAgrupar(un);
+    				controladorMesa.baixarCartaAgrupar(un,cartaExibicao);
     				return;		//para nao ir para o comando de baixo
     			}
     		}
     	}
-        controladorMesa.baixarCarta(carta);
+        controladorMesa.baixarCarta(cartaJogada,cartaExibicao);
     }
 }
 

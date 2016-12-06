@@ -8,7 +8,8 @@ public class Lance implements Jogada {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	protected Carta carta;
+	protected Carta cartaJogada;
+	protected Carta cartaExibicao;		//manda junto para o adversario poder enxergar
     protected Jogador jogador;
 
     public Lance(Jogador jogador) {
@@ -16,18 +17,26 @@ public class Lance implements Jogada {
     }
 
     public Lance(Carta carta, Jogador jogador) {
-        this.carta = carta;
+        this.cartaJogada = carta;
         this.jogador = jogador;
     }
 
-    public Carta getCarta() {
-        return carta;
+    public Carta getCartaJogada() {
+        return cartaJogada;
     }
 
-    public void setCarta(Carta carta) {
-        this.carta = carta;
+    public void setCartaJogada(Carta carta) {
+        this.cartaJogada = carta;
     }
-
+    
+    public Carta getCartaExibicao(){
+    	return cartaExibicao;
+    }
+    
+    public void setCartaExibicao(Carta carta){
+    	this.cartaExibicao = carta;
+    }
+    
     public Jogador getJogador() {
         return jogador;
     }
@@ -37,13 +46,13 @@ public class Lance implements Jogada {
     }
 
     public boolean isInicioPartida() {
-        return carta == null && jogador == null;
+        return cartaJogada == null && jogador == null;
     }
     
     @Override
     public String toString(){
     	String detalhes = "";
-    	detalhes += "Carta Jogada : " + (this.carta != null ? this.carta.toString() : "");
+    	detalhes += "Carta Jogada : " + (this.cartaJogada != null ? this.cartaJogada.toString() : "");
     	detalhes += "\nJogador : " + this.jogador.toString();
     	return detalhes;
     }

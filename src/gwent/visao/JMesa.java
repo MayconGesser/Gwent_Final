@@ -66,7 +66,7 @@ public class JMesa extends javax.swing.JFrame {
 
     public void recebeLance(Lance lance) {
         atualizarPlacar();
-        if (lance.getCarta() == null) {
+        if (lance.getCartaJogada() == null) {
             this.exibeMensagem("O adversário passou o turno");
             this.acaoBotao(true);
         } else {
@@ -199,7 +199,11 @@ public class JMesa extends javax.swing.JFrame {
     public HashMap<String,Carta> getCartasFileira(){
     	return this.cartasFileiraEx;
     }
-
+    
+    public void addCartasExibicaoAdversario(Carta carta){
+    	this.cartasExibicaoAdversario.put(carta.getNomeCarta(), carta);
+    }
+    
     @SuppressWarnings("unchecked")
 	public JMesa() {
         initComponents();
@@ -222,13 +226,20 @@ public class JMesa extends javax.swing.JFrame {
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">                          
 	private void initComponents() {
 		placar = new javax.swing.JPanel();
+		mouseCartas = new MouseCarta();
 		fileiraCerco = new Fileira(TipoUnidade.CERCO,null);
+		fileiraCerco.setMouseCartas(mouseCartas);
 		fileiraLongaDistancia = new Fileira(TipoUnidade.LONGA_DISTANCIA,null);
+		fileiraLongaDistancia.setMouseCartas(mouseCartas);
 		fileiraInfantaria = new Fileira(TipoUnidade.INFANTARIA,null);
+		fileiraInfantaria.setMouseCartas(mouseCartas);
 		divisor = new javax.swing.JPanel();
 		fileiraInfantariaAd = new Fileira(TipoUnidade.INFANTARIA,null);
+		fileiraInfantariaAd.setMouseCartas(mouseCartas);
 		fileiraLongaDistanciaAd = new Fileira(TipoUnidade.LONGA_DISTANCIA,null);
+		fileiraLongaDistanciaAd.setMouseCartas(mouseCartas);
 		fileiraCercoAd = new Fileira(TipoUnidade.CERCO,null);
+		fileiraCercoAd.setMouseCartas(mouseCartas);
 		seletorFileira = new SeletorFileira();
 		fileiraCerco.addMouseListener(seletorFileira);
 		fileiraLongaDistancia.addMouseListener(seletorFileira);
@@ -239,7 +250,7 @@ public class JMesa extends javax.swing.JFrame {
 		cemiterioAd = new javax.swing.JPanel();
 		espacoCartas = new javax.swing.JPanel();
 		espacoExibicaoCarta = new javax.swing.JPanel();
-		mouseCartas = new MouseCarta();
+		cartasExibicaoAdversario = new HashMap<>();
 		btPassar = new javax.swing.JButton();
 		btJogar = new javax.swing.JButton();
 		jMenuBar = new javax.swing.JMenuBar();
@@ -715,6 +726,7 @@ public class JMesa extends javax.swing.JFrame {
 	private Deck cartasCemiterio;
 	private HashMap<String,Carta> cartasExibicao;
 	private HashMap<String,Carta> cartasFileiraEx;
+	private HashMap<String,Carta> cartasExibicaoAdversario;
 	private boolean passouTurno;
 	private boolean jogadorDaVez;
 	private boolean precisaSelecionar;
@@ -880,8 +892,11 @@ public class JMesa extends javax.swing.JFrame {
 			if(cartaSelecionada != null){return;}
 
 			Carta c = (Carta) o;
-			String n = c.getNomeCarta();
+			String n = c.getNomeCarta();			
 			c = cartasExibicao.get(n);
+			if(c == null){		//nao eh uma carta do jogador, eh do adversario		
+				c = cartasExibicaoAdversario.get(n);
+			}
 			c.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 			java.awt.Component co = espacoExibicaoCarta.getComponent(0);	//getComponent(0) pq esse espaco tem sempre apenas um componente (q eh a carta amplificada)
 			espacoExibicaoCartaLayout.replace(co, c);
@@ -929,30 +944,19 @@ public class JMesa extends javax.swing.JFrame {
 				c.repaint();
 				cartaSelecionada.setBorder(null);
 				Carta cartaAdicionada = null;
+				Carta cartaExibicao = null;
 				String n = cartaSelecionada.getNomeCarta();
 				if(cartaSelecionada instanceof CartaUnidade){
 					cartaAdicionada = (CartaUnidade) cartasFileiraEx.get(n);  //precisa-se manter um ponteiro para o objeto da carta q vai ser add pra manter o mouselistener
-					cartaAdicionada.addMouseListener(mouseCartas);
+					cartaExibicao = (CartaUnidade) cartasExibicao.get(n);
+					//cartaAdicionada.addMouseListener(mouseCartas);
 					TipoHabilidade tipoHabilidadeCarta = null;
 
-					if(cartaSelecionada.getHabilidade() != null){
-						tipoHabilidadeCarta = cartaSelecionada.getHabilidade().getTipoHabilidade();
-//						switch(tipoHabilidadeCarta){
-//							case MEDICO:
-//								ctrlMesa.setCemiterio(cartasCemiterio);
-//								break;
-//
-//							default:
-//								break;
-//						}
-						
-					}
-//                    precisaSelecionar = ctrlMesa.processarCarta(cartaAdicionada);
-                    atorJogador.baixarCarta(cartaAdicionada);
+                    atorJogador.baixarCarta(cartaAdicionada,cartaExibicao);
 				}
 				else if(cartaSelecionada instanceof CartaClima){	//nao precisa adicionar na fileira, soh joga
 					CartaClima cartaClima = (CartaClima) cartaSelecionada;
-					atorJogador.baixarCarta(cartaClima);
+					atorJogador.baixarCarta(cartaClima,null);
 				}
 
 //				if(precisaSelecionar){
