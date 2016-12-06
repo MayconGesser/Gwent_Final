@@ -22,13 +22,13 @@ public class Habilidade implements Jogada {
 	public void ativarHabilidadeFileira(Fileira fileiraAtingida){
 		switch(this.tipoHabilidade){			
 				
-			case AGILIDADE:
-				break;
-				
-			case MEDICO:
-				CartaUnidade cartaSacada = (CartaUnidade) referenciaDeck.sacarCarta();
-				chamador.processarCarta(cartaSacada);
-				break;
+//			case AGILIDADE:
+//				break;
+//				
+//			case MEDICO:
+//				CartaUnidade cartaSacada = (CartaUnidade) referenciaDeck.sacarCarta();
+//				chamador.processarCarta(cartaSacada);
+//				break;
 			
 			case ELEVAR_MORAL:
 				ArrayList<Carta> cartasFileira = fileiraAtingida.getCartas();

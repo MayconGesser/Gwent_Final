@@ -927,14 +927,14 @@ public class JMesa extends javax.swing.JFrame {
 
 					if(cartaSelecionada.getHabilidade() != null){
 						tipoHabilidadeCarta = cartaSelecionada.getHabilidade().getTipoHabilidade();
-						switch(tipoHabilidadeCarta){
-							case MEDICO:
-								ctrlMesa.setCemiterio(cartasCemiterio);
-								break;
-
-							default:
-								break;
-						}
+//						switch(tipoHabilidadeCarta){
+//							case MEDICO:
+//								ctrlMesa.setCemiterio(cartasCemiterio);
+//								break;
+//
+//							default:
+//								break;
+//						}
 					}
 //                    precisaSelecionar = ctrlMesa.processarCarta(cartaAdicionada);
                     atorJogador.baixarCarta(cartaAdicionada);

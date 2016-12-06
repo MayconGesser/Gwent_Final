@@ -90,16 +90,16 @@ public class ControladorMesa {
             if(habilidadeCarta != null){
                 TipoHabilidade tipoHabilidadeCarta = habilidadeCarta.getTipoHabilidade();
                 switch(tipoHabilidadeCarta){
-                    case MEDICO:
-                        habilidadeCarta.setChamador(this);
-                        habilidadeCarta.setReferenciaDeck(this.cemiterio);
-                        break;
-                    case AGILIDADE:
+//                    case MEDICO:
+//                        habilidadeCarta.setChamador(this);
+//                        habilidadeCarta.setReferenciaDeck(this.cemiterio);
+//                        break;
+//                    case AGILIDADE:
 //                        precisaSelecionar = true;
 //                        return precisaSelecionar;
-                    	break;
-                    case CORNETA_COMANDANTE:
-                        break;
+//                    	break;
+//                    case CORNETA_COMANDANTE:
+//                        break;
                     case ESPIAO:	//deve ser baixada na fileira do adversario
                     	f = this.fileirasAdversario.get(t);		//troca a referencia para a fileira do adversario
                     	Carta cs1 = this.jogadorAtual.comprarCarta();
@@ -111,10 +111,25 @@ public class ControladorMesa {
                     	this.jMesa.atualizarMaoJogador(cs1);
                     	this.jMesa.atualizarMaoJogador(cs2);
                         break;
-                    case INCINERAR:
-                        break;
-                    case ISCA:
-                        break;
+//                    case INCINERAR:
+//                        break;
+//                    case ISCA:
+//                        break;
+                        
+                    case AGRUPAR:
+                    	Deck deckJogador = this.jogadorAtual.getDeck();
+                    	for(Carta cds : deckJogador.getCartas()){
+                    		if(cds instanceof CartaUnidade){
+                    			CartaUnidade u = (CartaUnidade)cds;
+                    			if(u.getNomeCarta().contains(c.getNomeCarta()) &&
+                    					u.getHabilidade().getTipoHabilidade().equals(TipoHabilidade.AGRUPAR)
+                    					&& u != c){	//c eh a referencia da carta q foi jogada
+                    				Fileira fi = this.fileiras.get(u.getTipo());
+                    				fi.incluirCarta(u);
+                    			}
+                    		}
+                    	}                   	
+                    	break;
                     default:
                         break;
                 }
@@ -218,24 +233,27 @@ public class ControladorMesa {
             if(habilidadeCarta != null){
                 TipoHabilidade tipoHabilidadeCarta = habilidadeCarta.getTipoHabilidade();
                 switch(tipoHabilidadeCarta){
-                    case MEDICO:
-                        habilidadeCarta.setChamador(this);
-                        habilidadeCarta.setReferenciaDeck(this.cemiterio);
-
-                        break;
-                    case AGILIDADE:
+//                    case MEDICO:
+//                        habilidadeCarta.setChamador(this);
+//                        habilidadeCarta.setReferenciaDeck(this.cemiterio);
+//
+//                        break;
+//                    case AGILIDADE:
 //                        precisaSelecionar = true;
 //                        return precisaSelecionar;
-                        break;
-                    case CORNETA_COMANDANTE:
-                        break;
+//                        break;
+//                    case CORNETA_COMANDANTE:
+//                        break;
                     case ESPIAO:
                     	f = this.fileiras.get(t);	//troca a referencia, deve ser baixada na propria fileira
                         break;
-                    case INCINERAR:
-                        break;
-                    case ISCA:
-                        break;
+//                    case INCINERAR:
+//                        break;
+//                    case ISCA:
+//                        break;
+                        
+                    case AGRUPAR:
+                    	break;
                     default:
                         break;
                 }
