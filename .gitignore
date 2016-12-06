@@ -5,3 +5,5 @@
 *project
 bin
 *.iml
+/classes
+src/META-INF

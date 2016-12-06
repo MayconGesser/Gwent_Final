@@ -150,12 +150,20 @@ public class Mesa implements Jogada {
         }
     }
 
-    public void atualizaRoundAtual(Jogador jogadorVencedor) {
-        this.roundAtual.setVencedor(jogadorVencedor);
-        this.roundAtual.setNumeroRound(this.rounds.size() + 1);
-    }
-
     public Jogador getJogador(Jogador jogador) {
         return this.jogadorUm.getIdJogador().equals(jogador.getIdJogador()) ? this.jogadorUm : this.jogadorDois;
+    }
+
+    public void iniciarNovoRound(Jogador jogadorVencedor) {
+        this.jogadorUm.setPontuacao(0);
+        this.jogadorUm.setStatusJogador(StatusJogador.ATIVO);
+        this.jogadorDois.setPontuacao(0);
+        this.jogadorDois.setStatusJogador(StatusJogador.ATIVO);
+        this.jogadorDaVez = this.getJogador(jogadorVencedor);
+        this.roundAtual.setVencedor(jogadorVencedor);
+        this.roundAtual.setNumeroRound(this.rounds.size() + 1);
+        this.rounds.add(this.roundAtual);
+        this.roundAtual = new Round(this.rounds.size() + 1);
+        this.setStatusMesa(StatusMesa.INICIAR_RODADA);
     }
 }

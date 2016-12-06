@@ -10,6 +10,13 @@ public class Round implements Jogada {
     protected Jogador vencedor;
     protected Collection<Lance> lances;
 
+    public Round() {
+    }
+
+    public Round(Integer numeroRound) {
+        this.numeroRound = numeroRound;
+    }
+
     public Integer getNumeroRound() {
         return numeroRound;
     }

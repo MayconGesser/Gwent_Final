@@ -80,11 +80,10 @@ public class JMesa extends javax.swing.JFrame {
         atualizarPlacar();
         if (mesa.getStatusMesa().equals(StatusMesa.INICAR_PARTIDA)) {
             this.iniciarPartidaJogadorDois(mesa);
-//            this.setNomeJogadoresLabel(mesa);
             this.exibeMensagem("Uma nova partida vai iniciar");
         }  else if (mesa.getStatusMesa().equals(StatusMesa.INICIAR_RODADA)) {
-//            this.iniciarNovaRodada(mesa);
-//            this.atualizarPontosJogadores(mesa);
+            this.iniciarNovaRodada(mesa);
+            this.exibeMensagem("Um novo round vai iniciar");
         } else if (mesa.getStatusMesa().equals(StatusMesa.ENCERRAR_PARTIDA)) {
 //            this.exibeMensagem(mesa.getMensagemFim());
             System.exit(0);
@@ -92,6 +91,18 @@ public class JMesa extends javax.swing.JFrame {
 //        this.atualizaJogadorDaVez(mesa);
         revalidate();
         repaint();
+    }
+
+    private void iniciarNovaRodada(Mesa mesa) {
+        fileiraLongaDistancia = new Fileira(TipoUnidade.LONGA_DISTANCIA,null);
+        fileiraInfantaria = new Fileira(TipoUnidade.INFANTARIA,null);
+        fileiraInfantariaAd = new Fileira(TipoUnidade.INFANTARIA,null);
+        fileiraLongaDistanciaAd = new Fileira(TipoUnidade.LONGA_DISTANCIA,null);
+        fileiraCercoAd = new Fileira(TipoUnidade.CERCO,null);
+        fileiraCerco.addMouseListener(seletorFileira);
+        fileiraLongaDistancia.addMouseListener(seletorFileira);
+        fileiraInfantaria.addMouseListener(seletorFileira);
+        this.ctrlMesa.limpaFileiras(fileiraInfantaria, fileiraLongaDistancia, fileiraCerco, fileiraInfantariaAd, fileiraLongaDistanciaAd, fileiraCercoAd);
     }
 
     private void iniciarPartidaJogadorDois(Mesa mesa) {
@@ -756,10 +767,6 @@ public class JMesa extends javax.swing.JFrame {
     private javax.swing.JLabel minhaFaccao;
 	// End of variables declaration        
 
-	public void atualizaJogadorDaVez(Jogador jogadorDaVez) {
-//        jLabelTextoJogadorDaVez.setText(mesa.getJogadorDaVez().getNome());
-	}
-
     public void atualizarPlacar() {
 	    if(ctrlMesa.getJogadorAtual().getNome().equals(ctrlMesa.getMesa().getJogadorUm().getNome())){
             meuPoder.setText(ctrlMesa.getMesa().getJogadorDois().getPontuacao().toString());
@@ -774,16 +781,6 @@ public class JMesa extends javax.swing.JFrame {
             labelInimigoPoder.setText(ctrlMesa.getMesa().getJogadorUm().getPontuacao().toString());
             labelInimigoNumeroCartas.setText("" + ctrlMesa.getMesa().getJogadorUm().getCartasMao().size());
         }
-
-        System.out.println("JOGADOR ATUAL PODER: "+ctrlMesa.getJogadorAtual().getPontuacao());
-        System.out.println("JOGADOR UM PODER: "+ctrlMesa.getMesa().getJogadorUm().getPontuacao());
-        System.out.println("JOGADOR DOIS PODER: "+ctrlMesa.getMesa().getJogadorDois().getPontuacao());
-
-
-        System.out.println("JOGADOR ATUAL: "+ctrlMesa.getJogadorAtual().getNome());
-        System.out.println("JOGADOR UM: "+ctrlMesa.getMesa().getJogadorUm().getNome());
-        System.out.println("JOGADOR DOIS: "+ctrlMesa.getMesa().getJogadorDois().getNome());
-
     }
 
     public void atualizarNomeFaccaoJogador(){

@@ -8,7 +8,7 @@ import gwent.entidades.*;
 import gwent.netGames.AtorNetGames;
 import gwent.visao.JMesa;
 
-public class ControladorMesa {
+public class ControladorMesa implements Jogada {
 
 	protected HashMap<TipoUnidade,Fileira> fileiras;
     protected HashMap<TipoUnidade,Fileira> fileirasAdversario;
@@ -17,7 +17,6 @@ public class ControladorMesa {
     protected Mesa mesa;
     protected JMesa jMesa;
     protected AtorNetGames atorNetGames;
-    protected Deck cemiterio;
 
     public ControladorMesa(JMesa jMesa,
                            Fileira fileiraInfantaria,
@@ -38,6 +37,22 @@ public class ControladorMesa {
         this.fileirasAdversario.put(TipoUnidade.LONGA_DISTANCIA, fileiraLongaDistanciaAd);
         this.fileirasAdversario.put(TipoUnidade.CERCO, fileiraCercoAd);
 	}
+
+	public void limpaFileiras(Fileira fileiraInfantaria,
+                              Fileira fileiraLongaDistancia,
+                              Fileira fileiraCerco,
+                              Fileira fileiraInfantariaAd,
+                              Fileira fileiraLongaDistanciaAd,
+                              Fileira fileiraCercoAd) {
+        this.fileiras = new HashMap<>();
+        this.fileiras.put(TipoUnidade.INFANTARIA, fileiraInfantaria);
+        this.fileiras.put(TipoUnidade.LONGA_DISTANCIA, fileiraLongaDistancia);
+        this.fileiras.put(TipoUnidade.CERCO, fileiraCerco);
+        this.fileirasAdversario = new HashMap<>();
+        this.fileirasAdversario.put(TipoUnidade.INFANTARIA, fileiraInfantariaAd);
+        this.fileirasAdversario.put(TipoUnidade.LONGA_DISTANCIA, fileiraLongaDistanciaAd);
+        this.fileirasAdversario.put(TipoUnidade.CERCO, fileiraCercoAd);
+    }
 
     public void iniciarPartida() {
         this.atorNetGames.iniciarPartida();
@@ -62,7 +77,7 @@ public class ControladorMesa {
         this.enviarJogada(this.mesa);
         this.jMesa.inicioPartidaJogadorUm(mesa);
     }
-    
+
     //metodo usado na habilidade AGRUPAR
     //compara nomes de cartas
     private String sanitizarString(String s){
@@ -76,24 +91,8 @@ public class ControladorMesa {
 		return sb.toString();
     }
 
-    public boolean processarCarta(Jogada jogada){
-        /*
-        Tive que fazer esse método receber uma jogada como parametro, podendo ser uma Carta
-        (somente utilizado na classe Habiliadde para alguma habilidade que o maycon implementou) e podendo ser Lance, pois
-        pego a carta e a referencia do jogador para poder adicionar a pontuacao dele na mesa
-        */
-        Carta carta;
-        Jogador jogador = null;
-        if (jogada instanceof Lance) {
-            Lance lance = (Lance) jogada;
-            carta = lance.getCartaJogada();
-            jogador = lance.getJogador();
-        } else {
-            carta = (Carta) jogada;
-        }
-
-    	System.out.println(this.jogadorAtual.getNome());
-        boolean precisaSelecionar = false;
+    public void processarCarta(Carta carta){
+        Jogador jogador = this.jogadorAtual;
         if(carta instanceof CartaUnidade){
             CartaUnidade c = (CartaUnidade) carta;
             TipoUnidade t = c.getTipo();
@@ -103,16 +102,6 @@ public class ControladorMesa {
             if(habilidadeCarta != null){
                 TipoHabilidade tipoHabilidadeCarta = habilidadeCarta.getTipoHabilidade();
                 switch(tipoHabilidadeCarta){
-//                    case MEDICO:
-//                        habilidadeCarta.setChamador(this);
-//                        habilidadeCarta.setReferenciaDeck(this.cemiterio);
-//                        break;
-//                    case AGILIDADE:
-//                        precisaSelecionar = true;
-//                        return precisaSelecionar;
-//                    	break;
-//                    case CORNETA_COMANDANTE:
-//                        break;
                     case ESPIAO:	//deve ser baixada na fileira do adversario
                     	f = this.fileirasAdversario.get(t);		//troca a referencia para a fileira do adversario
                     	Carta cs1 = this.jogadorAtual.comprarCarta();
@@ -123,21 +112,33 @@ public class ControladorMesa {
                     	}
                     	this.jMesa.adicionarCartasMaoJogador(cs1);
                     	this.jMesa.adicionarCartasMaoJogador(cs2);
+                        jogador = this.mesa.getJogadorNaoAtual(this.jogadorAtual);
                         break;
-//                    case INCINERAR:
-//                        break;
-//                    case ISCA:
-//                        break;
 
+                    case AGRUPAR:
+                    	Deck deckJogador = this.jogadorAtual.getDeck();
+                    	String nomeAComparar = sanitizarString(c.getNomeCarta());
+                    	HashMap<String,Carta> cartas = this.jMesa.getCartasFileira();
+                    	for(Carta cds : deckJogador.getCartas()){
+                    		if(cds instanceof CartaUnidade){
+                    			CartaUnidade u = (CartaUnidade)cds;
+                    			String nomeDaCarta = sanitizarString(u.getNomeCarta());
+                    			if(nomeAComparar.equals(nomeDaCarta) &&
+                    					u.getHabilidade().getTipoHabilidade().equals(TipoHabilidade.AGRUPAR)
+                    					&& c != u){
+                    				Fileira fi = this.fileiras.get(u.getTipo());
+                    				u = (CartaUnidade)cartas.get(u.getNomeCarta());
+                    				fi.incluirCarta(u);
+                    			}
+                    		}
+                    	}
+                    	break;
                     default:
                         break;
                 }
             }
             int pontuacaoCarta = f.incluirCarta(carta);
-            if (jogador != null) {
-                //Aqui eu atualizo a pontuacao do jogador que jogou a carta (chamado pelo metodo baixarCarta)
-                jogador.addPontuacao(pontuacaoCarta);	//maycon,06/12-01h41 isso nao vai funcionar para cartas espiao.....
-            }
+            jogador.addPontuacao(pontuacaoCarta);
         } else if(carta instanceof CartaClima){
         	CartaClima cc = (CartaClima) carta;
         	cc.ativarHabilidade(
@@ -146,9 +147,8 @@ public class ControladorMesa {
         			this.fileirasAdversario.get(cc.getTipo().getFileiraAtingida()));       	
         }
         getJogadorAtual().getCartasMao().remove(carta);
-        return precisaSelecionar;
     }
-    
+
     public ListaCartasAgrupar<CartaUnidade> processarCartaAgrupar(Jogada jogada){
     	CartaUnidade carta = null;
     	Jogador jogador = null;
@@ -176,7 +176,7 @@ public class ControladorMesa {
     					jogador.addPontuacao(pontos);
     				}
     				retorno.add(u);
-    			}                    				
+    			}
     		}
     	}
     	//joga cartas q fazem parte da jogada de agrupar q estao na mao do jogador
@@ -199,7 +199,7 @@ public class ControladorMesa {
 //    			}
 //    		}
 //    	}
-    	
+
     	int pontuacaoCarta = f.incluirCarta(carta);		//inclui a carta q ocasionou a habilidade
         if (jogador != null) {
             //Aqui eu atualizo a pontuacao do jogador que jogou a carta (chamado pelo metodo baixarCarta)
@@ -265,13 +265,12 @@ public class ControladorMesa {
                 }                
                 this.mesa.removeCartaMaoJogador(lance);
             }
-//            this.jMesa.atualizaJogadorDaVez(this.mesa.getJogadorDaVez());
             this.mesa.addLance(lance);
         }
 
         this.jMesa.atualizarPlacar();
     }
-    
+
     public void processarCartaAgruparAdversario(Jogada jogada){
     	LanceCartaAgrupar lanceAgrupar = (LanceCartaAgrupar) jogada;
     	Jogador jogador = lanceAgrupar.getJogador();
@@ -314,25 +313,10 @@ public class ControladorMesa {
             if(habilidadeCarta != null){
                 TipoHabilidade tipoHabilidadeCarta = habilidadeCarta.getTipoHabilidade();
                 switch(tipoHabilidadeCarta){
-//                    case MEDICO:
-//                        habilidadeCarta.setChamador(this);
-//                        habilidadeCarta.setReferenciaDeck(this.cemiterio);
-//
-//                        break;
-//                    case AGILIDADE:
-//                        precisaSelecionar = true;
-//                        return precisaSelecionar;
-//                        break;
-//                    case CORNETA_COMANDANTE:
-//                        break;
                     case ESPIAO:
                     	f = this.fileiras.get(t);	//troca a referencia, deve ser baixada na propria fileira
+                        jogador = this.jogadorAtual;
                         break;
-//                    case INCINERAR:
-//                        break;
-//                    case ISCA:
-//                        break;
-                        
                     case AGRUPAR:
                     	break;
                     default:
@@ -363,30 +347,23 @@ public class ControladorMesa {
     }
 
     private void acabouRound() {
-        this.jMesa.exibeMensagem("Acabou o round");
+        this.jMesa.exibeMensagem("Acabou o round, computando os pontos ...");
         Jogador jogadorVencedor = this.mesa.verificaVencedorRound();
-        this.mesa.atualizaRoundAtual(jogadorVencedor);
         this.jMesa.exibeMensagem("Jogador vencedor: " + jogadorVencedor.toString());
-//        if (this.chegouFimDaRodada()) {
-//            this.computarPontos();
-//            this.interfaceMesa.atualizarPontosJogadores(mesa);
-//
-//            this.mesa.setStatusMesa(StatusMesa.INICIAR_RODADA);
-//            this.interfaceMesa.recebeMesa(mesa);
-//
-//            this.enviarJogada(mesa);
-//            this.receberJogada(mesa);
-//
+        this.limparFileiras();
+        this.mesa.iniciarNovoRound(jogadorVencedor);
+        if (this.jogadorAtual.equals(jogadorVencedor))
+            this.jMesa.acaoBotao(true);
+
+        this.jogadorAtual = this.mesa.getJogador(jogadorVencedor);
+        this.jMesa.recebeMesa(this.mesa);
+
 //            this.verificarFimDaPartida();
-//        }
     }
 
-    private void alterarJogadorDaVezNaMesa(Jogador jogador) {
-        if (this.mesa.getJogadorUm().getNome().equals(jogador.getNome())) {
-            this.mesa.setJogadorDaVez(this.mesa.getJogadorDois());
-        } else {
-            this.mesa.setJogadorDaVez(this.mesa.getJogadorUm());
-        }
+    private void limparFileiras() {
+        this.fileiras.values().forEach(Fileira::limpar);
+        this.fileirasAdversario.values().forEach(Fileira::limpar);
     }
 
     private void criarJogadorAtual(String nome) {
@@ -413,14 +390,6 @@ public class ControladorMesa {
         this.conectado = conectado;
     }
 
-    public Deck getCemiterio() {
-        return cemiterio;
-    }
-
-    public void setCemiterio(Deck cemiterio) {
-        this.cemiterio = cemiterio;
-    }
-
     public void passarTurno() {
         if (this.tratarPossibilidadeJogada()) {
             this.mesa.inativarJogador(this.jogadorAtual);
@@ -442,8 +411,8 @@ public class ControladorMesa {
             Lance lance = new Lance(cartaJogada, this.jogadorAtual);
             if(cartaExibicao != null){
             	lance.setCartaExibicao(cartaExibicao);	//qdo eh null eh uma carta de clima
-            }            
-            this.processarCarta(lance);
+            }
+            this.processarCarta(cartaJogada);
             this.enviarJogada(lance);
             Jogador jogadorNaoAtual = this.mesa.getJogadorNaoAtual(lance.getJogador());
             if (jogadorNaoAtual.getStatusJogador().equals(StatusJogador.ATIVO)) {

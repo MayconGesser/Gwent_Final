@@ -149,4 +149,19 @@ public class Fileira extends JPanel implements Jogada {
 	public void setMouseCartas(MouseListener mouseCartas) {
 		this.mouseCartas = mouseCartas;
 	}
+
+	public void limpar() {
+		if (this.sobEfeitoClima)
+			this.anularEfeitoClima();
+		this.poderTotal = 0;
+		this.cartas = new ArrayList<>();
+		this.glHorizontal = fileiraLayout.createSequentialGroup();
+		this.glVertical = fileiraLayout.createParallelGroup(
+				javax.swing.GroupLayout.Alignment.LEADING
+		);
+		this.fileiraLayout.setHorizontalGroup(glHorizontal);
+		this.fileiraLayout.setVerticalGroup(glVertical);
+		revalidate();
+		repaint();
+	}
 }
