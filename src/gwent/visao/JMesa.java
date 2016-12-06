@@ -83,12 +83,10 @@ public class JMesa extends javax.swing.JFrame {
             this.exibeMensagem("Uma nova partida vai iniciar");
         }  else if (mesa.getStatusMesa().equals(StatusMesa.INICIAR_RODADA)) {
             this.iniciarNovaRodada(mesa);
-            this.exibeMensagem("Um novo round vai iniciar");
         } else if (mesa.getStatusMesa().equals(StatusMesa.ENCERRAR_PARTIDA)) {
-//            this.exibeMensagem(mesa.getMensagemFim());
+            this.exibeMensagem("O vencedor do jogo é: " + mesa.getJogadorDaVez().getNome());
             System.exit(0);
         }
-//        this.atualizaJogadorDaVez(mesa);
         revalidate();
         repaint();
     }
@@ -693,7 +691,7 @@ public class JMesa extends javax.swing.JFrame {
     }
 
     private void jMenuItemEncerrarPartidaActionPerformed(ActionEvent evt) {
-//        atorJogador.encerrarPartida();
+        atorJogador.encerrarPartida();
     }
 
     private void jMenuItemConectarActionPerformed(ActionEvent evt) {

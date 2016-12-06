@@ -166,4 +166,33 @@ public class Mesa implements Jogada {
         this.roundAtual = new Round(this.rounds.size() + 1);
         this.setStatusMesa(StatusMesa.INICIAR_RODADA);
     }
+
+    public Jogador verificaFimPartida(boolean encerrarPartida) {
+        Jogador jogadorVencedor = null;
+
+        if (encerrarPartida) {
+            //Só ira entrar nesse if caso o jogador clique no botao de encerra partida
+            // O jogador que clicou neste botao irá perder, e o outro sera o vencedor
+            jogadorVencedor = this.getJogador(this.jogadorDaVez);
+            return this.jogadores.get(jogadorVencedor.getIdJogador());
+        } else if (this.rounds.size() < 2) {
+            return null;
+        }
+        int contadorUm = 0;
+        int contadorDois = 0;
+
+        for (Round round : this.rounds) {
+            if (round.getVencedor().getIdJogador().equals(this.jogadorUm.getIdJogador()))
+                contadorUm++;
+            else
+                contadorDois++;
+        }
+
+        if (contadorUm >= 2)
+            jogadorVencedor = this.jogadorUm;
+        else if (contadorDois >= 2)
+            jogadorVencedor = this.jogadorDois;
+
+        return jogadorVencedor;
+    }
 }

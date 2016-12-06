@@ -358,7 +358,23 @@ public class ControladorMesa implements Jogada {
         this.jogadorAtual = this.mesa.getJogador(jogadorVencedor);
         this.jMesa.recebeMesa(this.mesa);
 
-//            this.verificarFimDaPartida();
+        this.verificarFimDaPartida(false);
+        this.exibeMensagem("Um novo round vai iniciar");
+    }
+
+    public void verificarFimDaPartida(boolean encerrarPartida) {
+        Jogador jogadorVencedor = this.mesa.verificaFimPartida(encerrarPartida);
+
+        if (jogadorVencedor != null) {
+            this.encerrarPartida(jogadorVencedor);
+        }
+    }
+
+    private void encerrarPartida(Jogador jogadorVencedor) {
+        this.mesa.setJogadorDaVez(jogadorVencedor);
+        this.mesa.setStatusMesa(StatusMesa.ENCERRAR_PARTIDA);
+        this.enviarJogada(this.mesa);
+        this.jMesa.recebeMesa(this.mesa);
     }
 
     private void limparFileiras() {

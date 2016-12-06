@@ -58,5 +58,9 @@ public class AtorJogador {
     	}
         controladorMesa.baixarCarta(cartaJogada,cartaExibicao);
     }
+
+    public void encerrarPartida() {
+        this.controladorMesa.verificarFimDaPartida(true);
+    }
 }
 
