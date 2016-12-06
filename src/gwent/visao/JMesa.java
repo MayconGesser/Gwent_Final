@@ -74,7 +74,7 @@ public class JMesa extends javax.swing.JFrame {
             this.exibeMensagem("Sua vez de jogar");
             this.acaoBotao(true);
         }
-    }
+    }    
 
     public void recebeMesa(Mesa mesa) {
         atualizarPlacar();
@@ -124,12 +124,18 @@ public class JMesa extends javax.swing.JFrame {
     }
 
     //metodo invocado qdo cartas sao compradas, para exibir cartas
-    public void atualizarMaoJogador(Carta carta){
+    public void adicionarCartasMaoJogador(Carta carta){
     	carta.addMouseListener(this.mouseCartas);
     	this.HespacoCartas.addComponent(carta);
     	this.VespacoCartas.addComponent(carta);
 		revalidate();
 		repaint();
+    }
+    
+    public void removerCartasMaoJogador(Carta carta){
+    	java.awt.Container p = carta.getParent();
+    	p.remove(carta);
+    	p.repaint();
     }
     
     //invocado apenas no comeco do jogo
@@ -188,6 +194,10 @@ public class JMesa extends javax.swing.JFrame {
     private void trocaDummyExibicaoParaCarta(Carta carta){
     	java.awt.Component c = espacoExibicaoCarta.getComponent(0);
     	espacoExibicaoCartaLayout.replace(c, carta);
+    }
+    
+    public HashMap<String,Carta> getCartasFileira(){
+    	return this.cartasFileiraEx;
     }
 
     @SuppressWarnings("unchecked")
@@ -935,6 +945,7 @@ public class JMesa extends javax.swing.JFrame {
 //							default:
 //								break;
 //						}
+						
 					}
 //                    precisaSelecionar = ctrlMesa.processarCarta(cartaAdicionada);
                     atorJogador.baixarCarta(cartaAdicionada);

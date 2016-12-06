@@ -121,8 +121,8 @@ public class ControladorMesa {
                     		System.out.println("IMPRIMINDO MAO DO JOGADOR!!!!!!!!!!!!!");
                     		System.out.println(cccp.toString());
                     	}
-                    	this.jMesa.atualizarMaoJogador(cs1);
-                    	this.jMesa.atualizarMaoJogador(cs2);
+                    	this.jMesa.adicionarCartasMaoJogador(cs1);
+                    	this.jMesa.adicionarCartasMaoJogador(cs2);
                         break;
 //                    case INCINERAR:
 //                        break;
@@ -132,6 +132,7 @@ public class ControladorMesa {
                     case AGRUPAR:
                     	Deck deckJogador = this.jogadorAtual.getDeck();
                     	String nomeAComparar = sanitizarString(c.getNomeCarta());
+                    	HashMap<String,Carta> cartas = this.jMesa.getCartasFileira();
                     	for(Carta cds : deckJogador.getCartas()){
                     		if(cds instanceof CartaUnidade){
                     			CartaUnidade u = (CartaUnidade)cds;
@@ -140,6 +141,7 @@ public class ControladorMesa {
                     					u.getHabilidade().getTipoHabilidade().equals(TipoHabilidade.AGRUPAR)
                     					&& c != u){
                     				Fileira fi = this.fileiras.get(u.getTipo());
+                    				u = (CartaUnidade)cartas.get(u.getNomeCarta());
                     				fi.incluirCarta(u);
                     			}                    				
                     		}
@@ -163,6 +165,43 @@ public class ControladorMesa {
         }
         getJogadorAtual().getCartasMao().remove(carta);
         return precisaSelecionar;
+    }
+    
+    public ListaCartasAgrupar<CartaUnidade> processarCartaAgrupar(Jogada jogada){
+    	CartaUnidade carta = null;
+    	Jogador jogador = null;
+        LanceCartaAgrupar lance = (LanceCartaAgrupar) jogada;
+        carta = (CartaUnidade)lance.getCarta();
+        jogador = lance.getJogador();
+    	ListaCartasAgrupar<CartaUnidade> retorno = new ListaCartasAgrupar<>();
+    	TipoUnidade t = carta.getTipo();
+        Fileira f = this.fileiras.get(t);
+        Deck deckJogador = this.jogadorAtual.getDeck();
+    	String nomeAComparar = sanitizarString(carta.getNomeCarta());
+    	HashMap<String,Carta> cartasFileira = this.jMesa.getCartasFileira();
+    	for(Carta cds : deckJogador.getCartas()){
+    		if(cds instanceof CartaUnidade){
+    			CartaUnidade u = (CartaUnidade)cds;
+    			String nomeDaCarta = sanitizarString(u.getNomeCarta());
+    			if(nomeAComparar.equals(nomeDaCarta) && 
+    					u.getHabilidade().getTipoHabilidade().equals(TipoHabilidade.AGRUPAR)
+    					&& carta != u){
+    				Fileira fi = this.fileiras.get(u.getTipo());
+    				u = (CartaUnidade)cartasFileira.get(u.getNomeCarta());
+    				int pontos = fi.incluirCarta(u);	//inclui cartas q vieram com ativacao da habilidade
+    				if(jogador != null){
+    					jogador.addPontuacao(pontos);
+    				}
+    				retorno.add(u);
+    			}                    				
+    		}
+    	}
+    	int pontuacaoCarta = f.incluirCarta(carta);		//inclui a carta q ocasionou a habilidade
+        if (jogador != null) {
+            //Aqui eu atualizo a pontuacao do jogador que jogou a carta (chamado pelo metodo baixarCarta)
+            jogador.addPontuacao(pontuacaoCarta);	//maycon,06/12-01h41 isso nao vai funcionar para cartas espiao.....
+        }
+    	return retorno;
     }
 
     //INSTAVEL: a nao ser q carta de habilidade q vai em fileira tb receba um atributo tipo
@@ -197,7 +236,7 @@ public class ControladorMesa {
             jMesa.recebeMesa(mesa);
         } else {
             Lance lance = (Lance) jogada;
-            if (lance.getCarta() == null) {
+            if (lance.getCarta() == null) {		//jogador adversario passou o round
                 this.mesa.inativarJogador(lance.getJogador());
                 this.jogadorAtual = this.mesa.getJogadorNaoAtual(lance.getJogador());
                 if (this.mesa.verificaFimDoRound()) {
@@ -207,13 +246,19 @@ public class ControladorMesa {
                     this.jMesa.recebeLance(lance);
                     getJogadorAtual().getCartasMao().remove(lance.getCarta());
                 }
-            } else {
+            } else {		//jogador adversario jogou uma carta
                 if (this.mesa.getJogadorNaoAtual(lance.getJogador()).getStatusJogador().equals(StatusJogador.ATIVO)) {
                     this.jogadorAtual = this.mesa.getJogadorNaoAtual(lance.getJogador());
                     this.mesa.setJogadorDaVez(this.jogadorAtual);
                     this.jMesa.recebeLance(lance);
                 }
-                this.processarCartaAdversario(lance);
+                if(lance instanceof LanceCartaAgrupar){
+                	LanceCartaAgrupar lanceAgrupar = (LanceCartaAgrupar) lance;
+                	this.processarCartaAgruparAdversario(jogada);
+                }
+                else{
+                	this.processarCartaAdversario(lance);
+                }                
                 this.mesa.removeCartaMaoJogador(lance);
             }
 //            this.jMesa.atualizaJogadorDaVez(this.mesa.getJogadorDaVez());
@@ -221,6 +266,21 @@ public class ControladorMesa {
         }
 
         this.jMesa.atualizarPlacar();
+    }
+    
+    public void processarCartaAgruparAdversario(Jogada jogada){
+    	LanceCartaAgrupar lanceAgrupar = (LanceCartaAgrupar) jogada;
+    	Jogador jogador = lanceAgrupar.getJogador();
+    	ListaCartasAgrupar<CartaUnidade> cartasDoLance = lanceAgrupar.getCartasAgrupar();
+    	for(CartaUnidade u : cartasDoLance){
+    		Fileira f = this.fileirasAdversario.get(u.getTipo());
+    		int poderCarta = f.incluirCarta(u);
+    		jogador.addPontuacao(poderCarta);
+    	}
+    	CartaUnidade cartaJogada = (CartaUnidade)lanceAgrupar.getCarta();
+    	int poderCarta = this.fileirasAdversario.get(cartaJogada.getTipo()).incluirCarta(cartaJogada);
+    	jogador.addPontuacao(poderCarta);
+    	this.jMesa.atualizarPlacar();
     }
 
     public void processarCartaAdversario(Jogada jogada) {
@@ -374,6 +434,25 @@ public class ControladorMesa {
         if (this.tratarPossibilidadeJogada()) {
             Lance lance = new Lance(carta, this.jogadorAtual);
             this.processarCarta(lance);
+            this.enviarJogada(lance);
+            Jogador jogadorNaoAtual = this.mesa.getJogadorNaoAtual(lance.getJogador());
+            if (jogadorNaoAtual.getStatusJogador().equals(StatusJogador.ATIVO)) {
+                this.jogadorAtual = jogadorNaoAtual;
+                this.mesa.setJogadorDaVez(jogadorNaoAtual);
+                this.jMesa.acaoBotao(false);
+            }
+        } else {
+            this.exibeMensagem("Espere a sua vez.");
+        }
+    }
+    
+    public void baixarCartaAgrupar(Carta carta){
+    	if (this.tratarPossibilidadeJogada()) {
+            LanceCartaAgrupar lance = new LanceCartaAgrupar(carta, this.jogadorAtual);
+            ListaCartasAgrupar<CartaUnidade> cartasLance = this.processarCartaAgrupar(lance);
+            for(CartaUnidade u : cartasLance){
+            	lance.setCartaAgrupar(u);
+            }
             this.enviarJogada(lance);
             Jogador jogadorNaoAtual = this.mesa.getJogadorNaoAtual(lance.getJogador());
             if (jogadorNaoAtual.getStatusJogador().equals(StatusJogador.ATIVO)) {

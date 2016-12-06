@@ -2,7 +2,9 @@ package gwent.controladores;
 
 
 import gwent.entidades.Carta;
+import gwent.entidades.CartaUnidade;
 import gwent.entidades.Jogador;
+import gwent.entidades.TipoHabilidade;
 
 public class AtorJogador {
 
@@ -45,6 +47,15 @@ public class AtorJogador {
     }
 
     public void baixarCarta(Carta carta) {
+    	if(carta instanceof CartaUnidade){
+    		CartaUnidade un = (CartaUnidade) carta;
+    		if(un.getHabilidade() != null){
+    			if(un.getHabilidade().getTipoHabilidade().equals(TipoHabilidade.AGRUPAR)){
+    				controladorMesa.baixarCartaAgrupar(un);
+    				return;		//para nao ir para o comando de baixo
+    			}
+    		}
+    	}
         controladorMesa.baixarCarta(carta);
     }
 }
