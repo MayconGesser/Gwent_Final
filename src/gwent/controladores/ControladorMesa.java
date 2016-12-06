@@ -78,6 +78,8 @@ public class ControladorMesa {
         } else {
             carta = (Carta) jogada;
         }
+
+    	System.out.println(this.jogadorAtual.getNome());
         boolean precisaSelecionar = false;
         if(carta instanceof CartaUnidade){
             CartaUnidade c = (CartaUnidade) carta;
@@ -91,7 +93,6 @@ public class ControladorMesa {
                     case MEDICO:
                         habilidadeCarta.setChamador(this);
                         habilidadeCarta.setReferenciaDeck(this.cemiterio);
-
                         break;
                     case AGILIDADE:
 //                        precisaSelecionar = true;
@@ -99,7 +100,16 @@ public class ControladorMesa {
                     	break;
                     case CORNETA_COMANDANTE:
                         break;
-                    case ESPIAO:
+                    case ESPIAO:	//deve ser baixada na fileira do adversario
+                    	f = this.fileirasAdversario.get(t);		//troca a referencia para a fileira do adversario
+                    	Carta cs1 = this.jogadorAtual.comprarCarta();
+                    	Carta cs2 = this.jogadorAtual.comprarCarta();   //compra 2 cartas, conforme habilidade
+                    	for(Carta cccp : this.jogadorAtual.getCartasMao()){
+                    		System.out.println("IMPRIMINDO MAO DO JOGADOR!!!!!!!!!!!!!");
+                    		System.out.println(cccp.toString());
+                    	}
+                    	this.jMesa.atualizarMaoJogador(cs1);
+                    	this.jMesa.atualizarMaoJogador(cs2);
                         break;
                     case INCINERAR:
                         break;
@@ -112,7 +122,7 @@ public class ControladorMesa {
             int pontuacaoCarta = f.incluirCarta(carta);
             if (jogador != null) {
                 //Aqui eu atualizo a pontuacao do jogador que jogou a carta (chamado pelo metodo baixarCarta)
-                jogador.addPontuacao(pontuacaoCarta);
+                jogador.addPontuacao(pontuacaoCarta);	//maycon,06/12-01h41 isso nao vai funcionar para cartas espiao.....
             }
         } else if(carta instanceof CartaClima){
         	CartaClima cc = (CartaClima) carta;
@@ -220,6 +230,7 @@ public class ControladorMesa {
                     case CORNETA_COMANDANTE:
                         break;
                     case ESPIAO:
+                    	f = this.fileiras.get(t);	//troca a referencia, deve ser baixada na propria fileira
                         break;
                     case INCINERAR:
                         break;

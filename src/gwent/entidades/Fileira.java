@@ -14,7 +14,7 @@ public class Fileira extends JPanel implements Jogada {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private final ArrayList<Carta> cartas;
+	private ArrayList<Carta> cartas;
 	private int poderTotal;
 	private boolean sobEfeitoClima;
 	private Carta ultimaCartaInclusa;

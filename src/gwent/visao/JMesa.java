@@ -3,6 +3,8 @@ package gwent.visao;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -121,40 +123,36 @@ public class JMesa extends javax.swing.JFrame {
         mesa.iniciarRound(mesa.getJogadorDaVez());
     }
 
+    //metodo invocado qdo cartas sao compradas, para exibir cartas
+    public void atualizarMaoJogador(Carta carta){
+    	carta.addMouseListener(this.mouseCartas);
+    	this.HespacoCartas.addComponent(carta);
+    	this.VespacoCartas.addComponent(carta);
+		revalidate();
+		repaint();
+    }
+    
+    //invocado apenas no comeco do jogo
     private void preencherCartas(Jogador jogador) {
-		Group gh = espacoCartasLayout.createSequentialGroup();
-		Group gv = espacoCartasLayout.createParallelGroup();
-		MouseCarta b = new MouseCarta();
-
-		//apenas para teste de carta de clima
-//		ArrayList<Carta> d = (ArrayList<Carta>)jogador.getDeck().getCartas();
-//		CartaClima geadamordaz = null;
-//		int i = 0;
-//		for(Carta c : d){
-//			i++;
-//			if(c instanceof CartaClima){
-//				geadamordaz = (CartaClima) c;
-//			}
-//		}
-//		if(geadamordaz != null){
-//			jogador.getDeck().getCartas().remove(i);
-//			geadamordaz.addMouseListener(b);
-//			geadamordaz.setName(geadamordaz.getNomeCarta());
-//			gh.addComponent(geadamordaz);
-//			gv.addComponent(geadamordaz);
-//		}
-//
+		this.HespacoCartas = espacoCartasLayout.createSequentialGroup();
+		this.VespacoCartas = espacoCartasLayout.createParallelGroup();
+		
+		ArrayList<Carta> mao = (ArrayList)jogador.getCartasMao();
+		for(int y = 0; y<mao.size(); y++){
+			System.out.println(mao.get(y).toString());
+		}			
+		
 		for(int x = 0; x<10; x++) {
 			Carta carta = jogador.mostrarCarta(x);
-			carta.addMouseListener(b);
+			carta.addMouseListener(this.mouseCartas);
 			carta.setName(carta.getNomeCarta());
-			gh.addComponent(carta);
-			gv.addComponent(carta);
+			this.HespacoCartas.addComponent(carta);
+			this.VespacoCartas.addComponent(carta);
 		}
 		
-		espacoCartasLayout.setHorizontalGroup(gh);
-		espacoCartasLayout.setVerticalGroup(gv);
-
+		espacoCartasLayout.setHorizontalGroup(this.HespacoCartas);
+		espacoCartasLayout.setVerticalGroup(this.VespacoCartas);
+		
         Map<String, Object> mapDeck = BancoCartas.resgatarDeck(jogador.getDeck().getFaccao());
 
         cartasExibicao = (HashMap<String, Carta>) mapDeck.get("exibicao");
@@ -231,6 +229,7 @@ public class JMesa extends javax.swing.JFrame {
 		cemiterioAd = new javax.swing.JPanel();
 		espacoCartas = new javax.swing.JPanel();
 		espacoExibicaoCarta = new javax.swing.JPanel();
+		mouseCartas = new MouseCarta();
 		btPassar = new javax.swing.JButton();
 		btJogar = new javax.swing.JButton();
 		jMenuBar = new javax.swing.JMenuBar();
@@ -681,6 +680,8 @@ public class JMesa extends javax.swing.JFrame {
 	private javax.swing.JPanel espacoCartas;
 	private JPanel dummy;
 	private GroupLayout espacoCartasLayout;
+	private Group HespacoCartas; 
+	private Group VespacoCartas;
 	private GroupLayout espacoExibicaoCartaLayout;
 	private Fileira fileiraCerco;
 	private Fileira fileiraCercoAd;
@@ -697,6 +698,7 @@ public class JMesa extends javax.swing.JFrame {
 	private javax.swing.JButton btJogar;
 	private javax.swing.JPanel espacoExibicaoCarta;
 	private Carta cartaSelecionada;
+	private MouseCarta mouseCartas;
 	private Group Hexibicao;
 	private Group Vexibicao;
 	private Deck cartasDeck;
@@ -822,14 +824,15 @@ public class JMesa extends javax.swing.JFrame {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
-			if(passouTurno){
-				return;
-			}
+//			if(passouTurno){
+//				return;
+//			}
 
 			Carta c = (Carta) e.getSource();
 
 			//carta estah numa fileira, nao pode ser selecionada
 			if(c.getParent() instanceof Fileira){
+				System.out.println("Está numa fileira"); //debugar habilidade espiao
 				return;
 			}
 
@@ -919,7 +922,7 @@ public class JMesa extends javax.swing.JFrame {
 				String n = cartaSelecionada.getNomeCarta();
 				if(cartaSelecionada instanceof CartaUnidade){
 					cartaAdicionada = (CartaUnidade) cartasFileiraEx.get(n);  //precisa-se manter um ponteiro para o objeto da carta q vai ser add pra manter o mouselistener
-					cartaAdicionada.addMouseListener(new MouseCarta());
+					cartaAdicionada.addMouseListener(mouseCartas);
 					TipoHabilidade tipoHabilidadeCarta = null;
 
 					if(cartaSelecionada.getHabilidade() != null){
@@ -952,7 +955,6 @@ public class JMesa extends javax.swing.JFrame {
                 atualizarPlacar();
 				cartaSelecionada = null;
 				trocaCartaParaDummy();
-				jogadorDaVez = false;
 				revalidate();
 				repaint();
 			}

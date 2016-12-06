@@ -54,6 +54,14 @@ public class Jogador implements Jogada {
 //        	}
 //        }
     }
+    
+    //metodo disparado apenas pela habilidade ESPIAO
+    //precisa retornar carta para ser exibida na tela
+    public Carta comprarCarta(){
+    	Carta cartaSacada = this.deck.sacarCarta();
+    	this.cartasMao.add(cartaSacada);
+    	return cartaSacada;
+    }
 
     public void addPontuacao(int pontuacao) {
         this.pontuacao += pontuacao;
