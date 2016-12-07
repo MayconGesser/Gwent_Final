@@ -349,6 +349,7 @@ public class ControladorMesa implements Jogada {
     private void acabouRound() {
         this.jMesa.exibeMensagem("Acabou o round, computando os pontos ...");
         Jogador jogadorVencedor = this.mesa.verificaVencedorRound();
+        jMesa.atualizarVencedorRound(jogadorVencedor);
         this.jMesa.exibeMensagem("Jogador vencedor: " + jogadorVencedor.toString());
         this.limparFileiras();
         this.mesa.iniciarNovoRound(jogadorVencedor);
