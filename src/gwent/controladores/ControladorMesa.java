@@ -197,11 +197,8 @@ public class ControladorMesa implements Jogada {
 //    		}
 //    	}
 
-    	int pontuacaoCarta = f.incluirCarta(carta);		//inclui a carta q ocasionou a habilidade
-        if (jogador != null) {
-            //Aqui eu atualizo a pontuacao do jogador que jogou a carta (chamado pelo metodo baixarCarta)
-            jogador.addPontuacao(pontuacaoCarta);	//maycon,06/12-01h41 isso nao vai funcionar para cartas espiao.....
-        }
+    	f.incluirCarta(carta);		//inclui a carta q ocasionou a habilidade
+        this.computaPontosJogador(this.mesa.getJogador(jogador), this.fileiras);
     	return retorno;
     }
 
@@ -274,12 +271,11 @@ public class ControladorMesa implements Jogada {
     	ListaCartasAgrupar<CartaUnidade> cartasDoLance = lanceAgrupar.getCartasAgrupar();
     	for(CartaUnidade u : cartasDoLance){
     		Fileira f = this.fileirasAdversario.get(u.getTipo());
-    		int poderCarta = f.incluirCarta(u);
-    		jogador.addPontuacao(poderCarta);
+    		f.incluirCarta(u);
     	}
     	CartaUnidade cartaJogada = (CartaUnidade)lanceAgrupar.getCartaJogada();
-    	int poderCarta = this.fileirasAdversario.get(cartaJogada.getTipo()).incluirCarta(cartaJogada);
-    	jogador.addPontuacao(poderCarta);
+    	this.fileirasAdversario.get(cartaJogada.getTipo()).incluirCarta(cartaJogada);
+        this.computaPontosJogador(this.mesa.getJogador(jogador), this.fileirasAdversario);
     	this.jMesa.atualizarPlacar();
     }
 
