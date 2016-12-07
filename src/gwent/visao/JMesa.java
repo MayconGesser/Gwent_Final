@@ -82,7 +82,7 @@ public class JMesa extends javax.swing.JFrame {
             this.iniciarPartidaJogadorDois(mesa);
             this.exibeMensagem("Uma nova partida vai iniciar");
         }  else if (mesa.getStatusMesa().equals(StatusMesa.INICIAR_RODADA)) {
-            this.iniciarNovaRodada(mesa);
+            this.iniciarNovaRodada();
         } else if (mesa.getStatusMesa().equals(StatusMesa.ENCERRAR_PARTIDA)) {
             this.exibeMensagem("O vencedor do jogo é: " + mesa.getJogadorDaVez().getNome());
             System.exit(0);
@@ -91,15 +91,15 @@ public class JMesa extends javax.swing.JFrame {
         repaint();
     }
 
-    private void iniciarNovaRodada(Mesa mesa) {
-        fileiraLongaDistancia = new Fileira(TipoUnidade.LONGA_DISTANCIA,null);
-        fileiraInfantaria = new Fileira(TipoUnidade.INFANTARIA,null);
-        fileiraInfantariaAd = new Fileira(TipoUnidade.INFANTARIA,null);
-        fileiraLongaDistanciaAd = new Fileira(TipoUnidade.LONGA_DISTANCIA,null);
-        fileiraCercoAd = new Fileira(TipoUnidade.CERCO,null);
-        fileiraCerco.addMouseListener(seletorFileira);
-        fileiraLongaDistancia.addMouseListener(seletorFileira);
-        fileiraInfantaria.addMouseListener(seletorFileira);
+    private void iniciarNovaRodada() {
+        fileiraLongaDistancia.limpar();
+        fileiraInfantaria.limpar();
+        fileiraInfantariaAd.limpar();
+        fileiraLongaDistanciaAd.limpar();
+        fileiraCercoAd.limpar();
+        fileiraCerco.limpar();
+        fileiraLongaDistancia.limpar();
+        fileiraInfantaria.limpar();
         //this.ctrlMesa.limpaFileiras(fileiraInfantaria, fileiraLongaDistancia, fileiraCerco, fileiraInfantariaAd, fileiraLongaDistanciaAd, fileiraCercoAd);
     }
 

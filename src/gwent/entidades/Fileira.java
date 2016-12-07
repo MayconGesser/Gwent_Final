@@ -152,7 +152,7 @@ public class Fileira extends JPanel implements Jogada {
 			this.anularEfeitoClima();
 		this.poderTotal = 0;
 		for(Carta c : this.cartas){
-			this.fileiraLayout.removeLayoutComponent(c);
+			this.remove(c);
 		}
 		this.cartas.clear();
 	}
