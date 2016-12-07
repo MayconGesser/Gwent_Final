@@ -100,7 +100,7 @@ public class JMesa extends javax.swing.JFrame {
         fileiraCerco.addMouseListener(seletorFileira);
         fileiraLongaDistancia.addMouseListener(seletorFileira);
         fileiraInfantaria.addMouseListener(seletorFileira);
-        this.ctrlMesa.limpaFileiras(fileiraInfantaria, fileiraLongaDistancia, fileiraCerco, fileiraInfantariaAd, fileiraLongaDistanciaAd, fileiraCercoAd);
+        //this.ctrlMesa.limpaFileiras(fileiraInfantaria, fileiraLongaDistancia, fileiraCerco, fileiraInfantariaAd, fileiraLongaDistanciaAd, fileiraCercoAd);
     }
 
     private void iniciarPartidaJogadorDois(Mesa mesa) {
@@ -230,6 +230,18 @@ public class JMesa extends javax.swing.JFrame {
 
     public void exibeMensagem(String message) {
         JOptionPane.showMessageDialog(null, message);
+    }
+    
+
+    public void limparFileiras() {
+        this.fileiraCerco.limpar();
+        this.fileiraCercoAd.limpar();
+        this.fileiraInfantaria.limpar();
+        this.fileiraInfantariaAd.limpar();
+        this.fileiraLongaDistancia.limpar();
+        this.fileiraLongaDistanciaAd.limpar();
+        revalidate();
+        repaint();
     }
 
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">                          

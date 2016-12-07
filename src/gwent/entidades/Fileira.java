@@ -22,7 +22,6 @@ public class Fileira extends JPanel implements Jogada {
 	private MouseListener mouseCartas;
 	private static final Color corNormal = new Color(156,73,0);
 	private final TipoUnidade tipo;
-	//private final ExibidorPoderFileira exibidorPoder;	
 	private Group glHorizontal;
 	private Group glVertical;
 	private GroupLayout fileiraLayout;
@@ -30,7 +29,6 @@ public class Fileira extends JPanel implements Jogada {
 	
 	public Fileira(TipoUnidade tipo, ExibidorPoderFileira exibidorPoder){
 		this.tipo = tipo;		
-		//this.exibidorPoder = exibidorPoder;
 		this.cartas = new ArrayList<>();
 		this.fileiraLayout = new GroupLayout(this);
 		this.setLayout(fileiraLayout);
@@ -154,14 +152,9 @@ public class Fileira extends JPanel implements Jogada {
 		if (this.sobEfeitoClima)
 			this.anularEfeitoClima();
 		this.poderTotal = 0;
-		this.cartas = new ArrayList<>();
-		this.glHorizontal = fileiraLayout.createSequentialGroup();
-		this.glVertical = fileiraLayout.createParallelGroup(
-				javax.swing.GroupLayout.Alignment.LEADING
-		);
-		this.fileiraLayout.setHorizontalGroup(glHorizontal);
-		this.fileiraLayout.setVerticalGroup(glVertical);
-		revalidate();
-		repaint();
+		for(Carta c : this.cartas){
+			this.fileiraLayout.removeLayoutComponent(c);
+		}
+		this.cartas.clear();
 	}
 }

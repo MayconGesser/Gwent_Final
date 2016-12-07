@@ -350,7 +350,7 @@ public class ControladorMesa implements Jogada {
         this.jMesa.exibeMensagem("Acabou o round, computando os pontos ...");
         Jogador jogadorVencedor = this.mesa.verificaVencedorRound();
         this.jMesa.exibeMensagem("Jogador vencedor: " + jogadorVencedor.toString());
-        this.limparFileiras();
+        this.jMesa.limparFileiras();
         this.mesa.iniciarNovoRound(jogadorVencedor);
         if (this.jogadorAtual.equals(jogadorVencedor))
             this.jMesa.acaoBotao(true);
@@ -375,11 +375,6 @@ public class ControladorMesa implements Jogada {
         this.mesa.setStatusMesa(StatusMesa.ENCERRAR_PARTIDA);
         this.enviarJogada(this.mesa);
         this.jMesa.recebeMesa(this.mesa);
-    }
-
-    private void limparFileiras() {
-        this.fileiras.values().forEach(Fileira::limpar);
-        this.fileirasAdversario.values().forEach(Fileira::limpar);
     }
 
     private void criarJogadorAtual(String nome) {
