@@ -63,14 +63,14 @@ public class AtorNetGames implements OuvidorProxy {
                 jogadores.add(jogador);
             }
         }
-//        else {
-//            Jogador jogador = controladorMesa.getJogadorAtual();
-//            jogador.setDeck((Deck) BancoCartas.resgatarDeck(Faccao.REINOS_DO_NORTE).get("deck"));
-//            jogadores.add(jogador);
-//            jogador = new Jogador(2, proxy.obterNomeAdversario(2));
-//            jogador.setDeck((Deck) BancoCartas.resgatarDeck(Faccao.MONSTROS).get("deck"));
-//            jogadores.add(jogador);
-//        }
+        else {
+            Jogador jogador = controladorMesa.getJogadorAtual();
+            jogador.setDeck((Deck) BancoCartas.resgatarDeck(Faccao.REINOS_DO_NORTE).get("deck"));
+            jogadores.add(jogador);
+            jogador = new Jogador(2, proxy.obterNomeAdversario(2));
+            jogador.setDeck((Deck) BancoCartas.resgatarDeck(Faccao.MONSTROS).get("deck"));
+            jogadores.add(jogador);
+        }
         return jogadores;
     }
 
