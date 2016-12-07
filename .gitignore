@@ -7,4 +7,5 @@ bin
 *.iml
 /classes
 src/META-INF
-documentacao/*.vux
+documentacao/Gwent.vux
+documentacao/.Gwent.vpp.lck

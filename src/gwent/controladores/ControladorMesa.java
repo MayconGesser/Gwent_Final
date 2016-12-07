@@ -233,7 +233,7 @@ public class ControladorMesa implements Jogada {
                 this.mesa.inativarJogador(lance.getJogador());
                 this.jogadorAtual = this.mesa.getJogadorNaoAtual(lance.getJogador());
                 if (this.mesa.verificaFimDoRound()) {
-                    this.acabouRound();
+                    this.verificaVencedorRound();
                 } else {
                     this.mesa.setJogadorDaVez(this.jogadorAtual);
                     this.jMesa.recebeLance(lance);
@@ -331,7 +331,7 @@ public class ControladorMesa implements Jogada {
         this.jMesa.atualizarVisibilidadeTela(mode);
     }
 
-    private void acabouRound() {
+    private void verificaVencedorRound() {
         this.jMesa.exibeMensagem("Acabou o round, computando os pontos ...");
         Jogador jogadorVencedor = this.mesa.verificaVencedorRound();
         jMesa.atualizarVencedorRound(jogadorVencedor);
@@ -394,7 +394,7 @@ public class ControladorMesa implements Jogada {
             this.mesa.addLance(lance);
             this.enviarJogada(lance);
             if (this.mesa.verificaFimDoRound()) {
-                this.acabouRound();
+                this.verificaVencedorRound();
             } else {
                 this.jogadorAtual = this.mesa.getJogadorNaoAtual(lance.getJogador());
                 this.mesa.setJogadorDaVez(this.jogadorAtual);
