@@ -1,20 +1,20 @@
 package gwent.visao;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import gwent.controladores.AtorJogador;
+import gwent.controladores.ControladorMesa;
+import gwent.entidades.*;
 
 import javax.swing.*;
 import javax.swing.GroupLayout.Group;
 import javax.swing.border.BevelBorder;
-
-import gwent.controladores.AtorJogador;
-import gwent.controladores.ControladorMesa;
-import gwent.entidades.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JMesa extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
@@ -308,7 +308,7 @@ public class JMesa extends javax.swing.JFrame {
         labelInimigoNumeroCartas.setText("10");
 
         labelInimigoPoder.setForeground(new java.awt.Color(0, 0, 0));
-        labelInimigoPoder.setText("56");
+        labelInimigoPoder.setText("0");
 
         labelInimicoFaccao.setForeground(new java.awt.Color(0, 0, 0));
         labelInimicoFaccao.setText("Reinos do Norte");
@@ -324,7 +324,7 @@ public class JMesa extends javax.swing.JFrame {
         labelInimigoNumeroCartas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelInimigoNumeroCartas.setText("10");
 
-        labelInimigoPoder.setText("56");
+        labelInimigoPoder.setText("0");
 
         labelInimicoFaccao.setText("Reinos do Norte");
 
@@ -342,7 +342,7 @@ public class JMesa extends javax.swing.JFrame {
         meuNumeroCartas.setText("10");
 
         meuPoder.setForeground(new java.awt.Color(0, 0, 0));
-        meuPoder.setText("56");
+        meuPoder.setText("0");
 
         minhaFaccao.setForeground(new java.awt.Color(0, 0, 0));
         minhaFaccao.setText("Reinos do Norte");
@@ -689,6 +689,11 @@ public class JMesa extends javax.swing.JFrame {
         btPassar.addActionListener(m);
         btJogar.addActionListener(m);
 
+        meuUmRound.setEnabled(false);
+        meuDoisRound.setEnabled(false);
+        inimigoUmRound.setEnabled(false);
+        inimigoDoisRound.setEnabled(false);
+
         getContentPane().addMouseListener(new MouseGeral());
         pack();
 
@@ -775,7 +780,7 @@ public class JMesa extends javax.swing.JFrame {
     private javax.swing.JLabel meuPoder;
     private javax.swing.JRadioButton meuUmRound;
     private javax.swing.JLabel minhaFaccao;
-	// End of variables declaration        
+	// End of variables declaration
 
     public void atualizarPlacar() {
 	    if(ctrlMesa.getJogadorAtual().getNome().equals(ctrlMesa.getMesa().getJogadorUm().getNome())){
@@ -790,6 +795,20 @@ public class JMesa extends javax.swing.JFrame {
 
             labelInimigoPoder.setText(ctrlMesa.getMesa().getJogadorUm().getPontuacao().toString());
             labelInimigoNumeroCartas.setText("" + ctrlMesa.getMesa().getJogadorUm().getCartasMao().size());
+        }
+    }
+
+    public void atualizarVencedorRound(Jogador jogadorVencedor){
+        if(jogadorVencedor.getNome().equals(ctrlMesa.getMesa().getJogadorDois().getNome())){
+            if(!meuUmRound.isSelected())
+                meuUmRound.setSelected(true);
+            else
+                meuDoisRound.setSelected(true);
+        } else{
+            if(!inimigoUmRound.isSelected())
+                inimigoUmRound.setSelected(true);
+            else
+                inimigoDoisRound.setSelected(true);
         }
     }
 
