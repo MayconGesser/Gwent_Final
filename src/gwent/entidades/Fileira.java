@@ -117,8 +117,7 @@ public class Fileira extends JPanel implements Jogada {
 		int novoPoderTotal = 0;
 		if(this.sobEfeitoClima){
 			novoPoderTotal = this.cartas.size();
-		}
-		else{
+		} else {
 			for(Carta c : this.cartas){
 				if(c instanceof CartaUnidade){
 					CartaUnidade unidade = (CartaUnidade) c;

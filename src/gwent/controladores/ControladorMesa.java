@@ -2,6 +2,7 @@ package gwent.controladores;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import br.ufsc.inf.leobr.cliente.Jogada;
 import gwent.entidades.*;
@@ -96,20 +97,16 @@ public class ControladorMesa implements Jogada {
         if(carta instanceof CartaUnidade){
             CartaUnidade c = (CartaUnidade) carta;
             TipoUnidade t = c.getTipo();
-            Fileira f = this.fileiras.get(t);
+            Map<TipoUnidade, Fileira> f = this.fileiras;
             Habilidade habilidadeCarta = c.getHabilidade();
 
             if(habilidadeCarta != null){
                 TipoHabilidade tipoHabilidadeCarta = habilidadeCarta.getTipoHabilidade();
                 switch(tipoHabilidadeCarta){
                     case ESPIAO:	//deve ser baixada na fileira do adversario
-                    	f = this.fileirasAdversario.get(t);		//troca a referencia para a fileira do adversario
+                    	f = this.fileirasAdversario;		//troca a referencia para a fileira do adversario
                     	Carta cs1 = this.jogadorAtual.comprarCarta();
                     	Carta cs2 = this.jogadorAtual.comprarCarta();   //compra 2 cartas, conforme habilidade
-                    	for(Carta cccp : this.jogadorAtual.getCartasMao()){
-                    		System.out.println("IMPRIMINDO MAO DO JOGADOR!!!!!!!!!!!!!");
-                    		System.out.println(cccp.toString());
-                    	}
                     	this.jMesa.adicionarCartasMaoJogador(cs1);
                     	this.jMesa.adicionarCartasMaoJogador(cs2);
                         jogador = this.mesa.getJogadorNaoAtual(this.jogadorAtual);
@@ -137,14 +134,14 @@ public class ControladorMesa implements Jogada {
                         break;
                 }
             }
-            int pontuacaoCarta = f.incluirCarta(carta);
-            jogador.addPontuacao(pontuacaoCarta);
+            f.get(t).incluirCarta(carta);
+            this.computaPontosJogador(jogador, f);
         } else if(carta instanceof CartaClima){
         	CartaClima cc = (CartaClima) carta;
-        	cc.ativarHabilidade(
-        			this.fileiras.get(cc.getTipo().getFileiraAtingida()));
-        	cc.ativarHabilidade(
-        			this.fileirasAdversario.get(cc.getTipo().getFileiraAtingida()));       	
+        	cc.ativarHabilidade(this.fileiras.get(cc.getTipo().getFileiraAtingida()));
+        	cc.ativarHabilidade(this.fileirasAdversario.get(cc.getTipo().getFileiraAtingida()));
+            this.computaPontosJogador(jogador, this.fileiras);
+            this.computaPontosJogador(this.mesa.getJogadorNaoAtual(jogador), this.fileirasAdversario);
         }
         getJogadorAtual().getCartasMao().remove(carta);
     }
@@ -287,34 +284,20 @@ public class ControladorMesa implements Jogada {
     }
 
     public void processarCartaAdversario(Jogada jogada) {
-        /*
-        Tive que fazer esse método receber uma jogada como parametro, podendo ser uma Carta
-        (somente utilizado na classe Habiliadde para alguma habilidade que o maycon implementou) e podendo ser Lance, pois
-        pego a carta e a referencia do jogador para poder adicionar a pontuacao dele na mesa
-        */
-        Carta cartaJogada;
-        Carta cartaExibicao = null;
-        Jogador jogador = null;
-        if (jogada instanceof Lance) {
-            Lance lance = (Lance) jogada;
-            cartaJogada = lance.getCartaJogada();
-            cartaExibicao = lance.getCartaExibicao();
-            jogador = lance.getJogador();
-        } else {
-            cartaJogada = (Carta) jogada;
-        }
-        boolean precisaSelecionar = false;
-        if(cartaJogada instanceof CartaUnidade){
-            CartaUnidade c = (CartaUnidade) cartaJogada;
+        Lance lance = (Lance) jogada;
+        Jogador jogador = lance.getJogador();
+
+        if(lance.getCartaJogada() instanceof CartaUnidade){
+            CartaUnidade c = (CartaUnidade) lance.getCartaJogada();
             TipoUnidade t = c.getTipo();
-            Fileira f = this.fileirasAdversario.get(t);
+            Map<TipoUnidade, Fileira> f = this.fileirasAdversario;
             Habilidade habilidadeCarta = c.getHabilidade();
 
             if(habilidadeCarta != null){
                 TipoHabilidade tipoHabilidadeCarta = habilidadeCarta.getTipoHabilidade();
                 switch(tipoHabilidadeCarta){
                     case ESPIAO:
-                    	f = this.fileiras.get(t);	//troca a referencia, deve ser baixada na propria fileira
+                    	f = this.fileiras;	//troca a referencia, deve ser baixada na propria fileira
                         jogador = this.jogadorAtual;
                         break;
                     case AGRUPAR:
@@ -323,23 +306,25 @@ public class ControladorMesa implements Jogada {
                         break;
                 }
             }
-            int pontuacaoCarta = f.incluirCarta(cartaJogada);
-            this.jMesa.addCartasExibicaoAdversario(cartaExibicao);
-            if (jogador != null) {
-                /*
-                Aqui eu atualizo a pontuacao do jogador que baixou essa carta (sendo o outro lado do jogo)
-                tenho que fazer esse metodo de this.mesa.getJogador(jogador), para poder pegar a referencia do jogador correto
-                e adicionar o valor da carta jogada
-                 */
-                this.mesa.getJogador(jogador).addPontuacao(pontuacaoCarta);
-            }
-        } else if(cartaJogada instanceof CartaClima){
-            CartaClima cc = (CartaClima) cartaJogada;
+            f.get(t).incluirCarta(lance.getCartaJogada());
+            this.jMesa.addCartasExibicaoAdversario(lance.getCartaExibicao());
+            this.computaPontosJogador(this.mesa.getJogador(jogador), f);
+        } else if(lance.getCartaJogada() instanceof CartaClima){
+            CartaClima cc = (CartaClima) lance.getCartaJogada();
             TipoCartaClima tipo = cc.getTipo();
-            cc.ativarHabilidade(this.fileiras.get(cc.getTipo().getFileiraAtingida()));
-            cc.ativarHabilidade(this.fileirasAdversario.get(cc.getTipo().getFileiraAtingida()));
+            cc.ativarHabilidade(this.fileiras.get(tipo.getFileiraAtingida()));
+            cc.ativarHabilidade(this.fileirasAdversario.get(tipo.getFileiraAtingida()));
+            this.computaPontosJogador(jogador, this.fileirasAdversario);
+            this.computaPontosJogador(this.mesa.getJogadorNaoAtual(jogador), this.fileiras);
         }
         this.jMesa.atualizarPlacar();
+    }
+
+    private void computaPontosJogador(Jogador jogador, Map<TipoUnidade, Fileira> fileiraMap) {
+        jogador.setPontuacao(0);
+        for (Fileira fileira : fileiraMap.values()) {
+            jogador.addPontuacao(fileira.getPoderTotal());
+        }
     }
 
     public void atualizarVisibilidadeTela(int mode) {
