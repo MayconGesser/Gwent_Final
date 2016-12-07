@@ -31,7 +31,12 @@ public class CartaClima extends CartaHabilidade implements Jogada{
 	
 	@Override
 	public void ativarHabilidade(Fileira fileira){
-		fileira.sofrerEfeitoClima();
+		if(this.tipo.equals(TipoCartaClima.TEMPO_LIMPO)){
+			fileira.anularEfeitoClima();
+		}
+		else{
+			fileira.sofrerEfeitoClima();
+		}		
 	}
 	
 	public TipoCartaClima getTipo(){

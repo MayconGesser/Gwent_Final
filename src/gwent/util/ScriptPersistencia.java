@@ -134,6 +134,12 @@ public class ScriptPersistencia {
 					System.out.println(TipoCartaClima.CHUVA_TORRENCIAL.toString());
 					carta = new CartaClima(nome,habilidadeCarta,TipoCartaClima.CHUVA_TORRENCIAL);
 					break;
+					
+				case "tl":
+					System.out.println(nome);
+					System.out.println(TipoCartaClima.TEMPO_LIMPO.toString());
+					carta = new CartaClima(nome,habilidadeCarta,TipoCartaClima.TEMPO_LIMPO);
+					break;
 			}
 		}		
 		

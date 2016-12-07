@@ -112,24 +112,6 @@ public class ControladorMesa implements Jogada {
                         jogador = this.mesa.getJogadorNaoAtual(this.jogadorAtual);
                         break;
 
-                    case AGRUPAR:
-                    	Deck deckJogador = this.jogadorAtual.getDeck();
-                    	String nomeAComparar = sanitizarString(c.getNomeCarta());
-                    	HashMap<String,Carta> cartas = this.jMesa.getCartasFileira();
-                    	for(Carta cds : deckJogador.getCartas()){
-                    		if(cds instanceof CartaUnidade){
-                    			CartaUnidade u = (CartaUnidade)cds;
-                    			String nomeDaCarta = sanitizarString(u.getNomeCarta());
-                    			if(nomeAComparar.equals(nomeDaCarta) &&
-                    					u.getHabilidade().getTipoHabilidade().equals(TipoHabilidade.AGRUPAR)
-                    					&& c != u){
-                    				Fileira fi = this.fileiras.get(u.getTipo());
-                    				u = (CartaUnidade)cartas.get(u.getNomeCarta());
-                    				fi.incluirCarta(u);
-                    			}
-                    		}
-                    	}
-                    	break;
                     default:
                         break;
                 }
@@ -138,8 +120,18 @@ public class ControladorMesa implements Jogada {
             this.computaPontosJogador(jogador, f);
         } else if(carta instanceof CartaClima){
         	CartaClima cc = (CartaClima) carta;
-        	cc.ativarHabilidade(this.fileiras.get(cc.getTipo().getFileiraAtingida()));
-        	cc.ativarHabilidade(this.fileirasAdversario.get(cc.getTipo().getFileiraAtingida()));
+        	if(cc.getTipo().equals(TipoCartaClima.TEMPO_LIMPO)){
+        		TipoUnidade[] tiposFileiras = cc.getTipo().getFileirasAtingidas();
+        		for(TipoUnidade tu : tiposFileiras){
+        			cc.ativarHabilidade(this.fileiras.get(tu));
+        			cc.ativarHabilidade(this.fileirasAdversario.get(tu));
+        		}
+        	}
+        	else{
+        		cc.ativarHabilidade(this.fileiras.get(cc.getTipo().getFileiraAtingida()));
+            	cc.ativarHabilidade(this.fileirasAdversario.get(cc.getTipo().getFileiraAtingida()));
+        	}
+        	
             this.computaPontosJogador(jogador, this.fileiras);
             this.computaPontosJogador(this.mesa.getJogadorNaoAtual(jogador), this.fileirasAdversario);
         }
@@ -308,8 +300,17 @@ public class ControladorMesa implements Jogada {
         } else if(lance.getCartaJogada() instanceof CartaClima){
             CartaClima cc = (CartaClima) lance.getCartaJogada();
             TipoCartaClima tipo = cc.getTipo();
-            cc.ativarHabilidade(this.fileiras.get(tipo.getFileiraAtingida()));
-            cc.ativarHabilidade(this.fileirasAdversario.get(tipo.getFileiraAtingida()));
+            if(tipo.equals(TipoCartaClima.TEMPO_LIMPO)){
+            	TipoUnidade[] fileiras = tipo.getFileirasAtingidas();
+            	for(TipoUnidade tu : fileiras){
+            		cc.ativarHabilidade(this.fileiras.get(tu));
+            		cc.ativarHabilidade(this.fileirasAdversario.get(tu));
+            	}
+            }
+            else{
+            	cc.ativarHabilidade(this.fileiras.get(tipo.getFileiraAtingida()));
+                cc.ativarHabilidade(this.fileirasAdversario.get(tipo.getFileiraAtingida()));
+            }            
             this.computaPontosJogador(jogador, this.fileirasAdversario);
             this.computaPontosJogador(this.mesa.getJogadorNaoAtual(jogador), this.fileiras);
         }
