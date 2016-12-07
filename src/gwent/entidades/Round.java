@@ -2,6 +2,7 @@ package gwent.entidades;
 
 import br.ufsc.inf.leobr.cliente.Jogada;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class Round implements Jogada {
@@ -11,6 +12,7 @@ public class Round implements Jogada {
     protected Collection<Lance> lances;
 
     public Round() {
+        this.lances = new ArrayList<>();
     }
 
     public Round(Integer numeroRound) {

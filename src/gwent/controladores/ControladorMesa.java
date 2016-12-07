@@ -56,17 +56,19 @@ public class ControladorMesa implements Jogada {
     }
 
     public void iniciarPartida() {
-        this.atorNetGames.iniciarPartida();
+        if (this.conectado) {
+            this.atorNetGames.iniciarPartida();
 
-        List<Jogador> jogadores = this.atorNetGames.getJogadores();
+            List<Jogador> jogadores = this.atorNetGames.getJogadores();
 
-        if (jogadores.size() == 2) {
-            this.mesa.setJogadores(jogadores);
-            this.mesa.criarJogadores();
-            jogadores.stream()
-                    .filter(jogador -> jogador.getNome().equals(this.jogadorAtual.getNome()))
-                    .forEach(jogador -> this.jogadorAtual = jogador);
-            this.iniciarNovaPartida();
+            if (jogadores.size() == 2) {
+                this.mesa.setJogadores(jogadores);
+                this.mesa.criarJogadores();
+                jogadores.stream()
+                        .filter(jogador -> jogador.getNome().equals(this.jogadorAtual.getNome()))
+                        .forEach(jogador -> this.jogadorAtual = jogador);
+                this.iniciarNovaPartida();
+            }
         }
     }
 
@@ -76,6 +78,7 @@ public class ControladorMesa implements Jogada {
         this.mesa.setStatusMesa(StatusMesa.INICAR_PARTIDA);
         this.mesa.iniciarRound(jogadorAtual);
         this.enviarJogada(this.mesa);
+        this.jogadorAtual = this.mesa.getJogadorUm();
         this.jMesa.inicioPartidaJogadorUm(mesa);
     }
 
@@ -388,6 +391,7 @@ public class ControladorMesa implements Jogada {
         if (this.tratarPossibilidadeJogada()) {
             this.mesa.inativarJogador(this.jogadorAtual);
             Lance lance = new Lance(this.jogadorAtual);
+            this.mesa.addLance(lance);
             this.enviarJogada(lance);
             if (this.mesa.verificaFimDoRound()) {
                 this.acabouRound();

@@ -110,7 +110,6 @@ public class JMesa extends javax.swing.JFrame {
 
     public void inicioPartidaJogadorUm(Mesa mesa) {
         this.preencherCartas(mesa.getJogadorUm());
-        this.ctrlMesa.setJogadorAtual(mesa.getJogadorUm());
         this.acaoBotao(true);
         this.exibeMensagem("Uma nova partida vai iniciar");
         this.atualizarNomeFaccaoJogador();
@@ -174,7 +173,7 @@ public class JMesa extends javax.swing.JFrame {
 		cartasFileiraEx = (HashMap<String, Carta>) mapDeck.get("fileiras");
 	}
 
-    private void iniciarPartidaJogadorDois() {
+    private void iniciarPartida() {
 		this.atorJogador.iniciarPartida();
     }
 
@@ -704,7 +703,7 @@ public class JMesa extends javax.swing.JFrame {
     }
 
     private void jMenuItemIniciarPartidaActionPerformed(ActionEvent evt) {
-        this.iniciarPartidaJogadorDois();
+        this.iniciarPartida();
     }
 
     private void jMenuItemEncerrarPartidaActionPerformed(ActionEvent evt) {
