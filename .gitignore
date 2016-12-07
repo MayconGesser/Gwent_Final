@@ -7,3 +7,4 @@ bin
 *.iml
 /classes
 src/META-INF
+documentacao/*.vux

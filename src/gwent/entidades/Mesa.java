@@ -32,14 +32,10 @@ public class Mesa implements Jogada {
     }
 
     public void embaralhar() {
-        if (this.jogadorUm.getDeck() != null) {
-            this.jogadorUm.getDeck().embaralhar();
-            this.jogadorUm.preencheCartasMao();
-        }
-        if (this.jogadorDois.getDeck() != null) {
-            this.jogadorDois.getDeck().embaralhar();
-            this.jogadorDois.preencheCartasMao();
-        }
+        this.jogadorUm.getDeck().embaralhar();
+        this.jogadorUm.preencheCartasMao();
+        this.jogadorDois.getDeck().embaralhar();
+        this.jogadorDois.preencheCartasMao();
     }
 
     public void iniciarRound(Jogador jogadorDaVez) {

@@ -16,10 +16,10 @@ import java.util.List;
 public class AtorNetGames implements OuvidorProxy {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	protected ControladorMesa controladorMesa;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    protected ControladorMesa controladorMesa;
     protected Proxy proxy;
 
     public AtorNetGames(ControladorMesa controladorMesa) {
@@ -55,31 +55,27 @@ public class AtorNetGames implements OuvidorProxy {
         if (controladorMesa.getJogadorAtual().getNome().equals(proxy.obterNomeAdversario(1))) {
             for (int i = 1; i <= 2; i++) {
                 Jogador jogador = null;
-                try {
-                    jogador = new Jogador(i, proxy.obterNomeAdversario(i));
-                    if (jogador.getIdJogador() == 1)
-                        jogador.setDeck((Deck) BancoCartas.resgatarDeck(Faccao.REINOS_DO_NORTE).get("deck"));
-                    else
-                        jogador.setDeck((Deck) BancoCartas.resgatarDeck(Faccao.MONSTROS).get("deck"));
-                    jogadores.add(jogador);
-                } catch (Exception e) {
-                    System.out.println("Sem jogadores suficientes");
-                }
+                jogador = new Jogador(i, proxy.obterNomeAdversario(i));
+                if (jogador.getIdJogador() == 1)
+                    jogador.setDeck((Deck) BancoCartas.resgatarDeck(Faccao.REINOS_DO_NORTE).get("deck"));
+                else
+                    jogador.setDeck((Deck) BancoCartas.resgatarDeck(Faccao.MONSTROS).get("deck"));
+                jogadores.add(jogador);
             }
-        } else {
-            Jogador jogador = controladorMesa.getJogadorAtual();
-            jogador.setDeck((Deck) BancoCartas.resgatarDeck(Faccao.REINOS_DO_NORTE).get("deck"));
-            jogadores.add(jogador);
-            jogador = new Jogador(2, proxy.obterNomeAdversario(2));
-            jogador.setDeck((Deck) BancoCartas.resgatarDeck(Faccao.MONSTROS).get("deck"));
-            jogadores.add(jogador);
         }
-
+//        else {
+//            Jogador jogador = controladorMesa.getJogadorAtual();
+//            jogador.setDeck((Deck) BancoCartas.resgatarDeck(Faccao.REINOS_DO_NORTE).get("deck"));
+//            jogadores.add(jogador);
+//            jogador = new Jogador(2, proxy.obterNomeAdversario(2));
+//            jogador.setDeck((Deck) BancoCartas.resgatarDeck(Faccao.MONSTROS).get("deck"));
+//            jogadores.add(jogador);
+//        }
         return jogadores;
     }
 
     public void enviarJogada(Jogada jogada) {
-    	System.out.println(jogada.toString());
+        System.out.println(jogada.toString());
         try {
             proxy.enviaJogada(jogada);
         } catch (NaoJogandoException ignored) {

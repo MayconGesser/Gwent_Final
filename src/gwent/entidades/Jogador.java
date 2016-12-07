@@ -44,15 +44,6 @@ public class Jogador implements Jogada {
         for (int i = 0; i < 10; i++) {
             this.cartasMao.add(this.deck.sacarCarta());
         }
-        //garantir q vai cartas de clima na mao
-        //apenas para fins de teste
-        //adiciona as 3 cartas de clima
-//        List<Carta> cs = this.deck.getCartas();
-//        for(Carta c : cs){
-//        	if(c instanceof CartaClima){
-//        		this.cartasMao.add(c);
-//        	}
-//        }
     }
     
     //metodo disparado apenas pela habilidade ESPIAO
