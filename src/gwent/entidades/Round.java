@@ -44,6 +44,8 @@ public class Round implements Jogada {
     }
 
     public void addLance(Lance lance) {
+        if (this.lances == null)
+            this.lances = new ArrayList<>();
         this.lances.add(lance);
     }
 }
