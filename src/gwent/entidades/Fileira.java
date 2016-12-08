@@ -27,7 +27,7 @@ public class Fileira extends JPanel implements Jogada {
 	private GroupLayout fileiraLayout;
 	
 	
-	public Fileira(TipoUnidade tipo, ExibidorPoderFileira exibidorPoder){
+	public Fileira(TipoUnidade tipo){
 		this.tipo = tipo;		
 		this.cartas = new ArrayList<>();
 		this.fileiraLayout = new GroupLayout(this);
@@ -62,7 +62,6 @@ public class Fileira extends JPanel implements Jogada {
 		this.glVertical.addComponent(carta);
 		this.fileiraLayout.setHorizontalGroup(glHorizontal);
 		this.fileiraLayout.setVerticalGroup(glVertical);
-		//this.exibidorPoder.alterarPoder(this.poderTotal);
 		System.out.println("Poder da fileira " + this.getTipo().toString() + ": " + this.poderTotal);
 		atualizaPoderTotal();
 		revalidate();

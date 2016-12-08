@@ -247,23 +247,19 @@ public class JMesa extends javax.swing.JFrame {
 	private void initComponents() {
 		placar = new javax.swing.JPanel();
 		mouseCartas = new MouseCarta();
-		fileiraCerco = new Fileira(TipoUnidade.CERCO,null);
+		fileiraCerco = new Fileira(TipoUnidade.CERCO);
 		fileiraCerco.setMouseCartas(mouseCartas);
-		fileiraLongaDistancia = new Fileira(TipoUnidade.LONGA_DISTANCIA,null);
+		fileiraLongaDistancia = new Fileira(TipoUnidade.LONGA_DISTANCIA);
 		fileiraLongaDistancia.setMouseCartas(mouseCartas);
-		fileiraInfantaria = new Fileira(TipoUnidade.INFANTARIA,null);
+		fileiraInfantaria = new Fileira(TipoUnidade.INFANTARIA);
 		fileiraInfantaria.setMouseCartas(mouseCartas);
 		divisor = new javax.swing.JPanel();
-		fileiraInfantariaAd = new Fileira(TipoUnidade.INFANTARIA,null);
+		fileiraInfantariaAd = new Fileira(TipoUnidade.INFANTARIA);
 		fileiraInfantariaAd.setMouseCartas(mouseCartas);
-		fileiraLongaDistanciaAd = new Fileira(TipoUnidade.LONGA_DISTANCIA,null);
+		fileiraLongaDistanciaAd = new Fileira(TipoUnidade.LONGA_DISTANCIA);
 		fileiraLongaDistanciaAd.setMouseCartas(mouseCartas);
-		fileiraCercoAd = new Fileira(TipoUnidade.CERCO,null);
+		fileiraCercoAd = new Fileira(TipoUnidade.CERCO);
 		fileiraCercoAd.setMouseCartas(mouseCartas);
-		seletorFileira = new SeletorFileira();
-		fileiraCerco.addMouseListener(seletorFileira);
-		fileiraLongaDistancia.addMouseListener(seletorFileira);
-		fileiraInfantaria.addMouseListener(seletorFileira);
 		deck = new javax.swing.JPanel();
 		cemiterio = new javax.swing.JPanel();
 		deckAd = new javax.swing.JPanel();
@@ -735,10 +731,6 @@ public class JMesa extends javax.swing.JFrame {
 	private Fileira fileiraInfantariaAd;
 	private Fileira fileiraLongaDistancia;
 	private Fileira fileiraLongaDistanciaAd;
-	private SeletorFileira seletorFileira;
-	private JPanel expF_cerco;
-	private JPanel expF_longd;
-	private JPanel expF_inf;
 	private javax.swing.JPanel placar;
 	private javax.swing.JButton btPassar;
 	private javax.swing.JButton btJogar;
@@ -752,9 +744,6 @@ public class JMesa extends javax.swing.JFrame {
 	private HashMap<String,Carta> cartasExibicao;
 	private HashMap<String,Carta> cartasFileiraEx;
 	private HashMap<String,Carta> cartasExibicaoAdversario;
-	private boolean passouTurno;
-	private boolean jogadorDaVez;
-	private boolean precisaSelecionar;
 	private javax.swing.JMenu jMenu;
 	private javax.swing.JMenuBar jMenuBar;
 	private javax.swing.JMenuItem jMenuItemConectar;
@@ -1011,61 +1000,8 @@ public class JMesa extends javax.swing.JFrame {
 					}
 					acaoBotao(false);
 					atorJogador.passarTurno();
-					passouTurno = true;
-					jogadorDaVez = false;
 				}				
 			}
 		}    	
-	}
-
-	private class SeletorFileira implements MouseListener{
-
-		private Fileira fileiraSelecionada;
-
-		public Fileira getFileiraSelecionada(){
-			return this.fileiraSelecionada;
-		}
-
-		@Override
-		public void mouseClicked(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			if(!precisaSelecionar){
-				return;
-			}
-			this.fileiraSelecionada = (Fileira)arg0.getSource();
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			if(!precisaSelecionar){
-				return;
-			}
-			Fileira fileira = (Fileira) arg0.getSource();
-			fileira.setBorder(BorderFactory.createLineBorder(Color.RED,3));
-		}
-
-		@Override
-		public void mouseExited(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			if(!precisaSelecionar){
-				return;
-			}
-			Fileira fileira = (Fileira) arg0.getSource();
-			fileira.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
-		}
-
-		@Override
-		public void mousePressed(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-
-		}
-
-	}
+	}	
 }
