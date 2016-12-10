@@ -973,14 +973,6 @@ public class JMesa extends javax.swing.JFrame {
 					atorJogador.baixarCarta(cartaClima,null);
 				}
 
-//				if(precisaSelecionar){
-//					Fileira fileiraSelecionada = null;
-//					JOptionPane.showMessageDialog(null, "Selecione uma fileira para jogar a carta");
-//					while(precisaSelecionar){
-//						
-//					}
-//					fileiraSelecionada.incluirCarta(cartaAdicionada);
-//				}
                 atualizarPlacar();
 				cartaSelecionada = null;
 				trocaCartaParaDummy();

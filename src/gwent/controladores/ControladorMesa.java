@@ -171,26 +171,7 @@ public class ControladorMesa implements Jogada {
     			}
     		}
     	}
-    	//joga cartas q fazem parte da jogada de agrupar q estao na mao do jogador
-//    	for(Carta ccc : this.jogadorAtual.getCartasMao()){
-//    		if(ccc instanceof CartaUnidade){
-//    			CartaUnidade uu = (CartaUnidade)ccc;
-//    			String nomeUU = sanitizarString(uu.getNomeCarta());
-//    			if(nomeAComparar.equals(nomeUU) &&
-//    					uu.getHabilidade() != null &&
-//    					uu.getHabilidade().getTipoHabilidade().equals(TipoHabilidade.AGRUPAR)
-//    					&& carta != uu){
-//    						Fileira fi = this.fileiras.get(uu.getTipo());
-//    						uu = (CartaUnidade)cartasFileira.get(uu.getTipo());
-//    						int pontos = fi.incluirCarta(uu);
-//    						if(jogador != null){
-//    							jogador.addPontuacao(pontos);
-//    						}
-//    					retorno.add(uu);
-//    					getJogadorAtual().getCartasMao().remove(carta);
-//    			}
-//    		}
-//    	}
+    	
 
     	f.incluirCarta(carta);		//inclui a carta q ocasionou a habilidade
         this.computaPontosJogador(this.mesa.getJogador(jogador), this.fileiras);
